@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.example.twitchapp.data.datasource.RemoteDatasource
 import com.example.twitchapp.databinding.ActivityMainBinding
+import com.example.twitchapp.ui.GameStreamsFragment
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,5 +24,10 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.container, GameStreamsFragment())
+                .commit()
+        }
     }
 }
