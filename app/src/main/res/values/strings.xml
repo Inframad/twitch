@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TwitchApp</string>
+    <string name="game_stream_iv_desc">Stream preview image</string>
+    <string name="views_iv_desc">Amount of views</string>
 </resources>
