@@ -1,14 +1,10 @@
-package com.example.twitchapp
+package com.example.twitchapp.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.lifecycleScope
-import com.example.twitchapp.data.datasource.RemoteDatasource
+import androidx.appcompat.app.AppCompatActivity
+import com.example.twitchapp.App
+import com.example.twitchapp.R
 import com.example.twitchapp.databinding.ActivityMainBinding
-import com.example.twitchapp.ui.GameStreamsFragment
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 

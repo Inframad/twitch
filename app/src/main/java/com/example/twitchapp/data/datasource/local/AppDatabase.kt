@@ -2,9 +2,9 @@ package com.example.twitchapp.data.datasource.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.twitchapp.data.model.GameStreamDb
+import com.example.twitchapp.data.model.GameStream
 
-@Database(entities = [GameStreamDb::class], version = 1)
+@Database(entities = [GameStream::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun gameStreamDao(): GameStreamDao
