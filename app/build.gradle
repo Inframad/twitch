@@ -46,6 +46,7 @@ dependencies {
     def dagger_version = "2.40.1"
     def lifecycle_version = "2.4.1"
     def room_version = "2.4.2"
+    def paging_version = "3.1.0"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
@@ -61,6 +62,8 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'

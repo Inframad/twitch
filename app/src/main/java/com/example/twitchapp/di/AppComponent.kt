@@ -1,9 +1,11 @@
 package com.example.twitchapp.di
 
 import android.content.Context
-import com.example.twitchapp.MainActivity
 import com.example.twitchapp.di.data.DataModule
 import com.example.twitchapp.di.data.NetworkModule
+import com.example.twitchapp.di.ui.UiModule
+import com.example.twitchapp.ui.GameStreamsFragment
+import com.example.twitchapp.ui.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -12,7 +14,8 @@ import javax.inject.Singleton
 @Component(
     modules = [
         NetworkModule::class,
-        DataModule::class
+        DataModule::class,
+        UiModule::class
     ]
 )
 interface AppComponent {
@@ -24,4 +27,5 @@ interface AppComponent {
     }
 
     fun inject(activity: MainActivity)
+    fun inject(fragment: GameStreamsFragment)
 }

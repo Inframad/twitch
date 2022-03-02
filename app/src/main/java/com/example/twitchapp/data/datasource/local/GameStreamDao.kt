@@ -4,15 +4,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.twitchapp.data.model.GameStreamDb
-import kotlinx.coroutines.flow.Flow
+import com.example.twitchapp.data.model.GameStream
 
 @Dao
 interface GameStreamDao {
 
-    @Query("SELECT * FROM gamestreamdb")
-    fun getAll(): Flow<List<GameStreamDb>>
+    @Query("SELECT * FROM gamestream")
+    fun getAll(): List<GameStream>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(gameStreamsDb: List<GameStreamDb>)
+    suspend fun insert(gameStreams: GameStream)
+
+    @Query("DELETE FROM gamestream")
+    suspend fun clearAll()
 }
