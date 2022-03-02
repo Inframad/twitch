@@ -15,15 +15,16 @@ class Repository @Inject constructor(
     private val api: TwitchApi
 ) {
 
-    fun getGameStreams() =
-        localDatasource.getGameStreams()
-
     val gameStreamsFlow = Pager(
         PagingConfig(pageSize = 20)
     ) {
         GameStreamsPagingSource(api)
     }.flow.map {
-        it.map { gameStreamDTO -> gameStreamDTO.toGameStream() }
+        it.map { gameStreamDTO ->
+            val gameStream = gameStreamDTO.toGameStream()
+            localDatasource.saveGameStream(gameStream)
+            gameStream
+        }
     }
 
 }

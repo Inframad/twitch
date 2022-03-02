@@ -13,7 +13,7 @@ interface GameStreamDao {
     fun getAll(): List<GameStream>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(gameStreams: List<GameStream>)
+    suspend fun insert(gameStreams: GameStream)
 
     @Query("DELETE FROM gamestream")
     suspend fun clearAll()

@@ -10,8 +10,8 @@ class LocalDatasource @Inject constructor(
     fun getGameStreams() =
         gameStreamDao.getAll()
 
-    suspend fun saveGameStreams(gameStreams: List<GameStream>) {
-        gameStreamDao.insertAll(gameStreams)
+    suspend fun saveGameStream(gameStream: GameStream) {
+        gameStreamDao.insert(gameStream)
     }
 
 }
