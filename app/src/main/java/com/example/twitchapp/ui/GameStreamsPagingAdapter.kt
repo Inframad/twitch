@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.twitchapp.data.model.GameStream
 import com.example.twitchapp.databinding.ItemGameStreamBinding
 
-class GameStreamsAdapter(
+class GameStreamsPagingAdapter(
     diffCallback: DiffUtil.ItemCallback<GameStream>
 ) : PagingDataAdapter<GameStream, GameStreamViewHolder>(diffCallback) {
 
@@ -28,12 +28,3 @@ class GameStreamsAdapter(
     }
 }
 
-object GameStreamComparator : DiffUtil.ItemCallback<GameStream>() {
-    override fun areItemsTheSame(oldItem: GameStream, newItem: GameStream): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: GameStream, newItem: GameStream): Boolean {
-        return oldItem == newItem
-    }
-}

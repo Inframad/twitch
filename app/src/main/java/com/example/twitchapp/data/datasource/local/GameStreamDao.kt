@@ -4,17 +4,26 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.twitchapp.data.model.GameStream
+import com.example.twitchapp.data.model.GameStreamEntity
 
 @Dao
 interface GameStreamDao {
 
-    @Query("SELECT * FROM gamestream")
-    fun getAll(): List<GameStream>
+    @Query("SELECT * FROM gamestreamentity")
+    fun getAll(): List<GameStreamEntity>
+
+    @Query("SELECT * FROM gamestreamentity WHERE GUID=:guid")
+    fun getGameStreamByGUID(guid: String): GameStreamEntity
+
+    @Query("SELECT * FROM gamestreamentity WHERE id BETWEEN :id AND :id+20")
+    fun getPage(id: Int): List<GameStreamEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(gameStreams: GameStream)
+    suspend fun insert(gameStreamsEntity: GameStreamEntity)
 
-    @Query("DELETE FROM gamestream")
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(gameStreamsEntities: List<GameStreamEntity>)
+
+    @Query("DELETE FROM gamestreamentity")
     suspend fun clearAll()
 }
