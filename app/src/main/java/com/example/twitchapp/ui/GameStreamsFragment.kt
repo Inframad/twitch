@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.example.twitchapp.App
+import com.example.twitchapp.data.model.DatabaseException
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
 import com.example.twitchapp.presentation.GameStreamViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -52,6 +53,19 @@ class GameStreamsFragment : Fragment() {
 
         binding.rv.adapter = pagingDataAdapter
 
+        pagingDataAdapter.addLoadStateListener {
+            when (it.refresh) {
+                is LoadState.Error -> {
+                    val refreshError = (it.refresh as LoadState.Error)
+                    when (refreshError.error) {
+                        is DatabaseException -> {
+                            binding.noSavedDataTv.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            }
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.gameStreamsFlow.collectLatest {
                 pagingDataAdapter.submitData(it)
@@ -59,9 +73,6 @@ class GameStreamsFragment : Fragment() {
         }
     }
 
-    private fun showToast(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

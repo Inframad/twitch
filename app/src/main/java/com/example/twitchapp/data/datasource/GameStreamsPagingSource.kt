@@ -5,9 +5,7 @@ import androidx.paging.PagingState
 import com.example.twitchapp.data.converter.toGameStream
 import com.example.twitchapp.data.converter.toGameStreamEntity
 import com.example.twitchapp.data.datasource.local.LocalDatasource
-import com.example.twitchapp.data.model.GameStream
-import com.example.twitchapp.data.model.Mode
-import com.example.twitchapp.data.model.NetworkState
+import com.example.twitchapp.data.model.*
 import com.example.twitchapp.data.network.NetworkConnectionChecker
 import com.example.twitchapp.data.network.TwitchApi
 import retrofit2.HttpException
@@ -64,11 +62,15 @@ class GameStreamsPagingSource @Inject constructor(
                         }
                     } else {
                         val data = localDatasource.getGameStreamsPage(1)
-                        return LoadResult.Page(
-                            data = data.map { it.toGameStream() },
-                            prevKey = null,
-                            nextKey = if (data.isNullOrEmpty()) null else data.last().GUID
-                        )
+                        return if(data.isEmpty()) {
+                            LoadResult.Error(DatabaseException(DatabaseState.EMPTY))
+                        } else {
+                            LoadResult.Page(
+                                data = data.map { it.toGameStream() },
+                                prevKey = null,
+                                nextKey = data.last().GUID
+                            )
+                        }
                     }
                 }
             }

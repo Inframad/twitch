@@ -7,4 +7,5 @@
     <string name="connection_restored">Соединение восстановлено</string>
     <string name="connection_lost">Соединение потеряно</string>
     <string name="connection_is_not_available_msg">Соединение недоступно, загружены сохраненные данные</string>
+    <string name="no_saved_data_msg">Интернет соединение недоступно. Сохраненных данных нет</string>
 </resources>
