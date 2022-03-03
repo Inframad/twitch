@@ -18,6 +18,9 @@ interface GameStreamDao {
     @Query("SELECT * FROM gamestreamentity WHERE id BETWEEN :id AND :id+20")
     fun getPage(id: Int): List<GameStreamEntity>
 
+    @Query("SELECT * FROM gamestreamentity LIMIT 20")
+    fun getFirstPage(): List<GameStreamEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(gameStreamsEntity: GameStreamEntity)
 

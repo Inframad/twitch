@@ -25,6 +25,8 @@ class GameStreamsPagingSource @Inject constructor(
         NetworkState.NOT_AVAILABLE -> Mode.OFFLINE
     }
 
+    private var isFirstLoad: Boolean = true
+
     override suspend fun load(params: LoadParams<String>): LoadResult<String, GameStream> {
         try {
             var data = emptyList<GameStream>()
@@ -34,6 +36,11 @@ class GameStreamsPagingSource @Inject constructor(
                 Mode.ONLINE -> {
                     val nextPage = params.key ?: ""
                     val response = twitchApi.getGameStreams(nextPage)
+
+                    if (isFirstLoad && !response.data.isNullOrEmpty()) {
+                        localDatasource.deleteAllGameStreams()
+                        isFirstLoad = false
+                    }
 
                     data = response.data.map { it.toGameStream() }
                     localDatasource.saveGameStreams(data.map { it.toGameStreamEntity() })
@@ -53,7 +60,7 @@ class GameStreamsPagingSource @Inject constructor(
                         }
 
                     } else {
-                        val gameStreamEntities = localDatasource.getGameStreamsPage(1)
+                        val gameStreamEntities = localDatasource.getGameStreamsFirstPage()
 
                         if (gameStreamEntities.isEmpty()) throw DatabaseException(DatabaseState.EMPTY)
                         else {

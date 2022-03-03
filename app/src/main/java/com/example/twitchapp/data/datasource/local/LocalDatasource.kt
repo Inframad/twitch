@@ -25,4 +25,15 @@ class LocalDatasource @Inject constructor(
         gameStreamDao.insert(gameStreams)
     }
 
+    suspend fun deleteAllGameStreams(){
+        withContext(Dispatchers.IO) {
+            gameStreamDao.clearAll()
+        }
+    }
+
+    suspend fun getGameStreamsFirstPage() =
+        withContext(Dispatchers.IO) {
+            gameStreamDao.getFirstPage()
+        }
+
 }
