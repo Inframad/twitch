@@ -27,56 +27,52 @@ class GameStreamsPagingSource @Inject constructor(
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, GameStream> {
         try {
+            var data = emptyList<GameStream>()
+            var nextKey: String? = null
+
             when (mode) {
                 Mode.ONLINE -> {
                     val nextPage = params.key ?: ""
                     val response = twitchApi.getGameStreams(nextPage)
 
-                    val data = response.data.map { it.toGameStream() }
+                    data = response.data.map { it.toGameStream() }
                     localDatasource.saveGameStreams(data.map { it.toGameStreamEntity() })
-                    return LoadResult.Page(
-                        data = data,
-                        prevKey = null,
-                        nextKey = response.pagination.cursor
-                    )
+
+                    nextKey = response.pagination.cursor
                 }
                 Mode.OFFLINE -> {
                     if (params.key != null) {
                         val nextPage = params.key
-                        val data = localDatasource.getGameStreamsPage(
+                        val gameStreamEntities = localDatasource.getGameStreamsPage(
                             localDatasource.getGameStreamByGUID(nextPage!!).id
                         )
 
-                        return if (data.last().GUID != nextPage) {
-                            LoadResult.Page(
-                                data = data.map { it.toGameStream() },
-                                prevKey = null,
-                                nextKey = data.last().GUID
-                            )
-                        } else {
-                            LoadResult.Page(
-                                data = emptyList(),
-                                prevKey = null,
-                                nextKey = null
-                            )
+                        if (gameStreamEntities.last().GUID != nextPage) {
+                            data = gameStreamEntities.map { it.toGameStream() }
+                            nextKey = data.last().GUID
                         }
+
                     } else {
-                        val data = localDatasource.getGameStreamsPage(1)
-                        return if(data.isEmpty()) {
-                            LoadResult.Error(DatabaseException(DatabaseState.EMPTY))
-                        } else {
-                            LoadResult.Page(
-                                data = data.map { it.toGameStream() },
-                                prevKey = null,
-                                nextKey = data.last().GUID
-                            )
+                        val gameStreamEntities = localDatasource.getGameStreamsPage(1)
+
+                        if (gameStreamEntities.isEmpty()) throw DatabaseException(DatabaseState.EMPTY)
+                        else {
+                            data = gameStreamEntities.map { it.toGameStream() }
+                            nextKey = data.last().GUID
                         }
                     }
                 }
             }
+            return LoadResult.Page(
+                data = data,
+                prevKey = null,
+                nextKey = nextKey
+            )
         } catch (e: IOException) {
             return LoadResult.Error(e)
         } catch (e: HttpException) {
+            return LoadResult.Error(e)
+        } catch (e: DatabaseException) {
             return LoadResult.Error(e)
         }
     }
