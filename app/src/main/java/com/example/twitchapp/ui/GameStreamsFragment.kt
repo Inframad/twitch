@@ -2,10 +2,7 @@ package com.example.twitchapp.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +14,7 @@ import com.example.twitchapp.databinding.FragmentGameStreamsBinding
 import com.example.twitchapp.presentation.GameStreamViewModel
 import com.example.twitchapp.ui.adapter.GameStreamsLoadStateAdapter
 import com.example.twitchapp.ui.adapter.GameStreamsPagingAdapter
+import com.example.twitchapp.ui.util.showToast
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.net.SocketTimeoutException
@@ -55,25 +53,31 @@ class GameStreamsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setHasOptionsMenu(true)
+
         val pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator())
 
-        binding.rv.adapter =
-            pagingDataAdapter.withLoadStateFooter(footer = GameStreamsLoadStateAdapter {
-                pagingDataAdapter.retry()
-            })
+        binding.apply {
+            rv.adapter =
+                pagingDataAdapter.withLoadStateFooter(footer = GameStreamsLoadStateAdapter {
+                    pagingDataAdapter.retry()
+                })
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            pagingDataAdapter.refresh()
+            swipeRefreshLayout.setOnRefreshListener {
+                pagingDataAdapter.refresh()
+            }
         }
 
-        pagingDataAdapter.addOnPagesUpdatedListener {
-            binding.noDataMsgTv.visibility = View.GONE
-            binding.swipeRefreshLayout.isRefreshing = false
-        }
+        pagingDataAdapter.apply {
+            addOnPagesUpdatedListener {
+                binding.noDataMsgTv.visibility = View.GONE
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
 
-        pagingDataAdapter.addLoadStateListener {
-            if (it.refresh is LoadState.Error) {
-                handleError(it.refresh as LoadState.Error)
+            addLoadStateListener {
+                if (it.refresh is LoadState.Error) {
+                    handleError(it.refresh as LoadState.Error)
+                }
             }
         }
 
@@ -84,38 +88,36 @@ class GameStreamsFragment : Fragment() {
         }
     }
 
-    private fun handleError(state: LoadState.Error) {
-        when (state.error) {
-            is DatabaseException -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.offline_mode_error_msg),
-                    Toast.LENGTH_LONG
-                ).show()
-                binding.noDataMsgTv.visibility = View.VISIBLE
-            }
-            is UnknownHostException -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.check_internet_connection_msg),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            is SocketTimeoutException -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.check_internet_connection_msg),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            else -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.unknown_error_msg),
-                    Toast.LENGTH_LONG
-                ).show()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.main_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.app_review_menu_item -> {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, AppReviewFragment())
+                    .addToBackStack("APP_REVIEW")
+                    .commit()
             }
         }
+        return true
+    }
+
+    private fun handleError(state: LoadState.Error) {
+        context?.showToast(
+            getString(
+                when (state.error) {
+                    is DatabaseException -> R.string.offline_mode_error_msg
+                    is UnknownHostException -> R.string.check_internet_connection_msg
+                    is SocketTimeoutException -> R.string.check_internet_connection_msg
+                    else -> R.string.unknown_error_msg
+                }
+            )
+        )
+        if (state.error is DatabaseException) binding.noDataMsgTv.visibility = View.VISIBLE
         binding.swipeRefreshLayout.isRefreshing = false
     }
 

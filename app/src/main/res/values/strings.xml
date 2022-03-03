@@ -15,4 +15,5 @@
     <string name="unknown_error_msg">Неизвестная ошибка</string>
     <string name="offline_mode_error_msg">Интернет соединение недоступно. Загружены сохраненные данные</string>
     <string name="retry_btn_text">Повторить</string>
+    <string name="review">Оставить отзыв</string>
 </resources>
