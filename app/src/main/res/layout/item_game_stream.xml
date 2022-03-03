@@ -14,9 +14,10 @@
         <ImageView
             android:id="@+id/game_stream_iv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/game_stream_iv_desc"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
