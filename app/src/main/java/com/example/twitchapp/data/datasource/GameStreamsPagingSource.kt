@@ -1,6 +1,5 @@
 package com.example.twitchapp.data.datasource
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.twitchapp.data.converter.toGameStream
@@ -11,6 +10,7 @@ import com.example.twitchapp.data.network.NetworkConnectionChecker
 import com.example.twitchapp.data.network.TwitchApi
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,7 +26,7 @@ class GameStreamsPagingSource @Inject constructor(
         NetworkState.NOT_AVAILABLE -> Mode.OFFLINE
     }
 
-    private var isFirstLoad: Boolean = true
+    private var isDatabaseShouldBeCleared: Boolean = true
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, GameStream> {
         try {
@@ -38,9 +38,9 @@ class GameStreamsPagingSource @Inject constructor(
                     val nextPage = params.key ?: ""
                     val response = twitchApi.getGameStreams(nextPage)
 
-                    if (isFirstLoad && !response.data.isNullOrEmpty()) {
+                    if (isDatabaseShouldBeCleared && !response.data.isNullOrEmpty()) {
                         localDatasource.deleteAllGameStreams()
-                        isFirstLoad = false
+                        isDatabaseShouldBeCleared = false
                     }
 
                     data = response.data.map { it.toGameStream() }
@@ -71,7 +71,6 @@ class GameStreamsPagingSource @Inject constructor(
                     }
                 }
             }
-            Log.d("TAG", "")
             return LoadResult.Page(
                 data = data,
                 prevKey = null,
@@ -80,6 +79,9 @@ class GameStreamsPagingSource @Inject constructor(
         } catch (e: IOException) {
             return LoadResult.Error(e)
         } catch (e: HttpException) {
+            return LoadResult.Error(e)
+        } catch (e: UnknownHostException) {
+            mode = Mode.OFFLINE
             return LoadResult.Error(e)
         } catch (e: DatabaseException) {
             return LoadResult.Error(e)
@@ -90,7 +92,11 @@ class GameStreamsPagingSource @Inject constructor(
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             val pageIndex = state.pages.indexOf(anchorPage)
-            if (pageIndex == 0) return null
+            if (pageIndex == 0) {
+                isDatabaseShouldBeCleared = true
+                mode = Mode.ONLINE
+                return null
+            }
             anchorPage?.nextKey
         }
     }

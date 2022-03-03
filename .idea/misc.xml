@@ -6,6 +6,7 @@
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/activity_main.xml" value="0.13269927536231885" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_app_review.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_game_streams.xml" value="0.13269927536231885" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/game_streams_load_state_footer.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/item_game_stream.xml" value="1.5230263157894737" />
       </map>
     </option>

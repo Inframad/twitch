@@ -4,4 +4,5 @@
     <dimen name="card_view_margin_vertical">8dp</dimen>
     <dimen name="card_text_margin_horizontal">8dp</dimen>
     <dimen name="fragment_app_review_content_margin">8dp</dimen>
+    <dimen name="footer_error_text_size">18sp</dimen>
 </resources>

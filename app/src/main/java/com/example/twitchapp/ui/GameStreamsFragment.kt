@@ -2,20 +2,25 @@ package com.example.twitchapp.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.example.twitchapp.App
+import com.example.twitchapp.R
 import com.example.twitchapp.data.model.DatabaseException
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
 import com.example.twitchapp.presentation.GameStreamViewModel
+import com.example.twitchapp.ui.adapter.GameStreamsLoadStateAdapter
+import com.example.twitchapp.ui.adapter.GameStreamsPagingAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class GameStreamsFragment : Fragment() {
@@ -52,27 +57,23 @@ class GameStreamsFragment : Fragment() {
 
         val pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator())
 
-        binding.rv.adapter = pagingDataAdapter
+        binding.rv.adapter =
+            pagingDataAdapter.withLoadStateFooter(footer = GameStreamsLoadStateAdapter {
+                pagingDataAdapter.retry()
+            })
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             pagingDataAdapter.refresh()
         }
 
         pagingDataAdapter.addOnPagesUpdatedListener {
+            binding.noDataMsgTv.visibility = View.GONE
             binding.swipeRefreshLayout.isRefreshing = false
-            Log.d(TAG, "Refreshed")
         }
 
         pagingDataAdapter.addLoadStateListener {
-            when (it.refresh) {
-                is LoadState.Error -> {
-                    val refreshError = it.refresh as LoadState.Error
-                    when (refreshError.error) {
-                        is DatabaseException -> {
-                            binding.noDataMsgTv.visibility = View.VISIBLE
-                        }
-                    }
-                }
+            if (it.refresh is LoadState.Error) {
+                handleError(it.refresh as LoadState.Error)
             }
         }
 
@@ -81,6 +82,41 @@ class GameStreamsFragment : Fragment() {
                 pagingDataAdapter.submitData(it)
             }
         }
+    }
+
+    private fun handleError(state: LoadState.Error) {
+        when (state.error) {
+            is DatabaseException -> {
+                Toast.makeText(
+                    context,
+                    getString(R.string.offline_mode_error_msg),
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.noDataMsgTv.visibility = View.VISIBLE
+            }
+            is UnknownHostException -> {
+                Toast.makeText(
+                    context,
+                    getString(R.string.check_internet_connection_msg),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            is SocketTimeoutException -> {
+                Toast.makeText(
+                    context,
+                    getString(R.string.check_internet_connection_msg),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            else -> {
+                Toast.makeText(
+                    context,
+                    getString(R.string.unknown_error_msg),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+        binding.swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onDestroyView() {

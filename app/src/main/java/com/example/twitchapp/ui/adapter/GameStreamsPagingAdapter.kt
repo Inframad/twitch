@@ -1,9 +1,10 @@
-package com.example.twitchapp.ui
+package com.example.twitchapp.ui.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.twitchapp.data.model.GameStream
+import com.example.twitchapp.ui.viewholder.GameStreamViewHolder
 
 class GameStreamsPagingAdapter(
     diffCallback: DiffUtil.ItemCallback<GameStream>
