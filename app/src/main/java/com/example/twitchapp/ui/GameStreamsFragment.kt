@@ -2,6 +2,7 @@ package com.example.twitchapp.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,13 +54,22 @@ class GameStreamsFragment : Fragment() {
 
         binding.rv.adapter = pagingDataAdapter
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            pagingDataAdapter.refresh()
+        }
+
+        pagingDataAdapter.addOnPagesUpdatedListener {
+            binding.swipeRefreshLayout.isRefreshing = false
+            Log.d(TAG, "Refreshed")
+        }
+
         pagingDataAdapter.addLoadStateListener {
             when (it.refresh) {
                 is LoadState.Error -> {
-                    val refreshError = (it.refresh as LoadState.Error)
+                    val refreshError = it.refresh as LoadState.Error
                     when (refreshError.error) {
                         is DatabaseException -> {
-                            binding.noSavedDataTv.visibility = View.VISIBLE
+                            binding.noDataMsgTv.visibility = View.VISIBLE
                         }
                     }
                 }

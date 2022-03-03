@@ -1,5 +1,6 @@
 package com.example.twitchapp.data.datasource
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.twitchapp.data.converter.toGameStream
@@ -70,6 +71,7 @@ class GameStreamsPagingSource @Inject constructor(
                     }
                 }
             }
+            Log.d("TAG", "")
             return LoadResult.Page(
                 data = data,
                 prevKey = null,
