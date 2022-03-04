@@ -1,4 +1,4 @@
-package com.example.twitchapp.presentation.util
+package com.example.twitchapp.ui.util
 
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
