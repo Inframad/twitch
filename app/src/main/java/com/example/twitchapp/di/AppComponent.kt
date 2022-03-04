@@ -4,8 +4,8 @@ import android.content.Context
 import com.example.twitchapp.di.data.DataModule
 import com.example.twitchapp.di.data.NetworkModule
 import com.example.twitchapp.di.ui.UiModule
-import com.example.twitchapp.ui.GameStreamsFragment
 import com.example.twitchapp.ui.MainActivity
+import com.example.twitchapp.ui.fragment.GameStreamsFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

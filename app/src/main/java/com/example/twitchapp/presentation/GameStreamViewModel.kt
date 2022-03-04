@@ -1,9 +1,12 @@
 package com.example.twitchapp.presentation
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.example.twitchapp.data.model.NetworkState
 import com.example.twitchapp.data.repository.Repository
+import com.example.twitchapp.di.util.SingleLiveEvent
 import javax.inject.Inject
 
 class GameStreamViewModel @Inject constructor(
@@ -12,7 +15,11 @@ class GameStreamViewModel @Inject constructor(
 
     val gameStreamsFlow = repository.gameStreamsFlow.cachedIn(viewModelScope)
 
-    val initNetworkState =
-        repository.getCurrentNetworkState()
+    private val _offlineMode: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val offlineMode: LiveData<Unit> = _offlineMode
 
+    init {
+        if (repository.getCurrentNetworkState() == NetworkState.NOT_AVAILABLE)
+            _offlineMode.value = Unit
+    }
 }

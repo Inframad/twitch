@@ -1,10 +1,9 @@
-package com.example.twitchapp.ui
+package com.example.twitchapp.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.twitchapp.R
 import com.example.twitchapp.databinding.FragmentAppReviewBinding
 import com.example.twitchapp.ui.util.showToast
@@ -26,6 +25,9 @@ class AppReviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setHasOptionsMenu(true)
+
+
         binding.apply {
             sendReviewBtn.setOnClickListener {
                 context?.showToast(
@@ -35,9 +37,14 @@ class AppReviewFragment : Fragment() {
                         appRatingBar.rating.toString()
                     )
                 )
-                parentFragmentManager.popBackStack()
+                findNavController().popBackStack()
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
     }
 
     override fun onDestroyView() {

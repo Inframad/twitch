@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/game_streams_page">
+
+    <fragment
+        android:id="@+id/game_streams_page"
+        android:name="com.example.twitchapp.ui.fragment.GameStreamsFragment"
+        android:label="GameStreamsFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/favorite_games_page"
+        android:name="com.example.twitchapp.ui.fragment.FavouriteGamesFragment"
+        android:label="FavouriteGamesFragment" >
+    </fragment>
+    <fragment
+        android:id="@+id/appReviewFragment"
+        android:name="com.example.twitchapp.ui.fragment.AppReviewFragment"
+        android:label="AppReviewFragment" />
+</navigation>

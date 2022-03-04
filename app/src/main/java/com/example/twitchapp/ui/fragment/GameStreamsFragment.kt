@@ -1,20 +1,25 @@
-package com.example.twitchapp.ui
+package com.example.twitchapp.ui.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import com.example.twitchapp.App
 import com.example.twitchapp.R
 import com.example.twitchapp.data.model.DatabaseException
-import com.example.twitchapp.data.model.NetworkState
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
 import com.example.twitchapp.presentation.GameStreamViewModel
 import com.example.twitchapp.ui.adapter.GameStreamsLoadStateAdapter
 import com.example.twitchapp.ui.adapter.GameStreamsPagingAdapter
+import com.example.twitchapp.ui.util.GameStreamComparator
 import com.example.twitchapp.ui.util.showToast
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -23,10 +28,6 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 
 class GameStreamsFragment : Fragment() {
-
-    companion object {
-        private const val TAG = "GameStreamsFragment"
-    }
 
     private var _binding: FragmentGameStreamsBinding? = null
     private val binding: FragmentGameStreamsBinding get() = _binding!!
@@ -51,15 +52,9 @@ class GameStreamsFragment : Fragment() {
             ViewModelProvider(this, viewModelFactory)[GameStreamViewModel::class.java]
     }
 
+    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setHasOptionsMenu(true)
-
-        if(savedInstanceState == null) {
-            if (viewModel.initNetworkState == NetworkState.NOT_AVAILABLE)
-                context?.showToast(getString(R.string.offline_mode_msg))
-        }
 
         val pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator())
 
@@ -88,28 +83,16 @@ class GameStreamsFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.gameStreamsFlow.collectLatest {
-                pagingDataAdapter.submitData(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.gameStreamsFlow.collectLatest {
+                    pagingDataAdapter.submitData(it)
+                }
             }
         }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.main_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        super.onOptionsItemSelected(item)
-        when (item.itemId) {
-            R.id.app_review_menu_item -> {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.container, AppReviewFragment())
-                    .addToBackStack("APP_REVIEW")
-                    .commit()
-            }
+        viewModel.offlineMode.observe(viewLifecycleOwner) {
+            context?.showToast(getString(R.string.offline_mode_msg))
         }
-        return true
     }
 
     private fun handleError(state: LoadState.Error) {

@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui
+package com.example.twitchapp.ui.util
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.twitchapp.data.model.GameStream
