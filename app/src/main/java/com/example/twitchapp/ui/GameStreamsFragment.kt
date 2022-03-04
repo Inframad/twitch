@@ -10,6 +10,7 @@ import androidx.paging.LoadState
 import com.example.twitchapp.App
 import com.example.twitchapp.R
 import com.example.twitchapp.data.model.DatabaseException
+import com.example.twitchapp.data.model.NetworkState
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
 import com.example.twitchapp.presentation.GameStreamViewModel
 import com.example.twitchapp.ui.adapter.GameStreamsLoadStateAdapter
@@ -54,6 +55,11 @@ class GameStreamsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setHasOptionsMenu(true)
+
+        if(savedInstanceState == null) {
+            if (viewModel.initNetworkState == NetworkState.NOT_AVAILABLE)
+                context?.showToast(getString(R.string.offline_mode_msg))
+        }
 
         val pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator())
 
@@ -110,7 +116,7 @@ class GameStreamsFragment : Fragment() {
         context?.showToast(
             getString(
                 when (state.error) {
-                    is DatabaseException -> R.string.offline_mode_error_msg
+                    is DatabaseException -> R.string.offline_mode_msg
                     is UnknownHostException -> R.string.check_internet_connection_msg
                     is SocketTimeoutException -> R.string.check_internet_connection_msg
                     else -> R.string.unknown_error_msg

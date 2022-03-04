@@ -8,8 +8,11 @@ import javax.inject.Inject
 
 class GameStreamViewModel @Inject constructor(
     repository: Repository
-): ViewModel() {
+) : ViewModel() {
 
     val gameStreamsFlow = repository.gameStreamsFlow.cachedIn(viewModelScope)
+
+    val initNetworkState =
+        repository.getCurrentNetworkState()
 
 }
