@@ -9,9 +9,9 @@ class LocalDatasource @Inject constructor(
     private val gameStreamDao: GameStreamDao
 ) {
 
-    suspend fun getGameStreamsPage(id: Int): List<GameStreamEntity> {
+    suspend fun getGameStreamsPage(startId: Int, endId: Int): List<GameStreamEntity> {
         return withContext(Dispatchers.IO) {
-            gameStreamDao.getPage(id)
+            gameStreamDao.getPage(startId, endId)
         }
     }
 
@@ -22,7 +22,9 @@ class LocalDatasource @Inject constructor(
     }
 
     suspend fun saveGameStreams(gameStreams: List<GameStreamEntity>) {
-        gameStreamDao.insert(gameStreams)
+        withContext(Dispatchers.IO) {
+            gameStreamDao.insert(gameStreams)
+        }
     }
 
     suspend fun deleteAllGameStreams(){

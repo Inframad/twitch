@@ -2,6 +2,7 @@ package com.example.twitchapp.data.datasource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.twitchapp.data.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.data.converter.toGameStream
 import com.example.twitchapp.data.converter.toGameStreamEntity
 import com.example.twitchapp.data.datasource.local.LocalDatasource
@@ -51,8 +52,10 @@ class GameStreamsPagingSource @Inject constructor(
                 Mode.OFFLINE -> {
                     if (params.key != null) {
                         val nextPage = params.key
+                        val startId = localDatasource.getGameStreamByGUID(nextPage!!).id
                         val gameStreamEntities = localDatasource.getGameStreamsPage(
-                            localDatasource.getGameStreamByGUID(nextPage!!).id
+                            startId = startId,
+                            endId = startId + GAME_STREAMS_PAGE_SIZE
                         )
 
                         if (gameStreamEntities.last().GUID != nextPage) {

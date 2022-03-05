@@ -1,5 +1,6 @@
 package com.example.twitchapp.di.data
 
+import com.example.twitchapp.BuildConfig
 import com.example.twitchapp.data.network.AuthInterceptor
 import com.example.twitchapp.data.network.TwitchApi
 import dagger.Module
@@ -14,8 +15,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
-
-    private const val BASE_URL = "https://api.twitch.tv/helix/"
 
     @Provides
     @Singleton
@@ -36,7 +35,7 @@ object NetworkModule {
         client: OkHttpClient
     ): Retrofit =
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(client)
             .addConverterFactory(moshiConverterFactory)
             .build()
