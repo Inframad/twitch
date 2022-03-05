@@ -39,7 +39,7 @@ class GameStreamsFragment : Fragment(R.layout.fragment_game_streams) {
         val pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator())
 
         binding.apply {
-            rv.adapter =
+            gameStreamsRecyclerView.adapter =
                 pagingDataAdapter.withLoadStateFooter(footer = GameStreamsLoadStateAdapter {
                     pagingDataAdapter.retry()
                 })
@@ -51,7 +51,7 @@ class GameStreamsFragment : Fragment(R.layout.fragment_game_streams) {
 
         pagingDataAdapter.apply {
             addOnPagesUpdatedListener {
-                binding.noDataMsgTv.visibility = View.GONE
+                binding.noDataTextView.visibility = View.GONE
                 binding.swipeRefreshLayout.isRefreshing = false
             }
 
@@ -86,7 +86,7 @@ class GameStreamsFragment : Fragment(R.layout.fragment_game_streams) {
                 }
             )
         )
-        if (state.error is DatabaseException) binding.noDataMsgTv.visibility = View.VISIBLE
+        if (state.error is DatabaseException) binding.noDataTextView.visibility = View.VISIBLE
         binding.swipeRefreshLayout.isRefreshing = false
     }
 }

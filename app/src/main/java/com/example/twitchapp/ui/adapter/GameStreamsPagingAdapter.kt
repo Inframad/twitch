@@ -11,8 +11,7 @@ class GameStreamsPagingAdapter(
 ) : PagingDataAdapter<GameStream, GameStreamViewHolder>(diffCallback) {
 
     override fun onBindViewHolder(holder: GameStreamViewHolder, position: Int) {
-        val item = getItem(position)
-        item?.let { holder.bind(item) }
+        getItem(position)?.let { item -> holder.bind(item) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameStreamViewHolder =
