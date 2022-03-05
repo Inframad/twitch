@@ -20,4 +20,5 @@
     <string name="streams">Стримы</string>
     <string name="favorite">Избранное</string>
     <string name="favorite_games_placeholder_text">Избранные игры</string>
+    <string name="game_fragment">Game Fragment</string>
 </resources>

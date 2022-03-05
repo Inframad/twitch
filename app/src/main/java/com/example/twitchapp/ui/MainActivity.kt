@@ -8,25 +8,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.twitchapp.App
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity() {
-
-    companion object {
-        private const val TAG = "MainActivity"
-    }
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var navController: NavController
 
+    private val binding: ActivityMainBinding by viewBinding()
+
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        (application as App).appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

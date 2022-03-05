@@ -1,28 +1,14 @@
 package com.example.twitchapp.ui.fragment
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.twitchapp.databinding.FragmentFavouriteGamesBinding
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.twitchapp.R
+import com.example.twitchapp.databinding.FragmentGameBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class FavouriteGamesFragment: Fragment() {
+@AndroidEntryPoint
+class FavouriteGamesFragment: Fragment(R.layout.fragment_favourite_games) {
 
-    private var _binding: FragmentFavouriteGamesBinding? = null
-    private val binding: FragmentFavouriteGamesBinding get() = _binding!!
+    private val viewBinding: FragmentGameBinding by viewBinding()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentFavouriteGamesBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

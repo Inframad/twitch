@@ -8,9 +8,7 @@ import com.example.twitchapp.data.model.NetworkState
 import com.example.twitchapp.data.network.NetworkConnectionChecker
 import com.example.twitchapp.data.network.TwitchApi
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class Repository @Inject constructor(
     private val localDatasource: LocalDatasource,
     private val networkConnectionChecker: NetworkConnectionChecker,

@@ -4,10 +4,11 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import com.example.twitchapp.data.model.NetworkState
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class NetworkConnectionChecker @Inject constructor(
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) {
 
     fun getNetworkState(): NetworkState {
@@ -18,6 +19,7 @@ class NetworkConnectionChecker @Inject constructor(
             if (connectivityManager.activeNetwork != null) NetworkState.AVAILABLE
             else NetworkState.NOT_AVAILABLE
         } else {
+            @Suppress("DEPRECATION")
             if (connectivityManager.activeNetworkInfo != null) NetworkState.AVAILABLE
             else NetworkState.NOT_AVAILABLE
         }

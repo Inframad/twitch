@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -24,6 +25,8 @@ android {
 
         }
         release {
+            buildConfigField "String", "TOKEN", "\"w70n5qwx7zi4qufg12212nh3m4yx8w\""
+            buildConfigField "String", "CLIENT_ID", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -43,20 +46,18 @@ android {
 dependencies {
     def retrofit_version = "2.9.0"
     def coroutines_version = "1.5.2"
-    def dagger_version = "2.40.1"
     def lifecycle_version = "2.4.1"
     def room_version = "2.4.2"
     def paging_version = "3.1.0"
     def glide_version = "4.13.0"
     def nav_version = "2.4.1"
+    def hilt_version = "2.38.1"
+    def view_binding_property_delegate_version = "1.4.4"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -72,6 +73,11 @@ dependencies {
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    implementation "com.github.kirich1409:viewbindingpropertydelegate:$view_binding_property_delegate_version"
 
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha03"
 

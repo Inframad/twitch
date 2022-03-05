@@ -1,32 +1,26 @@
 package com.example.twitchapp.ui.fragment
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.databinding.FragmentAppReviewBinding
 import com.example.twitchapp.ui.util.showToast
+import dagger.hilt.android.AndroidEntryPoint
 
-class AppReviewFragment : Fragment() {
+@AndroidEntryPoint
+class AppReviewFragment : Fragment(R.layout.fragment_app_review) {
 
-    private var _binding: FragmentAppReviewBinding? = null
-    private val binding: FragmentAppReviewBinding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentAppReviewBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private val binding: FragmentAppReviewBinding by viewBinding()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setHasOptionsMenu(true)
-
 
         binding.apply {
             sendReviewBtn.setOnClickListener {
@@ -45,10 +39,5 @@ class AppReviewFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

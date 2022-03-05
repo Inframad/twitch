@@ -1,18 +1,15 @@
 package com.example.twitchapp.ui.fragment
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
-import com.example.twitchapp.App
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.data.model.DatabaseException
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
@@ -21,36 +18,19 @@ import com.example.twitchapp.ui.adapter.GameStreamsLoadStateAdapter
 import com.example.twitchapp.ui.adapter.GameStreamsPagingAdapter
 import com.example.twitchapp.ui.util.GameStreamComparator
 import com.example.twitchapp.ui.util.showToast
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import javax.inject.Inject
 
-class GameStreamsFragment : Fragment() {
+@AndroidEntryPoint
+class GameStreamsFragment : Fragment(R.layout.fragment_game_streams) {
 
-    private var _binding: FragmentGameStreamsBinding? = null
-    private val binding: FragmentGameStreamsBinding get() = _binding!!
+    private val binding: FragmentGameStreamsBinding by viewBinding()
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: GameStreamViewModel
+    private val viewModel: GameStreamViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentGameStreamsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (requireActivity().application as App).appComponent.inject(this)
-        viewModel =
-            ViewModelProvider(this, viewModelFactory)[GameStreamViewModel::class.java]
-    }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,10 +88,5 @@ class GameStreamsFragment : Fragment() {
         )
         if (state.error is DatabaseException) binding.noDataMsgTv.visibility = View.VISIBLE
         binding.swipeRefreshLayout.isRefreshing = false
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
