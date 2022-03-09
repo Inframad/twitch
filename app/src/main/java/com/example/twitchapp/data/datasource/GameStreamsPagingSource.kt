@@ -6,9 +6,13 @@ import com.example.twitchapp.data.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.data.converter.toGameStream
 import com.example.twitchapp.data.converter.toGameStreamEntity
 import com.example.twitchapp.data.datasource.local.LocalDatasource
-import com.example.twitchapp.data.model.*
+import com.example.twitchapp.data.model.DatabaseException
+import com.example.twitchapp.data.model.DatabaseState
+import com.example.twitchapp.data.model.Mode
+import com.example.twitchapp.data.model.NetworkState
+import com.example.twitchapp.data.model.streams.GameStream
 import com.example.twitchapp.data.network.NetworkConnectionChecker
-import com.example.twitchapp.data.network.TwitchApi
+import com.example.twitchapp.data.network.TwitchGameStreamsApi
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.UnknownHostException
@@ -17,7 +21,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GameStreamsPagingSource @Inject constructor(
-    private val twitchApi: TwitchApi,
+    private val twitchGameStreamsApi: TwitchGameStreamsApi,
     private val localDatasource: LocalDatasource,
     networkConnectionChecker: NetworkConnectionChecker
 ) : PagingSource<String, GameStream>() {
@@ -37,7 +41,7 @@ class GameStreamsPagingSource @Inject constructor(
             when (mode) {
                 Mode.ONLINE -> {
                     val nextPage = params.key ?: ""
-                    val response = twitchApi.getGameStreams(nextPage)
+                    val response = twitchGameStreamsApi.getGameStreams(nextPage)
 
                     if (isDatabaseShouldBeCleared && !response.data.isNullOrEmpty()) {
                         localDatasource.deleteAllGameStreams()
@@ -52,15 +56,15 @@ class GameStreamsPagingSource @Inject constructor(
                 Mode.OFFLINE -> {
                     if (params.key != null) {
                         val nextPage = params.key
-                        val startId = localDatasource.getGameStreamByGUID(nextPage!!).id
+                        val startId = localDatasource.getGameStreamByAccessKey(nextPage!!).id
                         val gameStreamEntities = localDatasource.getGameStreamsPage(
                             startId = startId,
                             endId = startId + GAME_STREAMS_PAGE_SIZE
                         )
 
-                        if (gameStreamEntities.last().GUID != nextPage) {
+                        if (gameStreamEntities.last().accessKey != nextPage) {
                             data = gameStreamEntities.map { it.toGameStream() }
-                            nextKey = data.last().GUID
+                            nextKey = data.last().accessKey
                         }
 
                     } else {
@@ -69,7 +73,7 @@ class GameStreamsPagingSource @Inject constructor(
                         if (gameStreamEntities.isEmpty()) throw DatabaseException(DatabaseState.EMPTY)
                         else {
                             data = gameStreamEntities.map { it.toGameStream() }
-                            nextKey = data.last().GUID
+                            nextKey = data.last().accessKey
                         }
                     }
                 }

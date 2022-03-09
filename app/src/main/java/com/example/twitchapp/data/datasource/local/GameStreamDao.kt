@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.twitchapp.data.GAME_STREAMS_PAGE_SIZE
-import com.example.twitchapp.data.model.GameStreamEntity
+import com.example.twitchapp.data.model.streams.GameStreamEntity
 
 @Dao
 interface GameStreamDao {
@@ -13,8 +13,8 @@ interface GameStreamDao {
     @Query("SELECT * FROM gamestreamentity")
     suspend fun getAll(): List<GameStreamEntity>
 
-    @Query("SELECT * FROM gamestreamentity WHERE GUID=:guid")
-    fun getGameStreamByGUID(guid: String): GameStreamEntity
+    @Query("SELECT * FROM gamestreamentity WHERE accessKey=:accessKey")
+    suspend fun getGameStreamByAccessKey(accessKey: String): GameStreamEntity
 
     @Query("SELECT * FROM gamestreamentity WHERE id BETWEEN :startId AND :endId")
     suspend fun getPage(startId: Int, endId: Int): List<GameStreamEntity>

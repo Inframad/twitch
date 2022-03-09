@@ -1,4 +1,6 @@
-package com.example.twitchapp.data.model
+package com.example.twitchapp.data.model.response
+
+import com.example.twitchapp.data.model.streams.GameStreamDTO
 
 data class StreamsResponse(
     val data: List<GameStreamDTO>,

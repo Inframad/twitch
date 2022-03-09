@@ -1,9 +1,9 @@
-package com.example.twitchapp.ui.adapter
+package com.example.twitchapp.ui.streams.adapter
 
 import android.view.ViewGroup
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
-import com.example.twitchapp.ui.viewholder.GameStreamLoadStateViewHolder
+import com.example.twitchapp.ui.streams.viewholder.GameStreamLoadStateViewHolder
 
 class GameStreamsLoadStateAdapter(
     private val retry: () -> Unit

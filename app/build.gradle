@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -79,8 +80,6 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$view_binding_property_delegate_version"
-
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha03"
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 

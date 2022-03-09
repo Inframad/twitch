@@ -2,7 +2,8 @@ package com.example.twitchapp.di.data
 
 import com.example.twitchapp.BuildConfig
 import com.example.twitchapp.data.network.AuthInterceptor
-import com.example.twitchapp.data.network.TwitchApi
+import com.example.twitchapp.data.network.TwitchGameStreamsApi
+import com.example.twitchapp.data.network.TwitchGamesApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,8 +43,15 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTwitchApi(
+    fun provideTwitchStreamsApi(
         retrofit: Retrofit
-    ): TwitchApi =
-        retrofit.create(TwitchApi::class.java)
+    ): TwitchGameStreamsApi =
+        retrofit.create(TwitchGameStreamsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTwitchGamesApi(
+        retrofit: Retrofit
+    ): TwitchGamesApi =
+        retrofit.create(TwitchGamesApi::class.java)
 }

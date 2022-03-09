@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.viewholder
+package com.example.twitchapp.ui.streams.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.example.twitchapp.R
-import com.example.twitchapp.data.model.GameStream
+import com.example.twitchapp.data.model.streams.GameStream
 import com.example.twitchapp.databinding.ItemGameStreamBinding
 
 class GameStreamViewHolder(private val binding: ItemGameStreamBinding) :
@@ -21,7 +21,7 @@ class GameStreamViewHolder(private val binding: ItemGameStreamBinding) :
         }.start()
     }
 
-    fun bind(gameStream: GameStream) {
+    fun bind(gameStream: GameStream, onClick: (GameStream) -> Unit) {
         binding.apply {
 
             Glide.with(root)
@@ -31,8 +31,10 @@ class GameStreamViewHolder(private val binding: ItemGameStreamBinding) :
                 .into(gameStreamIv)
 
             gameNameTv.text = gameStream.gameName
-            usernameTv.text = gameStream.username
+            usernameTv.text = gameStream.userName
             amountOfViewsTv.text = gameStream.viewerCount.toString()
+
+            root.setOnClickListener { onClick(gameStream) }
         }
     }
 
