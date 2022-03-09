@@ -26,7 +26,7 @@ class GameViewModel @Inject constructor(
     fun bindData(data: Bundle) {
         viewModelScope.launch {
             data.apply {
-                val gameName = getString(GAME_NAME) ?: "Unknown"
+                val gameName = getString(GAME_NAME) ?: getString(R.string.uknown)
                 gameScreenModel.setValue(handleResult(repository.getGame(gameName), this))
             }
         }
@@ -37,7 +37,7 @@ class GameViewModel @Inject constructor(
             is Result.Success -> UiState.Loaded(
                 GameScreenModel(
                     name = result.data.name,
-                    streamerName = data.getString(STREAMER_NAME) ?: "Unknown",
+                    streamerName = data.getString(STREAMER_NAME) ?: getString(R.string.uknown),
                     viewersCount = (data.getLong(VIEWERS_COUNT)).toString(),
                     imageUrl = result.data.imageUrl
                 )

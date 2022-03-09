@@ -5,7 +5,9 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
@@ -14,6 +16,7 @@ import com.example.twitchapp.databinding.FragmentGameBinding
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameFragment : Fragment(R.layout.fragment_game) {
@@ -27,12 +30,12 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         super.onViewCreated(view, savedInstanceState)
 
         bindData()
-        initView()
+        initViews()
         initAnim()
         bindViewModel()
     }
 
-    private fun initView() {
+    private fun initViews() {
         viewBinding.noDataTextView.text = getString(R.string.no_saved_data_msg)
     }
 
@@ -46,13 +49,15 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     }
 
     private fun bindViewModel() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.gameScreenModel.collect { uiState ->
-                when (uiState) {
-                    is UiState.Loaded -> showGame(uiState.data)
-                    UiState.Loading -> showLoading()
-                    UiState.Empty -> showNoDataPlaceholder()
-                    is UiState.Error -> showError(uiState.msg)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.gameScreenModel.collect { uiState ->
+                    when (uiState) {
+                        is UiState.Loaded -> showGame(uiState.data)
+                        is UiState.Error -> showError(uiState.msg)
+                        UiState.Loading -> showLoading()
+                        UiState.Empty -> showNoDataPlaceholder()
+                    }
                 }
             }
         }

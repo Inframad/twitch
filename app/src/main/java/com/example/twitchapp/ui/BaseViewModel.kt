@@ -16,7 +16,6 @@ abstract class BaseViewModel(private val applicationContext: Context) : ViewMode
     protected fun <T> mutableStateFlow(value: T): ViewModelStateFlow<T> =
         ViewModelStateFlowImpl(value)
 
-
     protected fun <T> ViewModelStateFlow<T>.setValue(value: T) = when (this) {
         is ViewModelStateFlowImpl -> wrapped.value = value
     }
