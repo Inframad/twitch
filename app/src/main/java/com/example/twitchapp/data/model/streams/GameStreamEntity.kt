@@ -1,4 +1,4 @@
-package com.example.twitchapp.data.model
+package com.example.twitchapp.data.model.streams
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class GameStreamEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val GUID: String,
-    val username: String,
+    val userName: String,
     val gameName: String,
     val viewerCount: Long,
     val imageUrl: String?

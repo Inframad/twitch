@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.viewholder
+package com.example.twitchapp.ui.streams.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -39,7 +39,7 @@ class GameStreamLoadStateViewHolder (
                     }
                 is IOException -> getString(R.string.check_internet_connection_msg)
                 else -> loadState.error.localizedMessage
-                    ?: getString(R.string.unknown_error)
+                    ?: getString(R.string.unknown_error_msg)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.twitchapp.presentation
+package com.example.twitchapp.ui.streams
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.twitchapp.data.model.NetworkState
 import com.example.twitchapp.data.repository.Repository
-import com.example.twitchapp.di.util.SingleLiveEvent
+import com.example.twitchapp.ui.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

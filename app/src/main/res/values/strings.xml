@@ -10,7 +10,6 @@
     <string name="no_saved_data_msg">Интернет соединение недоступно. Сохраненных данных нет</string>
     <string name="too_many_request_error">Слишком много запросов. Попробуйте повторить позднее</string>
     <string name="check_internet_connection_msg">Проверьте интернет соединение</string>
-    <string name="unknown_error">Неизвестная ошибка</string>
     <string name="not_found_error_msg">Не найдено</string>
     <string name="unknown_error_msg">Неизвестная ошибка</string>
     <string name="offline_mode_msg">Интернет соединение недоступно. Загружены сохраненные данные</string>
@@ -20,5 +19,5 @@
     <string name="streams">Стримы</string>
     <string name="favorite">Избранное</string>
     <string name="favorite_games_placeholder_text">Избранные игры</string>
-    <string name="game_fragment">Game Fragment</string>
+    <string name="game_image_view_desc">Game\'s poster</string>
 </resources>

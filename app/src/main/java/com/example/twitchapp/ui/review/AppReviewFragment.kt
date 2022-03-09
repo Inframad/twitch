@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.fragment
+package com.example.twitchapp.ui.review
 
 import android.os.Bundle
 import android.view.Menu
@@ -23,11 +23,11 @@ class AppReviewFragment : Fragment(R.layout.fragment_app_review) {
         setHasOptionsMenu(true)
 
         binding.apply {
-            sendReviewBtn.setOnClickListener {
+            sendReviewButton.setOnClickListener {
                 context?.showToast(
                     String.format(
                         getString(R.string.review_is_sent_msg),
-                        appReviewEt.text,
+                        appReviewEditText.text,
                         appRatingBar.rating.toString()
                     )
                 )

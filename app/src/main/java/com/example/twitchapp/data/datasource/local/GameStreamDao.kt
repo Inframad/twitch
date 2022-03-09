@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.twitchapp.data.GAME_STREAMS_PAGE_SIZE
-import com.example.twitchapp.data.model.GameStreamEntity
+import com.example.twitchapp.data.model.streams.GameStreamEntity
 
 @Dao
 interface GameStreamDao {

@@ -1,4 +1,4 @@
-package com.example.twitchapp.di.util
+package com.example.twitchapp.ui.util
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
