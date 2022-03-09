@@ -10,11 +10,11 @@ import com.example.twitchapp.data.model.game.GameEntity
 interface GameDao {
 
     @Query("SELECT * FROM gameentity WHERE name=:name")
-    fun getGame(name: String): GameEntity
+    suspend fun getGame(name: String): GameEntity
 
     @Insert(onConflict = REPLACE)
-    fun saveGame(game: GameEntity)
+    suspend fun saveGame(game: GameEntity)
 
     @Query("SELECT EXISTS(SELECT * FROM gameentity WHERE name = :name)")
-    fun isGameExist(name: String): Boolean
+    suspend fun isGameExist(name: String): Boolean
 }

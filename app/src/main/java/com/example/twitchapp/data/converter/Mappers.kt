@@ -17,7 +17,7 @@ fun GameStreamDTO.toGameStream(imageWidth: Int = 1000, imageHeight: Int = 500) =
 
 fun GameStreamEntity.toGameStream() =
     GameStream(
-        GUID = GUID,
+        accessKey = accessKey,
         userName = userName,
         gameName = gameName,
         viewerCount = viewerCount,
@@ -26,7 +26,7 @@ fun GameStreamEntity.toGameStream() =
 
 fun GameStream.toGameStreamEntity() =
     GameStreamEntity(
-        GUID = GUID,
+        accessKey = accessKey,
         userName = userName,
         gameName = gameName,
         viewerCount = viewerCount,

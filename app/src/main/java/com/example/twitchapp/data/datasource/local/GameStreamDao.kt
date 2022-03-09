@@ -13,8 +13,8 @@ interface GameStreamDao {
     @Query("SELECT * FROM gamestreamentity")
     suspend fun getAll(): List<GameStreamEntity>
 
-    @Query("SELECT * FROM gamestreamentity WHERE GUID=:guid")
-    fun getGameStreamByGUID(guid: String): GameStreamEntity
+    @Query("SELECT * FROM gamestreamentity WHERE accessKey=:accessKey")
+    suspend fun getGameStreamByAccessKey(accessKey: String): GameStreamEntity
 
     @Query("SELECT * FROM gamestreamentity WHERE id BETWEEN :startId AND :endId")
     suspend fun getPage(startId: Int, endId: Int): List<GameStreamEntity>

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class GameStreamEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val GUID: String,
+    val accessKey: String,
     val userName: String,
     val gameName: String,
     val viewerCount: Long,

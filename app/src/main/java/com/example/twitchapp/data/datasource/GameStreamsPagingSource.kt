@@ -56,15 +56,15 @@ class GameStreamsPagingSource @Inject constructor(
                 Mode.OFFLINE -> {
                     if (params.key != null) {
                         val nextPage = params.key
-                        val startId = localDatasource.getGameStreamByGUID(nextPage!!).id
+                        val startId = localDatasource.getGameStreamByAccessKey(nextPage!!).id
                         val gameStreamEntities = localDatasource.getGameStreamsPage(
                             startId = startId,
                             endId = startId + GAME_STREAMS_PAGE_SIZE
                         )
 
-                        if (gameStreamEntities.last().GUID != nextPage) {
+                        if (gameStreamEntities.last().accessKey != nextPage) {
                             data = gameStreamEntities.map { it.toGameStream() }
-                            nextKey = data.last().GUID
+                            nextKey = data.last().accessKey
                         }
 
                     } else {
@@ -73,7 +73,7 @@ class GameStreamsPagingSource @Inject constructor(
                         if (gameStreamEntities.isEmpty()) throw DatabaseException(DatabaseState.EMPTY)
                         else {
                             data = gameStreamEntities.map { it.toGameStream() }
-                            nextKey = data.last().GUID
+                            nextKey = data.last().accessKey
                         }
                     }
                 }

@@ -19,9 +19,9 @@ class LocalDatasource @Inject constructor(
         }
     }
 
-    suspend fun getGameStreamByGUID(guid: String): GameStreamEntity {
+    suspend fun getGameStreamByAccessKey(accessKey: String): GameStreamEntity {
         return withContext(Dispatchers.IO) {
-            gameStreamDao.getGameStreamByGUID(guid)
+            gameStreamDao.getGameStreamByAccessKey(accessKey)
         }
     }
 
