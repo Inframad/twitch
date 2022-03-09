@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/app_review_menu_item"
+        android:id="@+id/app_review_fragment"
         android:title="@string/review" />
 </menu>

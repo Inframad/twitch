@@ -19,7 +19,7 @@
         android:label="FavouriteGamesFragment" >
     </fragment>
     <fragment
-        android:id="@+id/appReviewFragment"
+        android:id="@+id/app_review_fragment"
         android:name="com.example.twitchapp.ui.review.AppReviewFragment"
         android:label="AppReviewFragment" />
     <fragment

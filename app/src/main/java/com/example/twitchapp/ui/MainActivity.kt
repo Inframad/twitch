@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.onNavDestinationSelected
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.databinding.ActivityMainBinding
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private var navController: NavController? = null
 
-    private val binding: ActivityMainBinding by viewBinding()
+    private val viewBinding: ActivityMainBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,15 +30,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         navController?.let {
             NavigationUI.setupWithNavController(
-                binding.bottomNavigation,
+                viewBinding.bottomNavigation,
                 it
             )
         }
 
         navController?.addOnDestinationChangedListener { _, destination, _ ->
-            binding.bottomNavigation.visibility =
+            viewBinding.bottomNavigation.visibility =
                 when (destination.id) {
-                    R.id.appReviewFragment -> View.GONE
+                    R.id.app_review_fragment -> View.GONE
                     else -> View.VISIBLE
                 }
         }
@@ -49,13 +50,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        super.onOptionsItemSelected(item)
-        when (item.itemId) {
-            R.id.app_review_menu_item -> {
-                navController?.navigate(R.id.appReviewFragment)
-            }
-        }
-        return true
+        return item.onNavDestinationSelected(navController!!) || super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

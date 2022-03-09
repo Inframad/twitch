@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,12 +15,14 @@ import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.data.model.DatabaseException
+import com.example.twitchapp.data.model.NetworkState
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
 import com.example.twitchapp.ui.GAME_NAME
 import com.example.twitchapp.ui.STREAMER_NAME
 import com.example.twitchapp.ui.VIEWERS_COUNT
 import com.example.twitchapp.ui.streams.adapter.GameStreamsLoadStateAdapter
 import com.example.twitchapp.ui.streams.adapter.GameStreamsPagingAdapter
+import com.example.twitchapp.ui.util.observeWithLifecycle
 import com.example.twitchapp.ui.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -33,11 +36,35 @@ class GameStreamsFragment : Fragment(R.layout.fragment_game_streams) {
     private val binding: FragmentGameStreamsBinding by viewBinding()
     private val viewModel: GameStreamViewModel by viewModels()
 
+    private var pagingDataAdapter: GameStreamsPagingAdapter? = null
+
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator()) { gameStream ->
+        initViews()
+        bindViewModel()
+    }
+
+    private fun bindViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.gameStreamsFlow.collectLatest {
+                    pagingDataAdapter?.submitData(it)
+                }
+            }
+        }
+
+        viewModel.initNetworkStateFlow.observeWithLifecycle(viewLifecycleOwner) {
+            when (it) {
+                NetworkState.NOT_AVAILABLE -> context?.showToast(getString(R.string.offline_mode_msg))
+                else -> {}
+            }
+        }
+    }
+
+    private fun initViews() {
+        pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator()) { gameStream ->
             val bundle = bundleOf(
                 GAME_NAME to gameStream.gameName,
                 STREAMER_NAME to gameStream.userName,
@@ -48,16 +75,16 @@ class GameStreamsFragment : Fragment(R.layout.fragment_game_streams) {
 
         binding.apply {
             gameStreamsRecyclerView.adapter =
-                pagingDataAdapter.withLoadStateFooter(footer = GameStreamsLoadStateAdapter {
-                    pagingDataAdapter.retry()
+                pagingDataAdapter?.withLoadStateFooter(footer = GameStreamsLoadStateAdapter {
+                    pagingDataAdapter?.retry()
                 })
 
             swipeRefreshLayout.setOnRefreshListener {
-                pagingDataAdapter.refresh()
+                pagingDataAdapter?.refresh()
             }
         }
 
-        pagingDataAdapter.apply {
+        pagingDataAdapter?.apply {
             addOnPagesUpdatedListener {
                 binding.noDataTextView.visibility = View.GONE
                 binding.swipeRefreshLayout.isRefreshing = false
@@ -68,18 +95,6 @@ class GameStreamsFragment : Fragment(R.layout.fragment_game_streams) {
                     handleError(it.refresh as LoadState.Error)
                 }
             }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.gameStreamsFlow.collectLatest {
-                    pagingDataAdapter.submitData(it)
-                }
-            }
-        }
-
-        viewModel.offlineMode.observe(viewLifecycleOwner) {
-            context?.showToast(getString(R.string.offline_mode_msg))
         }
     }
 
@@ -94,7 +109,7 @@ class GameStreamsFragment : Fragment(R.layout.fragment_game_streams) {
                 }
             )
         )
-        if (state.error is DatabaseException) binding.noDataTextView.visibility = View.VISIBLE
+        if (state.error is DatabaseException) binding.noDataTextView.isVisible = true
         binding.swipeRefreshLayout.isRefreshing = false
     }
 }

@@ -1,8 +1,6 @@
 package com.example.twitchapp.ui.review
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -20,8 +18,10 @@ class AppReviewFragment : Fragment(R.layout.fragment_app_review) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setHasOptionsMenu(true)
+        initViews()
+    }
 
+    private fun initViews() {
         binding.apply {
             sendReviewButton.setOnClickListener {
                 context?.showToast(
@@ -36,8 +36,4 @@ class AppReviewFragment : Fragment(R.layout.fragment_app_review) {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-    }
 }

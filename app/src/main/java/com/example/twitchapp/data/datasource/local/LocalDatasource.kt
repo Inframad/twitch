@@ -4,56 +4,58 @@ import com.example.twitchapp.data.converter.toGame
 import com.example.twitchapp.data.converter.toGameEntity
 import com.example.twitchapp.data.model.game.Game
 import com.example.twitchapp.data.model.streams.GameStreamEntity
-import kotlinx.coroutines.Dispatchers
+import com.example.twitchapp.di.data.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LocalDatasource @Inject constructor(
     private val gameStreamDao: GameStreamDao,
-    private val gameDao: GameDao
+    private val gameDao: GameDao,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend fun getGameStreamsPage(startId: Int, endId: Int): List<GameStreamEntity> {
-        return withContext(Dispatchers.IO) { //TODO Inject dispatchers to constructor
+        return withContext(ioDispatcher) {
             gameStreamDao.getPage(startId, endId)
         }
     }
 
     suspend fun getGameStreamByAccessKey(accessKey: String): GameStreamEntity {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             gameStreamDao.getGameStreamByAccessKey(accessKey)
         }
     }
 
     suspend fun saveGameStreams(gameStreams: List<GameStreamEntity>) {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             gameStreamDao.insert(gameStreams)
         }
     }
 
     suspend fun deleteAllGameStreams(){
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             gameStreamDao.clearAll()
         }
     }
 
     suspend fun getGameStreamsFirstPage() =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             gameStreamDao.getFirstPage()
         }
 
     suspend fun getGame(name: String): Game =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             gameDao.getGame(name).toGame()
         }
 
     suspend fun saveGame(game: Game) =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             gameDao.saveGame(game.toGameEntity())
         }
 
     suspend fun isGameExist(name: String): Boolean =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             gameDao.isGameExist(name)
         }
 
