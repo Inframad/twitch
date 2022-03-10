@@ -11,7 +11,7 @@ abstract class BaseFragment<TViewModel : BaseViewModel>(@LayoutRes lId: Int) :
 
     protected open fun bindViewModel() {
         with(viewModel) {
-            bindAction(showToastCommand) {
+            bindCommandAction(showToastCommand) {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }

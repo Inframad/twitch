@@ -4,20 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
 import com.example.twitchapp.ui.BaseFragment
 import com.example.twitchapp.ui.bindAction
+import com.example.twitchapp.ui.bindCommandAction
 import com.example.twitchapp.ui.streams.adapter.GameStreamsLoadStateAdapter
 import com.example.twitchapp.ui.streams.adapter.GameStreamsPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_game_streams) {
@@ -36,24 +32,19 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
 
     override fun bindViewModel() {
         super.bindViewModel()
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.gameStreamsFlow.collectLatest {
-                    pagingDataAdapter?.submitData(it)
-                }
-            }
-        }
-
         viewModel.apply {
-            bindAction(refreshCommand) { pagingDataAdapter?.refresh() }
-            bindAction(retryCommand) { pagingDataAdapter?.retry() }
-            bindAction(showNoDataPlaceholder) {
+            bindAction(gameStreamsFlow) {
+                pagingDataAdapter?.submitData(it)
+            }
+            bindCommandAction(refreshCommand) { pagingDataAdapter?.refresh() }
+            bindCommandAction(retryCommand) { pagingDataAdapter?.retry() }
+            bindCommandAction(showNoDataPlaceholder) {
                 viewBinding.noDataTextView.isVisible = true
             }
-            bindAction(hideNoDataPlaceholder) {
+            bindCommandAction(hideNoDataPlaceholder) {
                 viewBinding.noDataTextView.isVisible = false
             }
-            bindAction(stopShowRefreshing) {
+            bindCommandAction(stopShowRefreshing) {
                 viewBinding.swipeRefreshLayout.isRefreshing = false
             }
         }

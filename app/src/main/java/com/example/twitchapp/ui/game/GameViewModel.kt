@@ -1,7 +1,6 @@
 package com.example.twitchapp.ui.game
 
 import android.content.Context
-import android.os.Bundle
 import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
 import com.example.twitchapp.data.model.Result
@@ -24,10 +23,9 @@ class GameViewModel @Inject constructor(
 
     val uiState = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
 
-    fun init(data: Bundle) {
+    fun init(stream: GameStream) {
         viewModelScope.launch {
-            val gameStream = data.getParcelable<GameStream>("GameStream")!!
-            getGame(gameStream)
+            getGame(stream)
         }
     }
 
