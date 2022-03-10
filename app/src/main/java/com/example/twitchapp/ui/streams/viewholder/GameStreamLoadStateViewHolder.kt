@@ -15,10 +15,6 @@ class GameStreamLoadStateViewHolder (
     private val retry: () -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    init {
-        binding.retryButton.setOnClickListener { retry.invoke() }
-    }
-
     fun bind(loadState: LoadState) {
         if (loadState is LoadState.Error) {
             binding.errorMsg.text = showError(loadState)
@@ -26,6 +22,7 @@ class GameStreamLoadStateViewHolder (
         binding.progressBar.isVisible = loadState is LoadState.Loading
         binding.retryButton.isVisible = loadState is LoadState.Error
         binding.errorMsg.isVisible = loadState is LoadState.Error
+        binding.retryButton.setOnClickListener { retry.invoke() }
     }
 
     private fun showError(loadState: LoadState.Error): String {

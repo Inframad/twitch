@@ -83,6 +83,6 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     }
 
     private fun init() {
-        arguments?.let { viewModel.init(it) }
+        arguments?.let { viewModel.init(it)}
     }
 }

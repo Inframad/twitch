@@ -2,7 +2,6 @@ package com.example.twitchapp.ui.streams
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,7 +11,8 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
-import com.example.twitchapp.ui.*
+import com.example.twitchapp.ui.BaseFragment
+import com.example.twitchapp.ui.bindAction
 import com.example.twitchapp.ui.streams.adapter.GameStreamsLoadStateAdapter
 import com.example.twitchapp.ui.streams.adapter.GameStreamsPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,12 +61,10 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
 
     private fun initViews() {
         pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator()) { gameStream ->
-            val bundle = bundleOf(
-                GAME_NAME to gameStream.gameName,
-                STREAMER_NAME to gameStream.userName,
-                VIEWERS_COUNT to gameStream.viewerCount
+            findNavController().navigate(
+                GameStreamsFragmentDirections
+                    .actionGameStreamsPageToGameFragment(gameStream)
             )
-            findNavController().navigate(R.id.action_game_streams_page_to_gameFragment, bundle)
         }
 
         viewBinding.apply {
@@ -79,7 +77,7 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
         }
 
         pagingDataAdapter?.apply {
-            addOnPagesUpdatedListener { viewModel.onPagesUpdated()}
+            addOnPagesUpdatedListener { viewModel.onPagesUpdated() }
 
             addLoadStateListener { viewModel.onPagesLoadStateChanged(it) }
         }

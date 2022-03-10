@@ -10,7 +10,11 @@
         android:label="GameStreamsFragment">
         <action
             android:id="@+id/action_game_streams_page_to_gameFragment"
-            app:destination="@id/gameFragment" />
+            app:destination="@id/gameFragment">
+            <argument
+                android:name="GameStream"
+                app:argType="com.example.twitchapp.data.model.streams.GameStream" />
+        </action>
     </fragment>
 
     <fragment

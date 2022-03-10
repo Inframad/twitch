@@ -5,9 +5,10 @@ import android.os.Bundle
 import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
 import com.example.twitchapp.data.model.Result
-import com.example.twitchapp.data.model.game.Game
+import com.example.twitchapp.data.model.streams.GameStream
 import com.example.twitchapp.data.repository.Repository
-import com.example.twitchapp.ui.*
+import com.example.twitchapp.ui.BaseViewModel
+import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -25,29 +26,33 @@ class GameViewModel @Inject constructor(
 
     fun init(data: Bundle) {
         viewModelScope.launch {
-            data.apply {
-                val gameName = getString(GAME_NAME) ?: getString(R.string.unknown)
-                uiState.setValue(handleResult(repository.getGame(gameName), this))
-            }
+            val gameStream = data.getParcelable<GameStream>("GameStream")!!
+            getGame(gameStream)
         }
     }
 
-    private fun handleResult(result: Result<Game>, data: Bundle): UiState<GameScreenModel> =
-        when (result) {
-            is Result.Success -> UiState.Loaded(
-                GameScreenModel(
-                    name = result.data.name,
-                    streamerName = data.getString(STREAMER_NAME) ?: getString(R.string.unknown),
-                    viewersCount = (data.getLong(VIEWERS_COUNT)).toString(),
-                    imageUrl = result.data.imageUrl
-                )
+    private fun getGame(gameStream: GameStream) {
+        viewModelScope.launch {
+            uiState.setValue(
+                when (val result = repository.getGame(gameStream.gameName)) {
+                    is Result.Success -> UiState.Loaded(
+                        GameScreenModel(
+                            name = result.data.name,
+                            streamerName = gameStream.userName,
+                            viewersCount = gameStream.viewerCount.toString(),
+                            imageUrl = result.data.imageUrl
+                        )
+                    )
+                    Result.Empty -> UiState.Empty
+                    is Result.Error -> UiState.Error(handleError(result.e))
+                }
             )
-            Result.Empty -> UiState.Empty
-            is Result.Error -> UiState.Error(handleError(result.e))
         }
+    }
+
 
     private fun handleError(e: Throwable): String =
-        when(e) {
+        when (e) {
             is SocketTimeoutException -> getString(R.string.check_internet_connection_msg)
             is UnknownHostException -> getString(R.string.check_internet_connection_msg)
             else -> getString(R.string.unknown_error_msg)
