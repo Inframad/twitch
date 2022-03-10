@@ -16,7 +16,7 @@ abstract class BaseViewModel(private val applicationContext: Context) : ViewMode
     val showToastCommand = TCommand<String?>()
 
     protected fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
-        applicationContext.getString(resId, formatArgs)
+        applicationContext.getString(resId, *formatArgs)
 
     protected fun <T> TCommand(value: T? = null): ViewModelStateFlowSingleEvent<T?> =
         ViewModelStateFlowSingleEventImpl(value)
