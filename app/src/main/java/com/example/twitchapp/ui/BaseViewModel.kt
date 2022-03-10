@@ -18,6 +18,8 @@ abstract class BaseViewModel(private val applicationContext: Context) : ViewMode
     protected fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
         applicationContext.getString(resId, *formatArgs)
 
+    protected fun Command(): ViewModelStateFlowSingleEvent<Unit?> = ViewModelStateFlowSingleEventImpl(null)
+
     protected fun <T> TCommand(value: T? = null): ViewModelStateFlowSingleEvent<T?> =
         ViewModelStateFlowSingleEventImpl(value)
 

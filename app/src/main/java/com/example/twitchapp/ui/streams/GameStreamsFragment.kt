@@ -9,23 +9,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.data.model.DatabaseException
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
-import com.example.twitchapp.ui.BaseFragment
-import com.example.twitchapp.ui.GAME_NAME
-import com.example.twitchapp.ui.STREAMER_NAME
-import com.example.twitchapp.ui.VIEWERS_COUNT
+import com.example.twitchapp.ui.*
 import com.example.twitchapp.ui.streams.adapter.GameStreamsLoadStateAdapter
 import com.example.twitchapp.ui.streams.adapter.GameStreamsPagingAdapter
-import com.example.twitchapp.ui.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 @AndroidEntryPoint
 class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_game_streams) {
@@ -51,6 +43,17 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
                 }
             }
         }
+
+        viewModel.apply {
+            bindAction(refreshCommand) { pagingDataAdapter?.refresh() }
+            bindAction(retryCommand) { pagingDataAdapter?.retry() }
+            bindAction(showNoDataPlaceholder) {
+                viewBinding.noDataTextView.isVisible = true
+            }
+            bindAction(stopShowRefreshing) {
+                viewBinding.swipeRefreshLayout.isRefreshing = false
+            }
+        }
     }
 
     private fun initViews() {
@@ -66,12 +69,10 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
         viewBinding.apply {
             gameStreamsRecyclerView.adapter =
                 pagingDataAdapter?.withLoadStateFooter(footer = GameStreamsLoadStateAdapter {
-                    pagingDataAdapter?.retry()
+                    viewModel.onScrollEndError()
                 })
 
-            swipeRefreshLayout.setOnRefreshListener {
-                pagingDataAdapter?.refresh()
-            }
+            swipeRefreshLayout.setOnRefreshListener { viewModel.onSwipeToRefresh() }
         }
 
         pagingDataAdapter?.apply {
@@ -80,26 +81,7 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
                 viewBinding.swipeRefreshLayout.isRefreshing = false
             }
 
-            addLoadStateListener {
-                if (it.refresh is LoadState.Error) {
-                    handleError(it.refresh as LoadState.Error)
-                }
-            }
+            addLoadStateListener { viewModel.onPagesLoadStateChanged(it) }
         }
-    }
-
-    private fun handleError(state: LoadState.Error) {
-        context?.showToast(
-            getString(
-                when (state.error) {
-                    is DatabaseException -> R.string.offline_mode_msg
-                    is UnknownHostException -> R.string.check_internet_connection_msg
-                    is SocketTimeoutException -> R.string.check_internet_connection_msg
-                    else -> R.string.unknown_error_msg
-                }
-            )
-        )
-        if (state.error is DatabaseException) viewBinding.noDataTextView.isVisible = true
-        viewBinding.swipeRefreshLayout.isRefreshing = false
     }
 }
