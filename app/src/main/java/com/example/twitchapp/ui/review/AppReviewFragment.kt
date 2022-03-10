@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AppReviewFragment : Fragment(R.layout.fragment_app_review) {
 
-    private val binding: FragmentAppReviewBinding by viewBinding()
+    private val viewBinding: FragmentAppReviewBinding by viewBinding()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -22,7 +22,7 @@ class AppReviewFragment : Fragment(R.layout.fragment_app_review) {
     }
 
     private fun initViews() {
-        binding.apply {
+        viewBinding.apply {
             sendReviewButton.setOnClickListener {
                 context?.showToast(
                     String.format(

@@ -29,7 +29,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindData()
+        init()
         initViews()
         initAnim()
         bindViewModel()
@@ -51,7 +51,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     private fun bindViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.gameScreenModel.collect { uiState ->
+                viewModel.uiState.collect { uiState ->
                     when (uiState) {
                         is UiState.Loaded -> showGame(uiState.data)
                         is UiState.Error -> showError(uiState.msg)
@@ -61,45 +61,45 @@ class GameFragment : Fragment(R.layout.fragment_game) {
                 }
             }
         }
-    }
+}
 
-    private fun showError(msg: String) {
-        viewBinding.progressBarLayout.isVisible = false
-        viewBinding.errorLayout.isVisible = true
-        viewBinding.noDataLayout.isVisible = false
-        viewBinding.errorTextView.text = msg
-    }
+private fun showError(msg: String) {
+    viewBinding.progressBarLayout.isVisible = false
+    viewBinding.errorLayout.isVisible = true
+    viewBinding.noDataLayout.isVisible = false
+    viewBinding.errorTextView.text = msg
+}
 
-    private fun showNoDataPlaceholder() {
-        viewBinding.progressBarLayout.isVisible = false
+private fun showNoDataPlaceholder() {
+    viewBinding.progressBarLayout.isVisible = false
+    viewBinding.errorLayout.isVisible = false
+    viewBinding.noDataLayout.isVisible = true
+}
+
+private fun showLoading() {
+    viewBinding.progressBarLayout.isVisible = true
+    viewBinding.errorLayout.isVisible = false
+    viewBinding.noDataLayout.isVisible = false
+}
+
+private fun showGame(data: GameScreenModel) {
+    viewBinding.apply {
+        progressBarLayout.isVisible = false
         viewBinding.errorLayout.isVisible = false
-        viewBinding.noDataLayout.isVisible = true
-    }
-
-    private fun showLoading() {
-        viewBinding.progressBarLayout.isVisible = true
-        viewBinding.errorLayout.isVisible = false
         viewBinding.noDataLayout.isVisible = false
-    }
 
-    private fun showGame(data: GameScreenModel) {
-        viewBinding.apply {
-            progressBarLayout.isVisible = false
-            viewBinding.errorLayout.isVisible = false
-            viewBinding.noDataLayout.isVisible = false
-
-            gameNameTextView.text = data.name
-            streamerNameTextView.text = data.streamerName
-            viewersCountTextView.text = data.viewersCount
-            Glide.with(root)
-                .load(data.imageUrl)
-                .placeholder(circularProgressDrawable)
-                .error(R.drawable.image_error_placeholder)
-                .into(gameImageView)
-        }
+        gameNameTextView.text = data.name
+        streamerNameTextView.text = data.streamerName
+        viewersCountTextView.text = data.viewersCount
+        Glide.with(root)
+            .load(data.imageUrl)
+            .placeholder(circularProgressDrawable)
+            .error(R.drawable.image_error_placeholder)
+            .into(gameImageView)
     }
+}
 
-    private fun bindData() {
-        arguments?.let { viewModel.bindData(it) }
-    }
+private fun init() {
+    arguments?.let { viewModel.init(it) }
+}
 }

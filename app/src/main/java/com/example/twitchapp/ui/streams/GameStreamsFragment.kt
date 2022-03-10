@@ -30,7 +30,7 @@ import java.net.UnknownHostException
 @AndroidEntryPoint
 class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_game_streams) {
 
-    private val binding: FragmentGameStreamsBinding by viewBinding()
+    private val viewBinding: FragmentGameStreamsBinding by viewBinding()
     override val viewModel: GameStreamViewModel by viewModels()
 
     private var pagingDataAdapter: GameStreamsPagingAdapter? = null
@@ -63,7 +63,7 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
             findNavController().navigate(R.id.action_game_streams_page_to_gameFragment, bundle)
         }
 
-        binding.apply {
+        viewBinding.apply {
             gameStreamsRecyclerView.adapter =
                 pagingDataAdapter?.withLoadStateFooter(footer = GameStreamsLoadStateAdapter {
                     pagingDataAdapter?.retry()
@@ -76,8 +76,8 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
 
         pagingDataAdapter?.apply {
             addOnPagesUpdatedListener {
-                binding.noDataTextView.visibility = View.GONE
-                binding.swipeRefreshLayout.isRefreshing = false
+                viewBinding.noDataTextView.visibility = View.GONE
+                viewBinding.swipeRefreshLayout.isRefreshing = false
             }
 
             addLoadStateListener {
@@ -99,7 +99,7 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
                 }
             )
         )
-        if (state.error is DatabaseException) binding.noDataTextView.isVisible = true
-        binding.swipeRefreshLayout.isRefreshing = false
+        if (state.error is DatabaseException) viewBinding.noDataTextView.isVisible = true
+        viewBinding.swipeRefreshLayout.isRefreshing = false
     }
 }

@@ -21,13 +21,13 @@ class GameViewModel @Inject constructor(
     private val repository: Repository
 ) : BaseViewModel(context) {
 
-    val gameScreenModel = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
+    val uiState = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
 
-    fun bindData(data: Bundle) {
+    fun init(data: Bundle) {
         viewModelScope.launch {
             data.apply {
                 val gameName = getString(GAME_NAME) ?: getString(R.string.unknown)
-                gameScreenModel.setValue(handleResult(repository.getGame(gameName), this))
+                uiState.setValue(handleResult(repository.getGame(gameName), this))
             }
         }
     }
