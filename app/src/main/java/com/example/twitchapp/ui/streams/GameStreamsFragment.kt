@@ -50,6 +50,9 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
             bindAction(showNoDataPlaceholder) {
                 viewBinding.noDataTextView.isVisible = true
             }
+            bindAction(hideNoDataPlaceholder) {
+                viewBinding.noDataTextView.isVisible = false
+            }
             bindAction(stopShowRefreshing) {
                 viewBinding.swipeRefreshLayout.isRefreshing = false
             }
@@ -76,10 +79,7 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
         }
 
         pagingDataAdapter?.apply {
-            addOnPagesUpdatedListener {
-                viewBinding.noDataTextView.visibility = View.GONE
-                viewBinding.swipeRefreshLayout.isRefreshing = false
-            }
+            addOnPagesUpdatedListener { viewModel.onPagesUpdated()}
 
             addLoadStateListener { viewModel.onPagesLoadStateChanged(it) }
         }
