@@ -1,30 +1,31 @@
-package com.example.twitchapp.ui
+package com.example.twitchapp.ui.util
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.twitchapp.ui.ViewModelStateFlowSingleEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-fun <T> Fragment.bindCommandAction(flow: ViewModelStateFlowSingleEvent<T?>, result: (T) -> Unit) {
+fun <T> Fragment.bindCommandAction(flow: ViewModelStateFlowSingleEvent<T?>, action: (T) -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
         viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             flow.collectLatest { event ->
                 event.getContentIfNotHandled()?.let {
-                    result(it)
+                    action(it)
                 }
             }
         }
     }
 }
 
-fun <T> Fragment.bindAction(flow: Flow<T>, result: suspend (T) -> Unit) {
+fun <T> Fragment.bindAction(flow: Flow<T>, action: suspend (T) -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
         viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             flow.collectLatest {
-                result(it)
+                action(it)
             }
         }
     }

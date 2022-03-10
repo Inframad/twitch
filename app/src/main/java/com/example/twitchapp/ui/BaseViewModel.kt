@@ -5,9 +5,7 @@ import android.content.Context
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import com.example.twitchapp.ui.util.SingleEvent
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @SuppressLint("StaticFieldLeak")
@@ -24,13 +22,6 @@ abstract class BaseViewModel(private val applicationContext: Context) : ViewMode
         ViewModelStateFlowSingleEventImpl(value)
 
     protected fun showToast(message: String) = showToastCommand.setValue(message)
-
-    protected fun <T> mutableSharedFlow(): ViewModelSharedFlow<T> =
-        ViewModelSharedFlowImpl()
-
-    protected suspend fun <T> ViewModelSharedFlow<T>.emitValue(value: T) = when (this) {
-        is ViewModelSharedFlowImpl -> wrapped.emit(value)
-    }
 
     protected fun <T> mutableStateFlowSingleEvent(value: T): ViewModelStateFlowSingleEvent<T> =
         ViewModelStateFlowSingleEventImpl(value)
@@ -54,13 +45,6 @@ private class ViewModelStateFlowSingleEventImpl<T>(
     initial: T,
     val wrapped: MutableStateFlow<SingleEvent<T>> = MutableStateFlow(SingleEvent(initial))
 ) : ViewModelStateFlowSingleEvent<T>(wrapped)
-
-sealed class ViewModelSharedFlow<T>(sharedFlow: SharedFlow<T>) :
-    SharedFlow<T> by sharedFlow
-
-private class ViewModelSharedFlowImpl<T>(
-    val wrapped: MutableSharedFlow<T> = MutableSharedFlow()
-) : ViewModelSharedFlow<T>(wrapped)
 
 sealed class ViewModelStateFlow<T>(stateFlow: StateFlow<T>) :
     StateFlow<T> by stateFlow

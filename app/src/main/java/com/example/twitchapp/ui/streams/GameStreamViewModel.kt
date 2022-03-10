@@ -23,12 +23,10 @@ class GameStreamViewModel @Inject constructor(
     private val repository: Repository
 ) : BaseViewModel(context) {
 
+    val isRefreshing = TCommand<Boolean>()
     val refreshCommand = Command()
     val retryCommand = Command()
-    val stopShowRefreshing = Command()
-    val showNoDataPlaceholder = Command()
-    val hideNoDataPlaceholder = Command()
-
+    val isNoDataPlaceholderVisible = TCommand<Boolean>()
     val gameStreamsFlow = repository.gameStreamsFlow.cachedIn(viewModelScope)
 
     init {
@@ -59,14 +57,14 @@ class GameStreamViewModel @Inject constructor(
                     }
                 )
             )
-            if (error is DatabaseException) showNoDataPlaceholder.setValue(Unit)
-            stopShowRefreshing.setValue(Unit)
+            if (error is DatabaseException) isNoDataPlaceholderVisible.setValue(true)
+            isRefreshing.setValue(false)
         }
     }
 
     fun onPagesUpdated() {
-        hideNoDataPlaceholder.setValue(Unit)
-        stopShowRefreshing.setValue(Unit)
+        isNoDataPlaceholderVisible.setValue(false)
+        isRefreshing.setValue(false)
     }
 
 }

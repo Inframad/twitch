@@ -9,10 +9,10 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
 import com.example.twitchapp.ui.BaseFragment
-import com.example.twitchapp.ui.bindAction
-import com.example.twitchapp.ui.bindCommandAction
 import com.example.twitchapp.ui.streams.adapter.GameStreamsLoadStateAdapter
 import com.example.twitchapp.ui.streams.adapter.GameStreamsPagingAdapter
+import com.example.twitchapp.ui.util.bindAction
+import com.example.twitchapp.ui.util.bindCommandAction
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,14 +38,11 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
             }
             bindCommandAction(refreshCommand) { pagingDataAdapter?.refresh() }
             bindCommandAction(retryCommand) { pagingDataAdapter?.retry() }
-            bindCommandAction(showNoDataPlaceholder) {
-                viewBinding.noDataTextView.isVisible = true
+            bindCommandAction(isNoDataPlaceholderVisible) {
+                viewBinding.noDataTextView.isVisible = it
             }
-            bindCommandAction(hideNoDataPlaceholder) {
-                viewBinding.noDataTextView.isVisible = false
-            }
-            bindCommandAction(stopShowRefreshing) {
-                viewBinding.swipeRefreshLayout.isRefreshing = false
+            bindCommandAction(isRefreshing) {
+                viewBinding.swipeRefreshLayout.isRefreshing = it
             }
         }
     }
