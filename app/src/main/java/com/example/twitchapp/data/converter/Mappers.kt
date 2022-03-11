@@ -44,6 +44,7 @@ fun Game.toGameEntity() =
     GameEntity(
         id = id,
         name = name,
+        isFavourite = isFavourite,
         imageUrl = imageUrl
     )
 
@@ -51,5 +52,6 @@ fun GameEntity.toGame() =
     Game(
         id = id,
         name = name,
+        isFavourite = isFavourite,
         imageUrl = imageUrl
     )

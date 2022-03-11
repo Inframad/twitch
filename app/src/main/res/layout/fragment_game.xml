@@ -70,10 +70,13 @@
                 android:layout_width="55dp"
                 android:layout_height="50dp"
                 android:scaleType="fitXY"
+                app:tint="@color/grey_400"
+                android:backgroundTint="@color/deep_orange_300"
                 android:layout_margin="@dimen/card_text_margin_horizontal"
                 android:src="@drawable/ic_gray_heart"
                 app:layout_constraintBottom_toBottomOf="@id/game_image_view"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/the_image_button_for_adding_to_favourite_list" />
 
             <FrameLayout
                 android:id="@+id/progress_bar_layout"

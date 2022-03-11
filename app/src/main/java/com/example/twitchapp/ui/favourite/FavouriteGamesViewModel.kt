@@ -10,8 +10,8 @@ import com.example.twitchapp.ui.BaseViewModel
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +24,9 @@ class FavouriteGamesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            uiState.setValue(handleResult(repository.getFavouriteGames())) //TODO Get from repo
+            repository.getFavouriteGames().collect { result ->
+                uiState.setValue(handleResult(result))
+            }
         }
     }
 
@@ -36,5 +38,5 @@ class FavouriteGamesViewModel @Inject constructor(
         }
 
     private fun handleError(e: Throwable): String =
-        e.localizedMessage ?: getString(R.string.unknown_error_msg) //TODO
+        e.localizedMessage ?: getString(R.string.unknown_error_msg)
 }

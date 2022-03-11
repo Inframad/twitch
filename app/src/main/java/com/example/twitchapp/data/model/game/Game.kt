@@ -4,5 +4,5 @@ data class Game(
     val id: Int,
     val name: String,
     val imageUrl: String?,
-    var isFavourite: Boolean = false
+    val isFavourite: Boolean = false
 )

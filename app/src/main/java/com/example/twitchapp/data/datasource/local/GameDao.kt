@@ -5,8 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import androidx.room.Update
-import com.example.twitchapp.data.model.game.Game
 import com.example.twitchapp.data.model.game.GameEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GameDao {
@@ -21,8 +21,8 @@ interface GameDao {
     suspend fun isGameExist(name: String): Boolean
 
     @Query("SELECT * FROM gameentity WHERE isFavourite=1")
-    suspend fun getFavoriteGames(): List<GameEntity>
+    fun getFavoriteGames(): Flow<List<GameEntity>>
 
     @Update
-    suspend fun updateGame(game: Game)
+    suspend fun updateGame(game: GameEntity)
 }
