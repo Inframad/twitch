@@ -1,6 +1,6 @@
 package com.example.twitchapp.data.model
 
-enum class Mode {
+enum class AppNetworkMode {
     ONLINE,
     OFFLINE
 }

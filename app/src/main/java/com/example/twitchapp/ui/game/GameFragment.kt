@@ -21,7 +21,7 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
 
     private val viewBinding: FragmentGameBinding by viewBinding()
     override val viewModel: GameViewModel by viewModels()
-    private val navArgs by navArgs<GameFragmentArgs>()
+    private val navArgs: GameFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

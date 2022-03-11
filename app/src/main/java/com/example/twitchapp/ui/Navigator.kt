@@ -10,4 +10,8 @@ object Navigator {
     fun goToGameScreen(f: Fragment, args: GameFragmentArgs) {
         f.findNavController().navigate(R.id.gameFragment, args.toBundle())
     }
+
+    fun goBack(f: Fragment) {
+        f.findNavController().popBackStack()
+    }
 }

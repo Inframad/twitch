@@ -6,9 +6,9 @@ import com.example.twitchapp.data.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.data.converter.toGameStream
 import com.example.twitchapp.data.converter.toGameStreamEntity
 import com.example.twitchapp.data.datasource.local.LocalDatasource
+import com.example.twitchapp.data.model.AppNetworkMode
 import com.example.twitchapp.data.model.DatabaseException
 import com.example.twitchapp.data.model.DatabaseState
-import com.example.twitchapp.data.model.Mode
 import com.example.twitchapp.data.model.NetworkState
 import com.example.twitchapp.data.model.streams.GameStream
 import com.example.twitchapp.data.network.NetworkConnectionChecker
@@ -26,9 +26,9 @@ class GameStreamsPagingSource @Inject constructor(
     networkConnectionChecker: NetworkConnectionChecker
 ) : PagingSource<String, GameStream>() {
 
-    private var mode: Mode = when (networkConnectionChecker.getNetworkState()) {
-        NetworkState.AVAILABLE -> Mode.ONLINE
-        NetworkState.NOT_AVAILABLE -> Mode.OFFLINE
+    private var appNetworkMode: AppNetworkMode = when (networkConnectionChecker.getNetworkState()) {
+        NetworkState.AVAILABLE -> AppNetworkMode.ONLINE
+        NetworkState.NOT_AVAILABLE -> AppNetworkMode.OFFLINE
     }
 
     private var isDatabaseShouldBeCleared: Boolean = true
@@ -38,8 +38,8 @@ class GameStreamsPagingSource @Inject constructor(
             var data = emptyList<GameStream>()
             var nextKey: String? = null
 
-            when (mode) {
-                Mode.ONLINE -> {
+            when (appNetworkMode) {
+                AppNetworkMode.ONLINE -> {
                     val nextPage = params.key ?: ""
                     val response = twitchGameStreamsApi.getGameStreams(nextPage)
 
@@ -53,7 +53,7 @@ class GameStreamsPagingSource @Inject constructor(
 
                     nextKey = response.pagination.cursor
                 }
-                Mode.OFFLINE -> {
+                AppNetworkMode.OFFLINE -> {
                     if (params.key != null) {
                         val nextPage = params.key
                         val startId = localDatasource.getGameStreamByAccessKey(nextPage!!).id
@@ -88,7 +88,7 @@ class GameStreamsPagingSource @Inject constructor(
         } catch (e: HttpException) {
             return LoadResult.Error(e)
         } catch (e: UnknownHostException) {
-            mode = Mode.OFFLINE
+            appNetworkMode = AppNetworkMode.OFFLINE
             return LoadResult.Error(e)
         } catch (e: DatabaseException) {
             return LoadResult.Error(e)
@@ -101,7 +101,7 @@ class GameStreamsPagingSource @Inject constructor(
             val pageIndex = state.pages.indexOf(anchorPage)
             if (pageIndex == 0) {
                 isDatabaseShouldBeCleared = true
-                mode = Mode.ONLINE
+                appNetworkMode = AppNetworkMode.ONLINE
                 return null
             }
             anchorPage?.nextKey
