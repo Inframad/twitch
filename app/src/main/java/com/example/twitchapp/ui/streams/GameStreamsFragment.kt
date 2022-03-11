@@ -40,6 +40,7 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
             bindCommandAction(retryCommand) { pagingDataAdapter?.retry() }
             bindCommandAction(isNoDataPlaceholderVisible) {
                 viewBinding.noDataTextView.isVisible = it
+                viewBinding.mainProgressBar.isVisible = false
             }
             bindCommandAction(isRefreshing) {
                 viewBinding.swipeRefreshLayout.isRefreshing = it
