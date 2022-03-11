@@ -1,13 +1,13 @@
 package com.example.twitchapp.ui.game
 
 import android.content.Context
-import android.os.Bundle
 import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
 import com.example.twitchapp.data.model.Result
-import com.example.twitchapp.data.model.game.Game
+import com.example.twitchapp.data.model.streams.GameStream
 import com.example.twitchapp.data.repository.Repository
-import com.example.twitchapp.ui.*
+import com.example.twitchapp.ui.BaseViewModel
+import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -21,53 +21,38 @@ class GameViewModel @Inject constructor(
     private val repository: Repository
 ) : BaseViewModel(context) {
 
-    val gameScreenModel = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
-    private var game: Game? = null
+    val uiState = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
 
-    val isFavourite = TCommand<Boolean>()
-
-    fun bindData(data: Bundle) {
+    fun init(stream: GameStream) {
         viewModelScope.launch {
-            data.apply {
-                isFavourite
-                val gameName = getString(GAME_NAME) ?: getString(R.string.uknown)
-                gameScreenModel.setValue(handleResult(repository.getGame(gameName), this))
-            }
+            getGame(stream)
         }
     }
 
-    fun favouriteGameImageButtonClicked() {
+    private fun getGame(gameStream: GameStream) {
         viewModelScope.launch {
-            game?.let {
-                it.isFavourite = !(it.isFavourite) //TODO
-                isFavourite.setValue()
-                repository.updateGame(it)
-            }
-        }
-    }
-
-    private fun handleResult(result: Result<Game>, data: Bundle): UiState<GameScreenModel> =
-        when (result) {
-            is Result.Success -> {
-                game = result.data
-                UiState.Loaded(
-                    GameScreenModel(
-                        name = result.data.name,
-                        streamerName = data.getString(STREAMER_NAME) ?: getString(R.string.uknown),
-                        viewersCount = (data.getLong(VIEWERS_COUNT)).toString(),
-                        imageUrl = result.data.imageUrl
+            uiState.setValue(
+                when (val result = repository.getGame(gameStream.gameName)) {
+                    is Result.Success -> UiState.Loaded(
+                        GameScreenModel(
+                            name = result.data.name,
+                            streamerName = gameStream.userName,
+                            viewersCount = gameStream.viewerCount.toString(),
+                            imageUrl = result.data.imageUrl
+                        )
                     )
-                )
-            }
-            Result.Empty -> UiState.Empty
-            is Result.Error -> UiState.Error(handleError(result.e))
+                    Result.Empty -> UiState.Empty
+                    is Result.Error -> UiState.Error(handleError(result.e))
+                }
+            )
         }
+    }
+
 
     private fun handleError(e: Throwable): String =
-        when(e) {
+        when (e) {
             is SocketTimeoutException -> getString(R.string.check_internet_connection_msg)
             is UnknownHostException -> getString(R.string.check_internet_connection_msg)
             else -> getString(R.string.unknown_error_msg)
         }
-
 }

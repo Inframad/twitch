@@ -15,10 +15,10 @@
     <string name="offline_mode_msg">Интернет соединение недоступно. Загружены сохраненные данные</string>
     <string name="retry_btn_text">Повторить</string>
     <string name="review">Оставить отзыв</string>
-    <string name="review_is_sent_msg">Отзыв (%1$s) отправлен. Спасибо что оценили на %2$s звезд(ы)!</string>
+    <string name="review_is_sent_msg">Отзыв (%1$s) отправлен. Спасибо что оценили на %2$.1f звезд(ы)!</string>
     <string name="streams">Стримы</string>
     <string name="favorite">Избранное</string>
     <string name="favorite_games_placeholder_text">Избранные игры</string>
     <string name="game_image_view_desc">Game\'s poster</string>
-    <string name="uknown">Unknown</string>
+    <string name="unknown">Unknown</string>
 </resources>

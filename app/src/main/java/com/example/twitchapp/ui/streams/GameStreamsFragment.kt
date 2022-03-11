@@ -1,44 +1,28 @@
 package com.example.twitchapp.ui.streams
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.data.model.DatabaseException
-import com.example.twitchapp.data.model.NetworkState
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
-import com.example.twitchapp.ui.GAME_NAME
-import com.example.twitchapp.ui.STREAMER_NAME
-import com.example.twitchapp.ui.VIEWERS_COUNT
+import com.example.twitchapp.ui.BaseFragment
 import com.example.twitchapp.ui.streams.adapter.GameStreamsLoadStateAdapter
 import com.example.twitchapp.ui.streams.adapter.GameStreamsPagingAdapter
-import com.example.twitchapp.ui.util.observeWithLifecycle
-import com.example.twitchapp.ui.util.showToast
+import com.example.twitchapp.ui.util.bindAction
+import com.example.twitchapp.ui.util.bindCommandAction
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 @AndroidEntryPoint
-class GameStreamsFragment : Fragment(R.layout.fragment_game_streams) {
+class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_game_streams) {
 
-    private val binding: FragmentGameStreamsBinding by viewBinding()
-    private val viewModel: GameStreamViewModel by viewModels()
+    private val viewBinding: FragmentGameStreamsBinding by viewBinding()
+    override val viewModel: GameStreamViewModel by viewModels()
 
     private var pagingDataAdapter: GameStreamsPagingAdapter? = null
 
-    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -46,70 +30,45 @@ class GameStreamsFragment : Fragment(R.layout.fragment_game_streams) {
         bindViewModel()
     }
 
-    private fun bindViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.gameStreamsFlow.collectLatest {
-                    pagingDataAdapter?.submitData(it)
-                }
+    override fun bindViewModel() {
+        super.bindViewModel()
+        viewModel.apply {
+            bindAction(gameStreamsFlow) {
+                pagingDataAdapter?.submitData(it)
             }
-        }
-
-        viewModel.initNetworkStateFlow.observeWithLifecycle(viewLifecycleOwner) {
-            when (it) {
-                NetworkState.NOT_AVAILABLE -> context?.showToast(getString(R.string.offline_mode_msg))
-                else -> {}
+            bindCommandAction(refreshCommand) { pagingDataAdapter?.refresh() }
+            bindCommandAction(retryCommand) { pagingDataAdapter?.retry() }
+            bindCommandAction(isNoDataPlaceholderVisible) {
+                viewBinding.noDataTextView.isVisible = it
+                viewBinding.mainProgressBar.isVisible = false
+            }
+            bindCommandAction(isRefreshing) {
+                viewBinding.swipeRefreshLayout.isRefreshing = it
             }
         }
     }
 
     private fun initViews() {
         pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator()) { gameStream ->
-            val bundle = bundleOf(
-                GAME_NAME to gameStream.gameName,
-                STREAMER_NAME to gameStream.userName,
-                VIEWERS_COUNT to gameStream.viewerCount
+            findNavController().navigate(
+                GameStreamsFragmentDirections
+                    .actionGameStreamsPageToGameFragment(gameStream)
             )
-            findNavController().navigate(R.id.action_game_streams_page_to_gameFragment, bundle)
         }
 
-        binding.apply {
+        viewBinding.apply {
             gameStreamsRecyclerView.adapter =
                 pagingDataAdapter?.withLoadStateFooter(footer = GameStreamsLoadStateAdapter {
-                    pagingDataAdapter?.retry()
+                    viewModel.onScrollEndError()
                 })
 
-            swipeRefreshLayout.setOnRefreshListener {
-                pagingDataAdapter?.refresh()
-            }
+            swipeRefreshLayout.setOnRefreshListener { viewModel.onSwipeToRefresh() }
         }
 
         pagingDataAdapter?.apply {
-            addOnPagesUpdatedListener {
-                binding.noDataTextView.visibility = View.GONE
-                binding.swipeRefreshLayout.isRefreshing = false
-            }
+            addOnPagesUpdatedListener { viewModel.onPagesUpdated() }
 
-            addLoadStateListener {
-                if (it.refresh is LoadState.Error) {
-                    handleError(it.refresh as LoadState.Error)
-                }
-            }
+            addLoadStateListener { viewModel.onPagesLoadStateChanged(it) }
         }
-    }
-
-    private fun handleError(state: LoadState.Error) {
-        context?.showToast(
-            getString(
-                when (state.error) {
-                    is DatabaseException -> R.string.offline_mode_msg
-                    is UnknownHostException -> R.string.check_internet_connection_msg
-                    is SocketTimeoutException -> R.string.check_internet_connection_msg
-                    else -> R.string.unknown_error_msg
-                }
-            )
-        )
-        if (state.error is DatabaseException) binding.noDataTextView.isVisible = true
-        binding.swipeRefreshLayout.isRefreshing = false
     }
 }

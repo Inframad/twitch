@@ -11,12 +11,17 @@ import kotlinx.coroutines.flow.StateFlow
 @SuppressLint("StaticFieldLeak")
 abstract class BaseViewModel(private val applicationContext: Context) : ViewModel() {
 
+    val showToastCommand = TCommand<String?>()
+
+    protected fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
+        applicationContext.getString(resId, *formatArgs)
+
     protected fun Command(): ViewModelStateFlowSingleEvent<Unit?> = ViewModelStateFlowSingleEventImpl(null)
+
     protected fun <T> TCommand(value: T? = null): ViewModelStateFlowSingleEvent<T?> =
         ViewModelStateFlowSingleEventImpl(value)
 
-    protected fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
-        applicationContext.getString(resId, formatArgs)
+    protected fun showToast(message: String) = showToastCommand.setValue(message)
 
     protected fun <T> mutableStateFlowSingleEvent(value: T): ViewModelStateFlowSingleEvent<T> =
         ViewModelStateFlowSingleEventImpl(value)
@@ -32,6 +37,7 @@ abstract class BaseViewModel(private val applicationContext: Context) : ViewMode
         is ViewModelStateFlowImpl -> wrapped.value = value
     }
 }
+
 sealed class ViewModelStateFlowSingleEvent<T>(stateFlow: StateFlow<SingleEvent<T>>) :
     StateFlow<SingleEvent<T>> by stateFlow
 
