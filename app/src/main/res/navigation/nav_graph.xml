@@ -8,20 +8,15 @@
         android:id="@+id/game_streams_page"
         android:name="com.example.twitchapp.ui.streams.GameStreamsFragment"
         android:label="GameStreamsFragment">
-        <action
-            android:id="@+id/action_game_streams_page_to_gameFragment"
-            app:destination="@id/gameFragment">
-            <argument
-                android:name="stream"
-                app:argType="com.example.twitchapp.data.model.streams.GameStream" />
-        </action>
+        <argument
+            android:name="stream"
+            app:argType="com.example.twitchapp.data.model.streams.GameStream" />
     </fragment>
 
     <fragment
         android:id="@+id/favorite_games_page"
         android:name="com.example.twitchapp.ui.favourite.FavouriteGamesFragment"
-        android:label="FavouriteGamesFragment" >
-    </fragment>
+        android:label="FavouriteGamesFragment" />
     <fragment
         android:id="@+id/app_review_fragment"
         android:name="com.example.twitchapp.ui.review.AppReviewFragment"
@@ -29,7 +24,7 @@
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.example.twitchapp.ui.game.GameFragment"
-        android:label="GameFragment" >
+        android:label="GameFragment">
         <argument
             android:name="stream"
             app:argType="com.example.twitchapp.data.model.streams.GameStream" />
