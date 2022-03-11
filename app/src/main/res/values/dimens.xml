@@ -6,4 +6,5 @@
     <dimen name="fragment_app_review_content_margin">8dp</dimen>
     <dimen name="footer_error_text_size">18sp</dimen>
     <dimen name="game_screen_title_text_size">30sp</dimen>
+    <dimen name="full_screen_msg_text_size">30sp</dimen>
 </resources>

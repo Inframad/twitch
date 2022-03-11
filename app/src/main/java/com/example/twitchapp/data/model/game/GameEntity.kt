@@ -9,4 +9,5 @@ data class GameEntity(
     val id: Int = 0,
     val name: String,
     val imageUrl: String?,
+    val isFavourite: Boolean = false
 )

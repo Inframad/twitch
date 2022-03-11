@@ -2,10 +2,12 @@ package com.example.twitchapp.data.datasource.local
 
 import com.example.twitchapp.data.converter.toGame
 import com.example.twitchapp.data.converter.toGameEntity
+import com.example.twitchapp.data.model.Result
 import com.example.twitchapp.data.model.game.Game
 import com.example.twitchapp.data.model.streams.GameStreamEntity
 import com.example.twitchapp.di.data.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -33,7 +35,7 @@ class LocalDatasource @Inject constructor(
         }
     }
 
-    suspend fun deleteAllGameStreams(){
+    suspend fun deleteAllGameStreams() {
         withContext(ioDispatcher) {
             gameStreamDao.clearAll()
         }
@@ -59,4 +61,20 @@ class LocalDatasource @Inject constructor(
             gameDao.isGameExist(name)
         }
 
+    suspend fun getFavouriteGames() =
+        withContext(ioDispatcher) {
+            gameDao.getFavoriteGames().map { list ->
+                Result.Success(
+                    list.map { gameEntity ->
+                        gameEntity.toGame()
+                    }
+                )
+            }
+        }
+
+    suspend fun updateGame(game: Game) {
+        withContext(ioDispatcher) {
+            gameDao.updateGame(game.toGameEntity())
+        }
+    }
 }

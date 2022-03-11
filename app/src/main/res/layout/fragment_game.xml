@@ -65,6 +65,19 @@
                 app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
                 tools:text="123" />
 
+            <ImageButton
+                android:id="@+id/favourite_game_image_button"
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:scaleType="fitXY"
+                app:tint="@color/grey_400"
+                android:backgroundTint="@color/deep_orange_300"
+                android:layout_margin="@dimen/card_text_margin_horizontal"
+                android:src="@drawable/ic_gray_heart"
+                app:layout_constraintBottom_toBottomOf="@id/game_image_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/the_image_button_for_adding_to_favourite_list" />
+
             <FrameLayout
                 android:id="@+id/progress_bar_layout"
                 android:layout_width="0dp"
@@ -73,7 +86,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="invisible">
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
@@ -90,7 +104,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="invisible">
 
                 <TextView
                     android:id="@+id/error_text_view"
@@ -107,7 +122,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="invisible">
 
                 <TextView
                     android:id="@+id/no_data_text_view"

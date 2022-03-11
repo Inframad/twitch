@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
 import com.example.twitchapp.data.model.Result
+import com.example.twitchapp.data.model.game.Game
 import com.example.twitchapp.data.model.streams.GameStream
 import com.example.twitchapp.data.repository.Repository
 import com.example.twitchapp.ui.BaseViewModel
@@ -22,30 +23,56 @@ class GameViewModel @Inject constructor(
 ) : BaseViewModel(context) {
 
     val uiState = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
+    private var game: Game? = null
+
+    val toggleFavouriteCommand = TCommand<Int>()
 
     fun init(stream: GameStream) {
         viewModelScope.launch {
-            getGame(stream)
+            fetchGameModel(stream)
         }
     }
 
-    private fun getGame(gameStream: GameStream) {
+    fun favouriteGameImageButtonClicked() {
+        var savedGame = game ?: return
+        savedGame = savedGame.copy(isFavourite = !savedGame.isFavourite)
+        viewModelScope.launch {
+            repository.updateGame(savedGame)
+        }
+        game = savedGame
+        toggleFavourite(savedGame.isFavourite)
+    }
+
+    private fun fetchGameModel(gameStream: GameStream) {
         viewModelScope.launch {
             uiState.setValue(
                 when (val result = repository.getGame(gameStream.gameName)) {
-                    is Result.Success -> UiState.Loaded(
-                        GameScreenModel(
-                            name = result.data.name,
-                            streamerName = gameStream.userName,
-                            viewersCount = gameStream.viewerCount.toString(),
-                            imageUrl = result.data.imageUrl
+                    is Result.Success -> {
+                        result.data.apply {
+                            game = this
+                            toggleFavourite(this.isFavourite)
+                        }
+                        UiState.Loaded(
+                            GameScreenModel(
+                                name = result.data.name,
+                                streamerName = gameStream.userName,
+                                viewersCount = gameStream.viewerCount.toString(),
+                                imageUrl = result.data.imageUrl
+                            )
                         )
-                    )
+                    }
                     Result.Empty -> UiState.Empty
                     is Result.Error -> UiState.Error(handleError(result.e))
                 }
             )
         }
+    }
+
+    private fun toggleFavourite(isFavourite: Boolean) {
+        toggleFavouriteCommand.setValue(
+            if (isFavourite) R.color.red_400
+            else R.color.grey_400
+        )
     }
 
 

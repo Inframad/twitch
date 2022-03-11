@@ -35,18 +35,23 @@ fun GameStream.toGameStreamEntity() =
 
 fun GameDTO.toGame(imageWidth: Int = 1000, imageHeight: Int = 1000) =
     Game(
+        id = 0,
         name = name ?: "Unknown",
         imageUrl = imageUrl?.replace("{width}x{height}", "${imageWidth}x${imageHeight}")
     )
 
 fun Game.toGameEntity() =
     GameEntity(
+        id = id,
         name = name,
+        isFavourite = isFavourite,
         imageUrl = imageUrl
     )
 
 fun GameEntity.toGame() =
     Game(
+        id = id,
         name = name,
+        isFavourite = isFavourite,
         imageUrl = imageUrl
     )

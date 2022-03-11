@@ -2,6 +2,7 @@ package com.example.twitchapp.data.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.example.twitchapp.data.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.data.datasource.GameStreamsPagingSource
 import com.example.twitchapp.data.datasource.RemoteDataSource
 import com.example.twitchapp.data.datasource.local.LocalDatasource
@@ -20,7 +21,7 @@ class Repository @Inject constructor(
 ) {
 
     val gameStreamsFlow = Pager(
-        PagingConfig(pageSize = 20)
+        PagingConfig(pageSize = GAME_STREAMS_PAGE_SIZE)
     ) {
         GameStreamsPagingSource(api, localDatasource, networkConnectionChecker)
     }.flow
@@ -46,5 +47,11 @@ class Repository @Inject constructor(
             }
         }
     }
+
+    suspend fun getFavouriteGames() =
+        localDatasource.getFavouriteGames()
+
+    suspend fun updateGame(game: Game) =
+        localDatasource.updateGame(game)
 }
 
