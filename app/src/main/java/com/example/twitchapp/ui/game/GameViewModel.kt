@@ -28,9 +28,7 @@ class GameViewModel @Inject constructor(
     val toggleFavouriteCommand = TCommand<Int>()
 
     fun init(stream: GameStream) {
-        viewModelScope.launch {
-            fetchGameModel(stream)
-        }
+        fetchGameModel(stream)
     }
 
     fun favouriteGameImageButtonClicked() {

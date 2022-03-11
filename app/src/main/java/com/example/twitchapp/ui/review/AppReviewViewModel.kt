@@ -13,7 +13,6 @@ class AppReviewViewModel @Inject constructor(
     @ApplicationContext context: Context
 ) : BaseViewModel(context) {
 
-
     fun onSendReviewButtonClicked(review: Editable, rating: Float) {
         showToast(getString(R.string.review_is_sent_msg, review.toString(), rating))
     }

@@ -12,7 +12,6 @@ import com.example.twitchapp.data.repository.Repository
 import com.example.twitchapp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.launch
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -20,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GameStreamViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val repository: Repository
+    repository: Repository
 ) : BaseViewModel(context) {
 
     val isRefreshing = TCommand<Boolean>()
@@ -30,10 +29,8 @@ class GameStreamViewModel @Inject constructor(
     val gameStreamsFlow = repository.gameStreamsFlow.cachedIn(viewModelScope)
 
     init {
-        viewModelScope.launch {
-            if (repository.getCurrentNetworkState() == NetworkState.NOT_AVAILABLE) {
-                showToast(getString(R.string.no_saved_data_msg))
-            }
+        if (repository.getCurrentNetworkState() == NetworkState.NOT_AVAILABLE) {
+            showToast(getString(R.string.no_saved_data_msg))
         }
     }
 
