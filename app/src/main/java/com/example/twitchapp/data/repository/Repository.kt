@@ -48,7 +48,7 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun getFavouriteGames() =
+    fun getFavouriteGames() =
         localDatasource.getFavouriteGames()
 
     suspend fun updateGame(game: Game) =
