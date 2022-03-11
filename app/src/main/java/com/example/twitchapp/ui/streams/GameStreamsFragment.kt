@@ -56,9 +56,13 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
 
         viewBinding.apply {
             gameStreamsRecyclerView.adapter =
-                pagingDataAdapter?.withLoadStateFooter(footer = GameStreamsLoadStateAdapter {
-                    viewModel.onScrollEndError()
-                })
+                pagingDataAdapter?.withLoadStateFooter(
+                    footer = GameStreamsLoadStateAdapter(
+                        retry = { viewModel.onScrollEndError() },
+                        onLoadStateChanged = {
+                            viewModel.onFooterLoadStateChanged(it)
+                        })
+                )
 
             swipeRefreshLayout.setOnRefreshListener { viewModel.onSwipeToRefresh() }
         }

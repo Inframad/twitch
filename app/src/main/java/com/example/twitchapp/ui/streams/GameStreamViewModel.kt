@@ -12,12 +12,15 @@ import com.example.twitchapp.data.repository.Repository
 import com.example.twitchapp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import retrofit2.HttpException
+import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
 class GameStreamViewModel @Inject constructor(
+
     @ApplicationContext context: Context,
     repository: Repository
 ) : BaseViewModel(context) {
@@ -56,6 +59,29 @@ class GameStreamViewModel @Inject constructor(
             )
             if (error is DatabaseException) isNoDataPlaceholderVisible.setValue(true)
             isRefreshing.setValue(false)
+        }
+    }
+
+    fun onFooterLoadStateChanged(loadState: LoadState) =
+        FooterItem(
+            errorMsg = if (loadState is LoadState.Error) handleError(loadState)
+            else "",
+            progressBarIsVisible = loadState is LoadState.Loading,
+            retryButtonIsVisible = loadState is LoadState.Error,
+            errorMsgIsVisible = loadState is LoadState.Error
+        )
+
+    private fun handleError(loadState: LoadState.Error): String {
+        return when (loadState.error) {
+            is HttpException ->
+                when ((loadState.error as HttpException).code()) {
+                    429 -> getString(R.string.too_many_request_error)
+                    404 -> getString(R.string.not_found_error_msg)
+                    else -> loadState.error.localizedMessage
+                }
+            is IOException -> getString(R.string.check_internet_connection_msg)
+            else -> loadState.error.localizedMessage
+                ?: getString(R.string.unknown_error_msg)
         }
     }
 
