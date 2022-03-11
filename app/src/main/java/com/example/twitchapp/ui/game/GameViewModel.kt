@@ -22,26 +22,43 @@ class GameViewModel @Inject constructor(
 ) : BaseViewModel(context) {
 
     val gameScreenModel = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
+    private var game: Game? = null
+
+    val isFavourite = TCommand<Boolean>()
 
     fun bindData(data: Bundle) {
         viewModelScope.launch {
             data.apply {
+                isFavourite
                 val gameName = getString(GAME_NAME) ?: getString(R.string.uknown)
                 gameScreenModel.setValue(handleResult(repository.getGame(gameName), this))
             }
         }
     }
 
+    fun favouriteGameImageButtonClicked() {
+        viewModelScope.launch {
+            game?.let {
+                it.isFavourite = !(it.isFavourite) //TODO
+                isFavourite.setValue()
+                repository.updateGame(it)
+            }
+        }
+    }
+
     private fun handleResult(result: Result<Game>, data: Bundle): UiState<GameScreenModel> =
         when (result) {
-            is Result.Success -> UiState.Loaded(
-                GameScreenModel(
-                    name = result.data.name,
-                    streamerName = data.getString(STREAMER_NAME) ?: getString(R.string.uknown),
-                    viewersCount = (data.getLong(VIEWERS_COUNT)).toString(),
-                    imageUrl = result.data.imageUrl
+            is Result.Success -> {
+                game = result.data
+                UiState.Loaded(
+                    GameScreenModel(
+                        name = result.data.name,
+                        streamerName = data.getString(STREAMER_NAME) ?: getString(R.string.uknown),
+                        viewersCount = (data.getLong(VIEWERS_COUNT)).toString(),
+                        imageUrl = result.data.imageUrl
+                    )
                 )
-            )
+            }
             Result.Empty -> UiState.Empty
             is Result.Error -> UiState.Error(handleError(result.e))
         }

@@ -24,7 +24,7 @@ class FavouriteGamesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            uiState.setValue(handleResult(Result.Error(UnknownHostException()))) //TODO Get from repo
+            uiState.setValue(handleResult(repository.getFavouriteGames())) //TODO Get from repo
         }
     }
 

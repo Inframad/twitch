@@ -8,4 +8,5 @@ data class GameEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val imageUrl: String?,
+    var isFavourite: Boolean = false
 )

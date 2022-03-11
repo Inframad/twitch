@@ -2,6 +2,7 @@ package com.example.twitchapp.data.datasource.local
 
 import com.example.twitchapp.data.converter.toGame
 import com.example.twitchapp.data.converter.toGameEntity
+import com.example.twitchapp.data.model.Result
 import com.example.twitchapp.data.model.game.Game
 import com.example.twitchapp.data.model.streams.GameStreamEntity
 import com.example.twitchapp.di.data.IoDispatcher
@@ -59,4 +60,14 @@ class LocalDatasource @Inject constructor(
             gameDao.isGameExist(name)
         }
 
+    suspend fun getFavouriteGames() =
+        withContext(ioDispatcher) {
+            Result.Success(gameDao.getFavoriteGames().map { it.toGame() })
+        }
+
+    suspend fun updateGame(game: Game) {
+        withContext(ioDispatcher) {
+            gameDao.updateGame(game)
+        }
+    }
 }

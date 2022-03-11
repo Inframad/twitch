@@ -37,6 +37,9 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
     private fun initViews() {
         viewBinding.noDataTextView.text = getString(R.string.no_saved_data_msg)
+        viewBinding.favouriteGameImageButton.setOnClickListener {
+            viewModel.favouriteGameImageButtonClicked()
+        }
     }
 
     private fun initAnim() {
