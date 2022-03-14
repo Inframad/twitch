@@ -4,8 +4,10 @@ import android.content.Context
 import com.example.twitchapp.BuildConfig
 import com.example.twitchapp.api.game.TwitchGamesApi
 import com.example.twitchapp.api.streams.TwitchGameStreamsApi
+import com.example.twitchapp.api.streams.UriJsonAdapter
 import com.example.twitchapp.api.util.NetworkConnectionChecker
 import com.example.twitchapp.api.util.NetworkConnectionCheckerImpl
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +24,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideMoshi(uriJsonAdapter: UriJsonAdapter): Moshi =
+        Moshi.Builder()
+            .add(uriJsonAdapter)
+            .build()
+
+    @Provides
+    @Singleton
     fun provideClient(interceptor: AuthInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(interceptor)
@@ -29,14 +38,15 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMoshiConverterFactory(): MoshiConverterFactory =
-        MoshiConverterFactory.create()
+    fun provideMoshiConverterFactory(moshi: Moshi): MoshiConverterFactory =
+        MoshiConverterFactory.create(moshi)
+
 
     @Provides
     @Singleton
     fun provideRetrofit(
         moshiConverterFactory: MoshiConverterFactory,
-        client: OkHttpClient
+        client: OkHttpClient,
     ): Retrofit =
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)

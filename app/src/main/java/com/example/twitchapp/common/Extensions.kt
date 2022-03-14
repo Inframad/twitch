@@ -1,6 +1,7 @@
 package com.example.twitchapp.common
 
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.IdRes
@@ -11,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.twitchapp.R
 import com.example.twitchapp.ui.AppScreen
 
-fun ImageView.glideImage(url: String?) {
+fun ImageView.glideImage(uri: Uri?) {
     val circularProgressDrawable = CircularProgressDrawable(this.context)
 
     circularProgressDrawable.apply {
@@ -20,7 +21,7 @@ fun ImageView.glideImage(url: String?) {
     }.start()
 
     Glide.with(this)
-        .load(url)
+        .load(uri)
         .placeholder(circularProgressDrawable)
         .error(R.drawable.image_error_placeholder)
         .into(this)

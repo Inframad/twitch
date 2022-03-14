@@ -38,7 +38,7 @@ class GameViewModel @Inject constructor(
             repository.updateGame(savedGame)
         }
         game = savedGame
-        toggleFavourite(savedGame.isFavourite)
+        toggleFavourite()
     }
 
     private fun fetchGameModel(gameStream: GameStream) {
@@ -48,7 +48,7 @@ class GameViewModel @Inject constructor(
                     is Result.Success -> {
                         result.data.apply {
                             game = this
-                            toggleFavourite(this.isFavourite)
+                            toggleFavourite()
                         }
                         UiState.Loaded(
                             GameScreenModel(
@@ -66,9 +66,9 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun toggleFavourite(isFavourite: Boolean) {
+    private fun toggleFavourite() {
         toggleFavouriteCommand.setValue(
-            if (isFavourite) R.color.red_400
+            if (game?.isFavourite == true) R.color.red_400
             else R.color.grey_400
         )
     }

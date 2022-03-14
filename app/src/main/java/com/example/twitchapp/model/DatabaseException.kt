@@ -1,6 +1,6 @@
 package com.example.twitchapp.model
 
-class DatabaseException(val state: DatabaseState): Exception()
+class DatabaseException(state: DatabaseState): Exception(state.name)
 
 enum class DatabaseState {
     EMPTY

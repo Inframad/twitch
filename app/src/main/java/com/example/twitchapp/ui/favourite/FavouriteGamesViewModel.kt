@@ -32,7 +32,7 @@ class FavouriteGamesViewModel @Inject constructor(
 
     private fun handleResult(result: Result<List<Game>>): UiState<List<Game>> =
         when (result) {
-            is Result.Success -> UiState.Loaded(result.data)
+            is Result.Success -> if(result.data.isEmpty()) UiState.Empty else UiState.Loaded(result.data) //TODO Изменить сообщение при доступном интернете
             is Result.Error -> UiState.Error(handleError(result.e))
             Result.Empty -> UiState.Empty
         }

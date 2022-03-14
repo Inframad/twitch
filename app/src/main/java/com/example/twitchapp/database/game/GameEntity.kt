@@ -1,15 +1,16 @@
 package com.example.twitchapp.database.game
 
+import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.twitchapp.model.game.Game
 
 @Entity
-data class GameEntity(
+class GameEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
-    val imageUrl: String?,
+    val imageUrl: Uri?,
     val isFavourite: Boolean = false
 ) {
     fun toModel() =

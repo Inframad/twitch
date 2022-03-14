@@ -12,8 +12,6 @@ import com.example.twitchapp.model.DatabaseException
 import com.example.twitchapp.model.DatabaseState
 import com.example.twitchapp.model.NetworkState
 import com.example.twitchapp.model.streams.GameStream
-import retrofit2.HttpException
-import java.io.IOException
 import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -82,14 +80,12 @@ class GameStreamsPagingSource @Inject constructor(
                 prevKey = null,
                 nextKey = nextKey
             )
-        } catch (e: IOException) {
-            return LoadResult.Error(e)
-        } catch (e: HttpException) {
-            return LoadResult.Error(e)
         } catch (e: UnknownHostException) {
             appNetworkMode = AppNetworkMode.OFFLINE
             return LoadResult.Error(e)
         } catch (e: DatabaseException) {
+            return LoadResult.Error(e)
+        } catch (e: Throwable) {
             return LoadResult.Error(e)
         }
     }

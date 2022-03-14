@@ -5,133 +5,128 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_layout"
+        <ImageView
+            android:id="@+id/game_image_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="400dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/game_image_view_desc"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
 
-            <ImageView
-                android:id="@+id/game_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/game_image_view_desc"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/backgrounds/scenic" />
+        <TextView
+            android:id="@+id/game_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/game_screen_title_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/game_image_view"
+            tools:text="Game name" />
 
-            <TextView
-                android:id="@+id/game_name_text_view"
+        <TextView
+            android:id="@+id/streamer_name_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toStartOf="@id/favourite_image_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
+            tools:text="Streamer's name" />
+
+        <ImageView
+            android:id="@+id/favourite_image_view"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:contentDescription="@string/views_iv_desc"
+            app:layout_constraintEnd_toStartOf="@id/viewers_count_text_view"
+            app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
+            app:srcCompat="@android:drawable/ic_menu_view" />
+
+        <TextView
+            android:id="@+id/viewers_count_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
+            tools:text="123" />
+
+        <ImageButton
+            android:id="@+id/favourite_game_image_button"
+            android:layout_width="55dp"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/card_text_margin_horizontal"
+            android:backgroundTint="@color/deep_orange_300"
+            android:contentDescription="@string/the_image_button_for_adding_to_favourite_list"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_heart"
+            app:layout_constraintBottom_toBottomOf="@id/game_image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/grey_400" />
+
+        <FrameLayout
+            android:id="@+id/progress_bar_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/background_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="invisible">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/game_screen_title_text_size"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/game_image_view"
-                tools:text="Game name" />
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/error_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/background_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="invisible">
 
             <TextView
-                android:id="@+id/streamer_name_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                app:layout_constraintEnd_toStartOf="@id/favourite_image_view"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
-                tools:text="Streamer's name" />
-
-            <ImageView
-                android:id="@+id/favourite_image_view"
-                android:layout_width="30sp"
-                android:layout_height="30sp"
-                android:contentDescription="@string/views_iv_desc"
-                app:layout_constraintEnd_toStartOf="@id/viewers_count_text_view"
-                app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
-                app:srcCompat="@android:drawable/ic_menu_view" />
-
-            <TextView
-                android:id="@+id/viewers_count_text_view"
+                android:id="@+id/error_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
-                tools:text="123" />
+                android:layout_gravity="center" />
+        </FrameLayout>
 
-            <ImageButton
-                android:id="@+id/favourite_game_image_button"
-                android:layout_width="55dp"
-                android:layout_height="50dp"
-                android:scaleType="fitXY"
-                app:tint="@color/grey_400"
-                android:backgroundTint="@color/deep_orange_300"
-                android:layout_margin="@dimen/card_text_margin_horizontal"
-                android:src="@drawable/ic_heart"
-                app:layout_constraintBottom_toBottomOf="@id/game_image_view"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:contentDescription="@string/the_image_button_for_adding_to_favourite_list" />
+        <FrameLayout
+            android:id="@+id/no_data_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/background_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="invisible">
 
-            <FrameLayout
-                android:id="@+id/progress_bar_layout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@android:color/background_light"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="invisible">
+            <TextView
+                android:id="@+id/no_data_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/error_layout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@android:color/background_light"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="invisible">
-
-                <TextView
-                    android:id="@+id/error_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/no_data_layout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@android:color/background_light"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="invisible">
-
-                <TextView
-                    android:id="@+id/no_data_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-            </FrameLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

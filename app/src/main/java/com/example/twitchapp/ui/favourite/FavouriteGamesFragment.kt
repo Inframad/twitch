@@ -3,25 +3,21 @@ package com.example.twitchapp.ui.favourite
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
+import com.example.twitchapp.common.BaseFragment
+import com.example.twitchapp.common.bindAction
 import com.example.twitchapp.databinding.FragmentFavouriteGamesBinding
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FavouriteGamesFragment : Fragment(R.layout.fragment_favourite_games) {
+class FavouriteGamesFragment : BaseFragment<FavouriteGamesViewModel>(R.layout.fragment_favourite_games) {
 
     private val viewBinding: FragmentFavouriteGamesBinding by viewBinding()
-    private val viewModel: FavouriteGamesViewModel by viewModels()
+    override val viewModel: FavouriteGamesViewModel by viewModels()
 
     private var adapter: FavouriteGamesAdapter? = null
 
@@ -38,17 +34,13 @@ class FavouriteGamesFragment : Fragment(R.layout.fragment_favourite_games) {
         viewBinding.noDataTextView.text = getString(R.string.no_saved_data_msg)
     }
 
-    private fun bindViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is UiState.Loaded -> showFavouriteGamesList(uiState.data)
-                        is UiState.Error -> showError(uiState.msg)
-                        UiState.Loading -> showLoading()
-                        UiState.Empty -> showNoDataPlaceholder()
-                    }
-                }
+    override fun bindViewModel() {
+        bindAction(viewModel.uiState) { uiState ->
+            when (uiState) {
+                is UiState.Loaded -> showFavouriteGamesList(uiState.data)
+                is UiState.Error -> showError(uiState.msg)
+                UiState.Loading -> showLoading()
+                UiState.Empty -> showNoDataPlaceholder()
             }
         }
     }
