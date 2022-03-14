@@ -3,10 +3,10 @@ package com.example.twitchapp.ui.game
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
-import com.example.twitchapp.data.model.Result
-import com.example.twitchapp.data.model.game.Game
-import com.example.twitchapp.data.model.streams.GameStream
-import com.example.twitchapp.data.repository.Repository
+import com.example.twitchapp.model.Result
+import com.example.twitchapp.model.game.Game
+import com.example.twitchapp.model.streams.GameStream
+import com.example.twitchapp.repository.Repository
 import com.example.twitchapp.ui.BaseViewModel
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel

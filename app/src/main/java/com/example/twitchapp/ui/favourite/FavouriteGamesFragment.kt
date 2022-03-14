@@ -10,8 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.data.model.game.Game
 import com.example.twitchapp.databinding.FragmentFavouriteGamesBinding
+import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect

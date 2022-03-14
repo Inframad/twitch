@@ -3,8 +3,8 @@ package com.example.twitchapp.ui.favourite
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.twitchapp.data.model.game.Game
 import com.example.twitchapp.databinding.ItemFavouriteGameBinding
+import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.ui.util.glideImage
 
 class FavouriteGameViewHolder(

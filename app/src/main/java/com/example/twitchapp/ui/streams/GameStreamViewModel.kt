@@ -6,9 +6,9 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.cachedIn
 import com.example.twitchapp.R
-import com.example.twitchapp.data.model.DatabaseException
-import com.example.twitchapp.data.model.NetworkState
-import com.example.twitchapp.data.repository.Repository
+import com.example.twitchapp.model.DatabaseException
+import com.example.twitchapp.model.NetworkState
+import com.example.twitchapp.repository.Repository
 import com.example.twitchapp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

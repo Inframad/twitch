@@ -1,7 +1,7 @@
 package com.example.twitchapp.ui.streams
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.twitchapp.data.model.streams.GameStream
+import com.example.twitchapp.model.streams.GameStream
 
 class GameStreamComparator : DiffUtil.ItemCallback<GameStream>() {
 

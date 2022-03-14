@@ -3,7 +3,7 @@ package com.example.twitchapp.ui.streams.adapter
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.example.twitchapp.data.model.streams.GameStream
+import com.example.twitchapp.model.streams.GameStream
 import com.example.twitchapp.ui.streams.viewholder.GameStreamViewHolder
 
 class GameStreamsPagingAdapter(
