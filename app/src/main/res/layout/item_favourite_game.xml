@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/card_view_margin_horizontal"
-    android:layout_marginVertical="@dimen/card_view_margin_vertical">
+    style="@style/MaterialCardStyle">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:contentDescription="@string/game_image_view_desc"
-            android:scaleType="centerCrop"
             tools:src="@tools:sample/backgrounds/scenic" />
 
         <TextView

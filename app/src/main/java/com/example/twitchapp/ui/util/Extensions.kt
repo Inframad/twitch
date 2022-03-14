@@ -34,10 +34,10 @@ fun ImageView.setTintColor(@ColorRes colorRes: Int) {
 }
 
 fun getAppScreenFromResId(@IdRes id: Int) =
-    when(id) {
-        R.id.game_streams_page -> AppScreen.STREAMS
+    when (id) {
+        R.id.gameStreamsFragment -> AppScreen.STREAMS
         R.id.gameFragment -> AppScreen.GAME
-        R.id.app_review_fragment -> AppScreen.APP_REVIEW
-        R.id.favorite_games_page -> AppScreen.FAVOURITE
+        R.id.appReviewFragment -> AppScreen.APP_REVIEW
+        R.id.favouriteGamesFragment -> AppScreen.FAVOURITE
         else -> throw IllegalArgumentException("AppScreens don't contain mapper for id ($id)")
     }

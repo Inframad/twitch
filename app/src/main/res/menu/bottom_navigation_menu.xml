@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/game_streams_page"
+        android:id="@+id/nav_streams"
         app:showAsAction="always"
         android:enabled="true"
         android:orderInCategory="1"
         android:icon="@drawable/ic_twitch"
         android:title="@string/streams"/>
     <item
-        android:id="@+id/favorite_games_page"
+        android:id="@+id/nav_favourite"
         app:showAsAction="ifRoom"
         android:enabled="true"
         android:orderInCategory="2"

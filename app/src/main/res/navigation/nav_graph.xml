@@ -2,31 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/game_streams_page">
+    app:startDestination="@id/nav_streams">
+
+    <include app:graph="@navigation/nav_streams" />
+    <include app:graph="@navigation/nav_favourite" />
 
     <fragment
-        android:id="@+id/game_streams_page"
-        android:name="com.example.twitchapp.ui.streams.GameStreamsFragment"
-        android:label="GameStreamsFragment">
-        <argument
-            android:name="stream"
-            app:argType="com.example.twitchapp.data.model.streams.GameStream" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/favorite_games_page"
-        android:name="com.example.twitchapp.ui.favourite.FavouriteGamesFragment"
-        android:label="FavouriteGamesFragment" />
-    <fragment
-        android:id="@+id/app_review_fragment"
+        android:id="@+id/appReviewFragment"
         android:name="com.example.twitchapp.ui.review.AppReviewFragment"
         android:label="AppReviewFragment" />
-    <fragment
-        android:id="@+id/gameFragment"
-        android:name="com.example.twitchapp.ui.game.GameFragment"
-        android:label="GameFragment">
-        <argument
-            android:name="stream"
-            app:argType="com.example.twitchapp.data.model.streams.GameStream" />
-    </fragment>
+
 </navigation>
