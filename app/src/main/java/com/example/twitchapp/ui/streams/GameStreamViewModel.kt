@@ -6,10 +6,10 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.cachedIn
 import com.example.twitchapp.R
+import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.DatabaseException
 import com.example.twitchapp.model.NetworkState
 import com.example.twitchapp.repository.Repository
-import com.example.twitchapp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.HttpException
@@ -20,7 +20,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameStreamViewModel @Inject constructor(
-
     @ApplicationContext context: Context,
     repository: Repository
 ) : BaseViewModel(context) {
@@ -29,7 +28,7 @@ class GameStreamViewModel @Inject constructor(
     val refreshCommand = Command()
     val retryCommand = Command()
     val isNoDataPlaceholderVisible = TCommand<Boolean>()
-    val gameStreamsFlow = repository.gameStreamsFlow.cachedIn(viewModelScope)
+    val gameStreamsFlow = repository.getGameStreamsFlow().cachedIn(viewModelScope)
 
     init {
         if (repository.getCurrentNetworkState() == NetworkState.NOT_AVAILABLE) {

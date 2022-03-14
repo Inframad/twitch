@@ -2,10 +2,11 @@ package com.example.twitchapp.datasource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.twitchapp.api.NetworkConnectionChecker
 import com.example.twitchapp.api.streams.TwitchGameStreamsApi
+import com.example.twitchapp.api.util.NetworkConnectionChecker
 import com.example.twitchapp.database.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.database.streams.GameStreamEntity
+import com.example.twitchapp.datasource.local.LocalDatasource
 import com.example.twitchapp.model.AppNetworkMode
 import com.example.twitchapp.model.DatabaseException
 import com.example.twitchapp.model.DatabaseState

@@ -1,11 +1,15 @@
 package com.example.twitchapp.api
 
+import android.content.Context
 import com.example.twitchapp.BuildConfig
 import com.example.twitchapp.api.game.TwitchGamesApi
 import com.example.twitchapp.api.streams.TwitchGameStreamsApi
+import com.example.twitchapp.api.util.NetworkConnectionChecker
+import com.example.twitchapp.api.util.NetworkConnectionCheckerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -53,4 +57,11 @@ object NetworkModule {
         retrofit: Retrofit
     ): TwitchGamesApi =
         retrofit.create(TwitchGamesApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideNetworkConnectionChecker(
+        @ApplicationContext context: Context
+    ): NetworkConnectionChecker =
+        NetworkConnectionCheckerImpl(context)
 }

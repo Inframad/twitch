@@ -1,4 +1,4 @@
-package com.example.twitchapp.api
+package com.example.twitchapp.api.util
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -7,11 +7,11 @@ import com.example.twitchapp.model.NetworkState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class NetworkConnectionChecker @Inject constructor(
+class NetworkConnectionCheckerImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) {
+): NetworkConnectionChecker {
 
-    fun getNetworkState(): NetworkState {
+    override fun getNetworkState(): NetworkState {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 

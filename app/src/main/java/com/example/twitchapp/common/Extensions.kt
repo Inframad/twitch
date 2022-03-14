@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.util
+package com.example.twitchapp.common
 
 import android.content.res.ColorStateList
 import android.widget.ImageView

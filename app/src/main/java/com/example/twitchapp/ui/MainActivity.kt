@@ -15,8 +15,9 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
+import com.example.twitchapp.common.ViewModelStateFlowSingleEvent
+import com.example.twitchapp.common.getAppScreenFromResId
 import com.example.twitchapp.databinding.ActivityMainBinding
-import com.example.twitchapp.ui.util.getAppScreenFromResId
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun <T> bindCommandAction(flow: ViewModelStateFlowSingleEvent<T?>,
-        action: (T) -> Unit
+                                      action: (T) -> Unit
     ) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

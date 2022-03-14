@@ -6,14 +6,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
+import com.example.twitchapp.common.BaseFragment
+import com.example.twitchapp.common.bindAction
+import com.example.twitchapp.common.bindCommandAction
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
-import com.example.twitchapp.ui.BaseFragment
-import com.example.twitchapp.ui.Navigator
+import com.example.twitchapp.navigation.Navigator
 import com.example.twitchapp.ui.game.GameFragmentArgs
 import com.example.twitchapp.ui.streams.adapter.GameStreamsLoadStateAdapter
 import com.example.twitchapp.ui.streams.adapter.GameStreamsPagingAdapter
-import com.example.twitchapp.ui.util.bindAction
-import com.example.twitchapp.ui.util.bindCommandAction
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

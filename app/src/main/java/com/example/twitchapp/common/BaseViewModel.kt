@@ -1,10 +1,9 @@
-package com.example.twitchapp.ui
+package com.example.twitchapp.common
 
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
-import com.example.twitchapp.ui.util.SingleEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

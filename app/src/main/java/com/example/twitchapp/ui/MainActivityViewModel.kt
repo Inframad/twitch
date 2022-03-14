@@ -1,6 +1,7 @@
 package com.example.twitchapp.ui
 
 import android.content.Context
+import com.example.twitchapp.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

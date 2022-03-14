@@ -1,4 +1,4 @@
-package com.example.twitchapp.datasource
+package com.example.twitchapp.datasource.local
 
 import com.example.twitchapp.database.game.GameDao
 import com.example.twitchapp.database.game.GameEntity
@@ -15,57 +15,57 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalDatasource @Inject constructor(
+class LocalDatasourceImpl @Inject constructor(
     private val gameStreamDao: GameStreamDao,
     private val gameDao: GameDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-) {
+): LocalDatasource {
 
-    suspend fun getGameStreamsPage(startId: Int, endId: Int): List<GameStreamEntity> {
+    override suspend fun getGameStreamsPage(startId: Int, endId: Int): List<GameStreamEntity> {
         return withContext(ioDispatcher) {
             gameStreamDao.getPage(startId, endId)
         }
     }
 
-    suspend fun getGameStreamByAccessKey(accessKey: String): GameStreamEntity {
+    override suspend fun getGameStreamByAccessKey(accessKey: String): GameStreamEntity {
         return withContext(ioDispatcher) {
             gameStreamDao.getGameStreamByAccessKey(accessKey)
         }
     }
 
-    suspend fun saveGameStreams(gameStreams: List<GameStreamEntity>) {
+    override suspend fun saveGameStreams(gameStreams: List<GameStreamEntity>) {
         withContext(ioDispatcher) {
             gameStreamDao.insert(gameStreams)
         }
     }
 
-    suspend fun deleteAllGameStreams() {
+    override suspend fun deleteAllGameStreams() {
         withContext(ioDispatcher) {
             gameStreamDao.clearAll()
         }
     }
 
-    suspend fun getGameStreamsFirstPage() =
+    override suspend fun getGameStreamsFirstPage() =
         withContext(ioDispatcher) {
             gameStreamDao.getFirstPage()
         }
 
-    suspend fun getGame(name: String): Game =
+    override suspend fun getGame(name: String): Game =
         withContext(ioDispatcher) {
             gameDao.getGame(name).toModel()
         }
 
-    suspend fun saveGame(game: Game) =
+    override suspend fun saveGame(game: Game) =
         withContext(ioDispatcher) {
             gameDao.saveGame(GameEntity.fromModel(game))
         }
 
-    suspend fun isGameExist(name: String): Boolean =
+    override suspend fun isGameExist(name: String): Boolean =
         withContext(ioDispatcher) {
             gameDao.isGameExist(name)
         }
 
-    fun getFavouriteGames() =
+    override fun getFavouriteGames() =
         gameDao.getFavoriteGames().map { list ->
             Result.Success(
                 list.map { gameEntity ->
@@ -74,7 +74,7 @@ class LocalDatasource @Inject constructor(
             )
         }.flowOn(ioDispatcher)
 
-    suspend fun updateGame(game: Game) {
+    override suspend fun updateGame(game: Game) {
         withContext(ioDispatcher) {
             gameDao.updateGame(GameEntity.fromModel(game))
         }

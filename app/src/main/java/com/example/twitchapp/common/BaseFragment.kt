@@ -1,9 +1,8 @@
-package com.example.twitchapp.ui
+package com.example.twitchapp.common
 
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import com.example.twitchapp.ui.util.bindCommandAction
 
 abstract class BaseFragment<TViewModel : BaseViewModel>(@LayoutRes lId: Int) :
     Fragment(lId) {

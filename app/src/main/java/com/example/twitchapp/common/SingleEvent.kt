@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.util
+package com.example.twitchapp.common
 
 open class SingleEvent<out T>(private val content: T) {
     private var hasBeenHandled = false

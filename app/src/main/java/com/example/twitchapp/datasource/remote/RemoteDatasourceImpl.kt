@@ -1,4 +1,4 @@
-package com.example.twitchapp.datasource
+package com.example.twitchapp.datasource.remote
 
 import com.example.twitchapp.api.game.TwitchGamesApi
 import com.example.twitchapp.datasource.di.IoDispatcher
@@ -10,12 +10,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RemoteDataSource @Inject constructor(
+class RemoteDatasourceImpl @Inject constructor(
     private val gamesApi: TwitchGamesApi,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-) {
+): RemoteDatasource {
 
-    suspend fun getGame(name: String): Result<Game> =
+    override suspend fun getGame(name: String): Result<Game> =
         withContext(ioDispatcher) {
             try {
                 Result.Success(

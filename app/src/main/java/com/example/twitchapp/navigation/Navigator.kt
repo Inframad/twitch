@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui
+package com.example.twitchapp.navigation
 
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
