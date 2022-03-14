@@ -73,7 +73,7 @@
                 app:tint="@color/grey_400"
                 android:backgroundTint="@color/deep_orange_300"
                 android:layout_margin="@dimen/card_text_margin_horizontal"
-                android:src="@drawable/ic_gray_heart"
+                android:src="@drawable/ic_heart"
                 app:layout_constraintBottom_toBottomOf="@id/game_image_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:contentDescription="@string/the_image_button_for_adding_to_favourite_list" />
