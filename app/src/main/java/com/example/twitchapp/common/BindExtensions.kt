@@ -29,3 +29,4 @@ fun <T> Fragment.bindAction(flow: Flow<T>, action: suspend (T) -> Unit) {
         }
     }
 }
+

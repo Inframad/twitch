@@ -4,10 +4,10 @@ import android.content.Context
 import com.example.twitchapp.BuildConfig
 import com.example.twitchapp.api.game.TwitchGamesApi
 import com.example.twitchapp.api.streams.TwitchGameStreamsApi
-import com.example.twitchapp.api.streams.UriJsonAdapter
 import com.example.twitchapp.api.util.NetworkConnectionChecker
 import com.example.twitchapp.api.util.NetworkConnectionCheckerImpl
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,10 +23,15 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides
-    @Singleton
-    fun provideMoshi(uriJsonAdapter: UriJsonAdapter): Moshi =
+    fun provideMoshi(
+        //uriJsonGameAdapter: UriJsonGameAdapter,
+        //uriJsonStreamAdapter: UriJsonStreamAdapter
+    ): Moshi =
         Moshi.Builder()
-            .add(uriJsonAdapter)
+            .add(MoshiCustomAdapter.INSTANCE)
+            //.add(uriJsonStreamAdapter)
+            //.add(uriJsonGameAdapter)
+            .addLast(KotlinJsonAdapterFactory()) //TODO Inject
             .build()
 
     @Provides
@@ -37,13 +42,11 @@ object NetworkModule {
             .build()
 
     @Provides
-    @Singleton
     fun provideMoshiConverterFactory(moshi: Moshi): MoshiConverterFactory =
         MoshiConverterFactory.create(moshi)
 
 
     @Provides
-    @Singleton
     fun provideRetrofit(
         moshiConverterFactory: MoshiConverterFactory,
         client: OkHttpClient,
@@ -55,14 +58,12 @@ object NetworkModule {
             .build()
 
     @Provides
-    @Singleton
     fun provideTwitchStreamsApi(
         retrofit: Retrofit
     ): TwitchGameStreamsApi =
         retrofit.create(TwitchGameStreamsApi::class.java)
 
     @Provides
-    @Singleton
     fun provideTwitchGamesApi(
         retrofit: Retrofit
     ): TwitchGamesApi =

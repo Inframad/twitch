@@ -3,9 +3,11 @@ package com.example.twitchapp.api.game
 import android.net.Uri
 import com.example.twitchapp.model.game.Game
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 class GameDTO(
-    @field:Json(name = "name") val name: String?,
+    val name: String?,
     @field:Json(name = "box_art_url") val imageUrl: Uri?
 ) {
     fun toModel() =

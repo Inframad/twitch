@@ -9,8 +9,7 @@ import com.example.twitchapp.ui.streams.viewholder.GameStreamLoadStateViewHolder
 class GameStreamsLoadStateAdapter(
     private val onLoadStateChanged: (LoadState) -> FooterItem,
     private val retry: () -> Unit
-) :
-    LoadStateAdapter<GameStreamLoadStateViewHolder>() {
+) : LoadStateAdapter<GameStreamLoadStateViewHolder>() {
 
     override fun onBindViewHolder(holder: GameStreamLoadStateViewHolder, loadState: LoadState) {
         holder.bind(onLoadStateChanged(loadState))

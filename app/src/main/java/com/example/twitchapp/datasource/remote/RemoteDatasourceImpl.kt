@@ -19,9 +19,10 @@ class RemoteDatasourceImpl @Inject constructor(
         withContext(ioDispatcher) {
             try {
                 Result.Success(
-                    gamesApi.getGames(name).games.first().toModel()
+                    gamesApi.getGames(name).data.first().toModel()
                 )
             } catch (e: Throwable) {
+                throw e //TODO
                 Result.Error(e)
             }
         }

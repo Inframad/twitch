@@ -82,6 +82,10 @@ dependencies {
 
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$view_binding_property_delegate_version"
 
+    implementation "com.squareup.moshi:moshi-kotlin:1.13.0" //TODO
+    implementation 'com.squareup.moshi:moshi:1.13.0'
+    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.13.0'
+
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     implementation 'androidx.core:core-ktx:1.7.0'

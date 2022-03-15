@@ -1,11 +1,10 @@
 package com.example.twitchapp.ui.favourite
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.twitchapp.model.game.Game
 
-class FavouriteGamesAdapter(): ListAdapter<Game, FavouriteGameViewHolder>(DiffCallback()) {
+class FavouriteGamesAdapter: ListAdapter<Game, FavouriteGameViewHolder>(FavouriteGameComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteGameViewHolder =
         FavouriteGameViewHolder.from(parent)
@@ -15,12 +14,3 @@ class FavouriteGamesAdapter(): ListAdapter<Game, FavouriteGameViewHolder>(DiffCa
     }
 }
 
-class DiffCallback : DiffUtil.ItemCallback<Game>() {
-    override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
-        return oldItem.name == newItem.name
-    }
-
-    override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
-        return oldItem == newItem
-    }
-}

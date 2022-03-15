@@ -35,6 +35,7 @@ class FavouriteGamesFragment : BaseFragment<FavouriteGamesViewModel>(R.layout.fr
     }
 
     override fun bindViewModel() {
+        super.bindViewModel()
         bindAction(viewModel.uiState) { uiState ->
             when (uiState) {
                 is UiState.Loaded -> showFavouriteGamesList(uiState.data)
@@ -46,22 +47,28 @@ class FavouriteGamesFragment : BaseFragment<FavouriteGamesViewModel>(R.layout.fr
     }
 
     private fun showLoading() {
-        viewBinding.progressBarLayout.isVisible = true
-        viewBinding.errorLayout.isVisible = false
-        viewBinding.noDataLayout.isVisible = false
+        viewBinding.apply {
+            progressBarLayout.isVisible = true
+            errorLayout.isVisible = false
+            noDataLayout.isVisible = false
+        }
     }
 
     private fun showNoDataPlaceholder() {
-        viewBinding.progressBarLayout.isVisible = false
-        viewBinding.errorLayout.isVisible = false
-        viewBinding.noDataLayout.isVisible = true
+        viewBinding.apply {
+            progressBarLayout.isVisible = false
+            errorLayout.isVisible = false
+            noDataLayout.isVisible = true
+        }
     }
 
     private fun showError(msg: String) {
-        viewBinding.progressBarLayout.isVisible = false
-        viewBinding.errorLayout.isVisible = true
-        viewBinding.noDataLayout.isVisible = false
-        viewBinding.errorTextView.text = msg
+        viewBinding.apply {
+            progressBarLayout.isVisible = false
+            errorLayout.isVisible = true
+            noDataLayout.isVisible = false
+            errorTextView.text = msg
+        }
     }
 
     private fun showFavouriteGamesList(games: List<Game>) {
@@ -70,7 +77,6 @@ class FavouriteGamesFragment : BaseFragment<FavouriteGamesViewModel>(R.layout.fr
             viewBinding.errorLayout.isVisible = false
             viewBinding.noDataLayout.isVisible = false
         }
-
         adapter?.submitList(games)
     }
 }

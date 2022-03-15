@@ -85,8 +85,6 @@ class GameStreamsPagingSource @Inject constructor(
             return LoadResult.Error(e)
         } catch (e: DatabaseException) {
             return LoadResult.Error(e)
-        } catch (e: Throwable) {
-            return LoadResult.Error(e)
         }
     }
 
