@@ -1,10 +1,7 @@
 package com.example.twitchapp.database.game
 
-import androidx.room.Dao
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
-import androidx.room.Update
 import com.example.twitchapp.database.DbConstants
 import kotlinx.coroutines.flow.Flow
 
@@ -25,4 +22,10 @@ interface GameDao {
 
     @Update
     suspend fun updateGame(game: GameEntity)
+
+    @Transaction
+    suspend fun saveAndGetGame(gameEntity: GameEntity): GameEntity {
+        saveGame(gameEntity)
+        return getGame(gameEntity.name)
+    }
 }

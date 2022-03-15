@@ -19,7 +19,7 @@ class LocalDatasourceImpl @Inject constructor(
     private val gameStreamDao: GameStreamDao,
     private val gameDao: GameDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-): LocalDatasource {
+) : LocalDatasource {
 
     override suspend fun getGameStreamsPage(startId: Int, endId: Int): List<GameStreamEntity> {
         return withContext(ioDispatcher) {
@@ -55,10 +55,6 @@ class LocalDatasourceImpl @Inject constructor(
             gameDao.getGame(name).toModel()
         }
 
-    override suspend fun saveGame(game: Game) =
-        withContext(ioDispatcher) {
-            gameDao.saveGame(GameEntity.fromModel(game))
-        }
 
     override suspend fun isGameExist(name: String): Boolean =
         withContext(ioDispatcher) {
@@ -79,4 +75,7 @@ class LocalDatasourceImpl @Inject constructor(
             gameDao.updateGame(GameEntity.fromModel(game))
         }
     }
+
+    override suspend fun saveAndGetGame(game: Game): Game =
+        gameDao.saveAndGetGame(GameEntity.fromModel(game)).toModel()
 }

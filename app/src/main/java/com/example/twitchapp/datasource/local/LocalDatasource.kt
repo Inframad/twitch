@@ -13,8 +13,8 @@ interface LocalDatasource {
     suspend fun deleteAllGameStreams()
     suspend fun getGameStreamsFirstPage(): List<GameStreamEntity>
     suspend fun getGame(name: String): Game
-    suspend fun saveGame(game: Game)
     suspend fun isGameExist(name: String): Boolean
     fun getFavouriteGames(): Flow<Result.Success<List<Game>>>
     suspend fun updateGame(game: Game)
+    suspend fun saveAndGetGame(game: Game): Game
 }

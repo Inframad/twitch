@@ -10,9 +10,6 @@ import com.example.twitchapp.database.GAME_STREAMS_PAGE_SIZE
 @Dao
 interface GameStreamDao {
 
-    @Query("SELECT * FROM ${DbConstants.STREAMS_TABLE_NAME}")
-    suspend fun getAll(): List<GameStreamEntity>
-
     @Query("SELECT * FROM ${DbConstants.STREAMS_TABLE_NAME} WHERE accessKey=:accessKey")
     suspend fun getGameStreamByAccessKey(accessKey: String): GameStreamEntity
 

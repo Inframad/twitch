@@ -34,11 +34,11 @@ class RepositoryImpl @Inject constructor(
     override suspend fun getGame(name: String): Result<Game> {
         return when (getCurrentNetworkState()) {
             NetworkState.AVAILABLE -> {
-                when (val result = remoteDatasource.getGame(name)) {
-                    is Result.Success -> localDatasource.saveGame(result.data)
-                    else -> return result
+                return when (val result = remoteDatasource.getGame(name)) {
+                    is Result.Success ->
+                        Result.Success(localDatasource.saveAndGetGame(result.data))
+                    else -> result
                 }
-                Result.Success(localDatasource.getGame(name))
             }
             NetworkState.NOT_AVAILABLE -> {
                 if (localDatasource.isGameExist(name)) {
