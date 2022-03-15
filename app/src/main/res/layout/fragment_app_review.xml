@@ -16,7 +16,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fragment_app_review_content_margin"
-            android:hint="@string/app_review_et_hint"
+            android:hint="@string/scr_app_review_hint_review"
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
             android:maxLines="20" />
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fragment_app_review_content_margin"
-            android:text="@string/send_review_btn_text" />
+            android:text="@string/scr_app_review_button_send" />
 
     </LinearLayout>
 </ScrollView>

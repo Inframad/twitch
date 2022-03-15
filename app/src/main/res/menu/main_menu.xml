@@ -3,5 +3,5 @@
 
     <item
         android:id="@+id/appReviewFragment"
-        android:title="@string/review" />
+        android:title="@string/src_any_menu_leave_review" />
 </menu>

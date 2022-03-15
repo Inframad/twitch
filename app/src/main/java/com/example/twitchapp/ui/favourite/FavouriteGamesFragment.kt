@@ -22,7 +22,7 @@ class FavouriteGamesFragment : BaseFragment<FavouriteGamesViewModel>(R.layout.fr
     override fun initViews() {
         adapter = FavouriteGamesAdapter()
         viewBinding.recyclerView.adapter = adapter
-        viewBinding.noDataTextView.text = getString(R.string.no_favourite_games_msg)
+        viewBinding.noDataTextView.text = getString(R.string.scr_favourite_games_no_favourite_games)
     }
 
     override fun bindViewModel() {

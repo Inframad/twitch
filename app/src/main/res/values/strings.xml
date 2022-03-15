@@ -1,26 +1,28 @@
 <resources>
     <string name="app_name">TwitchApp</string>
-    <string name="game_stream_iv_desc">Stream preview image</string>
-    <string name="views_iv_desc">Amount of views</string>
-    <string name="app_review_et_hint">Напишите ваши впечатления от приложения</string>
-    <string name="send_review_btn_text">Отправить</string>
-    <string name="connection_restored">Соединение восстановлено</string>
-    <string name="connection_lost">Соединение потеряно</string>
-    <string name="connection_is_not_available_msg">Соединение недоступно, загружены сохраненные данные</string>
-    <string name="no_saved_data_and_internet_msg">Интернет соединение недоступно. Сохраненных данных нет</string>
-    <string name="too_many_request_error">Слишком много запросов. Попробуйте повторить позднее</string>
-    <string name="check_internet_connection_msg">Проверьте интернет соединение</string>
-    <string name="not_found_error_msg">Не найдено</string>
-    <string name="unknown_error_msg">Неизвестная ошибка</string>
-    <string name="offline_mode_msg">Интернет соединение недоступно. Загружены сохраненные данные</string>
-    <string name="retry_btn_text">Повторить</string>
-    <string name="review">Оставить отзыв</string>
-    <string name="review_is_sent_msg">Отзыв (%1$s) отправлен. Спасибо что оценили на %2$.1f звезд(ы)!</string>
-    <string name="streams">Стримы</string>
-    <string name="favorite">Избранное</string>
-    <string name="favorite_games_placeholder_text">Избранные игры</string>
-    <string name="game_image_view_desc">Game\'s poster</string>
-    <string name="unknown">Unknown</string>
-    <string name="the_image_button_for_adding_to_favourite_list">The image button for adding to favourite list</string>
-    <string name="no_favourite_games_msg">Вы еще ничего не добавили в избранное</string>
+    <!-- Any screen -->
+    <string name="scr_any_lbl_too_many_request">Слишком много запросов. Попробуйте повторить позднее</string>
+    <string name="scr_any_lbl_check_internet_connection">Проверьте интернет соединение</string>
+    <string name="scr_any_lbl_not_found">Не найдено</string>
+    <string name="scr_any_lbl_unknown_error">Неизвестная ошибка</string>
+    <string name="scr_any_lbl_button_retry">Повторить</string>
+    <string name="scr_any_lbl_connection_restored">Соединение восстановлено</string>
+    <string name="scr_any_lbl_connection_lost">Соединение потеряно</string>
+    <string name="scr_any_lbl_streams">Стримы</string>
+    <string name="scr_any_lbl_favorite">Избранное</string>
+    <string name="scr_any_lbl_unknown">Unknown</string>
+    <string name="src_any_menu_leave_review">Оставить отзыв</string>
+
+    <!-- Streams -->
+    <string name="src_streams_lbl_saved_data_is_loaded">Интернет соединение недоступно, загружены сохраненные данные</string>
+    <string name="src_streams_lbl_no_saved_data_and_internet">Интернет соединение недоступно. Сохраненных данных нет</string>
+
+    <!-- App review -->
+    <string name="scr_app_review_lbl_review_is_sent">Отзыв (%1$s) отправлен. Спасибо что оценили на %2$.1f звезд(ы)!</string>
+    <string name="scr_app_review_hint_review">Напишите ваши впечатления от приложения</string>
+    <string name="scr_app_review_button_send">Отправить</string>
+
+    <!-- Favourite games -->
+    <string name="scr_favourite_games_no_favourite_games">Вы еще ничего не добавили в избранное</string>
+
 </resources>

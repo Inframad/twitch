@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/card_view_margin_horizontal"
-    android:layout_marginVertical="@dimen/card_view_margin_vertical">
+    style="@style/MaterialCardStyle"
+    tools:ignore="ContentDescription">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/game_stream_iv_desc"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +45,6 @@
             android:id="@+id/views_iv"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:contentDescription="@string/views_iv_desc"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/amount_of_views_tv"
             app:layout_constraintTop_toBottomOf="@id/game_name_tv"

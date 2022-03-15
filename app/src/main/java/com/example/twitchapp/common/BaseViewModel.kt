@@ -47,15 +47,15 @@ abstract class BaseViewModel(private val applicationContext: Context) : ViewMode
         Log.e("HandleBaseError", e.toString())
         return when (e) {
             is HttpException -> when (e.code()) {
-                429 -> getString(R.string.too_many_request_error)
-                404 -> getString(R.string.not_found_error_msg)
+                429 -> getString(R.string.scr_any_lbl_too_many_request)
+                404 -> getString(R.string.scr_any_lbl_not_found)
                 else -> e.localizedMessage
             }
-            is IOException -> getString(R.string.check_internet_connection_msg)
-            is SocketTimeoutException -> getString(R.string.check_internet_connection_msg)
-            is UnknownHostException -> getString(R.string.check_internet_connection_msg)
+            is IOException -> getString(R.string.scr_any_lbl_check_internet_connection)
+            is SocketTimeoutException -> getString(R.string.scr_any_lbl_check_internet_connection)
+            is UnknownHostException -> getString(R.string.scr_any_lbl_check_internet_connection)
             else -> e.localizedMessage
-                ?: getString(R.string.unknown_error_msg)
+                ?: getString(R.string.scr_any_lbl_unknown_error)
         }
     }
 }

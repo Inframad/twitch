@@ -25,5 +25,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/retry_btn_text"/>
+        android:text="@string/scr_any_lbl_button_retry"/>
 </LinearLayout>

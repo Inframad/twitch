@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_layout"
@@ -15,7 +16,6 @@
             android:layout_width="0dp"
             android:layout_height="450dp"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/game_image_view_desc"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,6 @@
             android:id="@+id/favourite_image_view"
             android:layout_width="30sp"
             android:layout_height="30sp"
-            android:contentDescription="@string/views_iv_desc"
             app:layout_constraintEnd_toStartOf="@id/viewers_count_text_view"
             app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
             app:srcCompat="@android:drawable/ic_menu_view" />
@@ -67,7 +66,6 @@
             android:layout_height="50dp"
             android:layout_margin="@dimen/card_text_margin_horizontal"
             android:backgroundTint="@color/deep_orange_300"
-            android:contentDescription="@string/the_image_button_for_adding_to_favourite_list"
             android:scaleType="fitXY"
             android:src="@drawable/ic_heart"
             app:layout_constraintBottom_toBottomOf="@id/game_image_view"

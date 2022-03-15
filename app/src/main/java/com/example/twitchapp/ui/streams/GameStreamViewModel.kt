@@ -28,7 +28,7 @@ class GameStreamViewModel @Inject constructor(
 
     init {
         if (repository.getCurrentNetworkState() == NetworkState.NOT_AVAILABLE) {
-            showToast(getString(R.string.no_saved_data_and_internet_msg))
+            showToast(getString(R.string.src_streams_lbl_no_saved_data_and_internet))
         }
     }
 

@@ -16,7 +16,7 @@ class AppReviewViewModel @Inject constructor(
     val goBackCommand = Command()
 
     fun onSendReviewButtonClicked(review: Editable, rating: Float) {
-        showToast(getString(R.string.review_is_sent_msg, review.toString(), rating))
+        showToast(getString(R.string.scr_app_review_lbl_review_is_sent, review.toString(), rating))
         goBackCommand.setValue(Unit)
     }
 }
