@@ -11,6 +11,13 @@ class FavouriteGameViewHolder(
     private val viewBinding: ItemFavouriteGameBinding
 ) : RecyclerView.ViewHolder(viewBinding.root) {
 
+    fun bind(game: Game) {
+        viewBinding.apply {
+            favouriteGameImageView.glideImage(game.imageUrl)
+            gameNameTextView.text = game.name
+        }
+    }
+
     companion object {
         fun from(parent: ViewGroup): FavouriteGameViewHolder {
             return FavouriteGameViewHolder(
@@ -20,13 +27,6 @@ class FavouriteGameViewHolder(
                     false
                 )
             )
-        }
-    }
-
-    fun bind(game: Game) {
-        viewBinding.apply {
-            favouriteGameImageView.glideImage(game.imageUrl)
-            gameNameTextView.text = game.name
         }
     }
 }
