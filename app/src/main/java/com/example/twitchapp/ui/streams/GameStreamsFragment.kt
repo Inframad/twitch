@@ -1,7 +1,5 @@
 package com.example.twitchapp.ui.streams
 
-import android.os.Bundle
-import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -24,32 +22,7 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
 
     private var pagingDataAdapter: GameStreamsPagingAdapter? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initViews()
-        bindViewModel()
-    }
-
-    override fun bindViewModel() {
-        super.bindViewModel()
-        viewModel.apply {
-            bindAction(gameStreamsFlow) {
-                pagingDataAdapter?.submitData(it)
-            }
-            bindCommandAction(refreshCommand) { pagingDataAdapter?.refresh() }
-            bindCommandAction(retryCommand) { pagingDataAdapter?.retry() }
-            bindCommandAction(isNoDataPlaceholderVisible) {
-                viewBinding.noDataTextView.isVisible = it
-                viewBinding.mainProgressBar.isVisible = false
-            }
-            bindCommandAction(isRefreshing) {
-                viewBinding.swipeRefreshLayout.isRefreshing = it
-            }
-        }
-    }
-
-    private fun initViews() {
+    override fun initViews() {
         pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator()) { gameStream ->
             Navigator.goToGameScreen(this, GameFragmentArgs(gameStream))
         }
@@ -71,6 +44,24 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
             addOnPagesUpdatedListener { viewModel.onPagesUpdated() }
 
             addLoadStateListener { viewModel.onPagesLoadStateChanged(it) }
+        }
+    }
+
+    override fun bindViewModel() {
+        super.bindViewModel()
+        viewModel.apply {
+            bindAction(gameStreamsFlow) {
+                pagingDataAdapter?.submitData(it)
+            }
+            bindCommandAction(refreshCommand) { pagingDataAdapter?.refresh() }
+            bindCommandAction(retryCommand) { pagingDataAdapter?.retry() }
+            bindCommandAction(isNoDataPlaceholderVisible) {
+                viewBinding.noDataTextView.isVisible = it
+                viewBinding.mainProgressBar.isVisible = false
+            }
+            bindCommandAction(isRefreshing) {
+                viewBinding.swipeRefreshLayout.isRefreshing = it
+            }
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.example.twitchapp.ui.review
 
-import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
@@ -17,13 +15,6 @@ class AppReviewFragment : BaseFragment<AppReviewViewModel>(R.layout.fragment_app
     override val viewModel: AppReviewViewModel by viewModels()
     private val viewBinding: FragmentAppReviewBinding by viewBinding()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initViews()
-        bindViewModel()
-    }
-
     override fun bindViewModel() {
         super.bindViewModel()
         bindCommandAction(viewModel.goBackCommand) {
@@ -31,7 +22,7 @@ class AppReviewFragment : BaseFragment<AppReviewViewModel>(R.layout.fragment_app
         }
     }
 
-    private fun initViews() {
+    override fun initViews() {
         viewBinding.apply {
             sendReviewButton.setOnClickListener {
                 viewModel.onSendReviewButtonClicked(

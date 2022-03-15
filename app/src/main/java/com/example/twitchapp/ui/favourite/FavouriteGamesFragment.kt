@@ -1,7 +1,5 @@
 package com.example.twitchapp.ui.favourite
 
-import android.os.Bundle
-import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -21,14 +19,7 @@ class FavouriteGamesFragment : BaseFragment<FavouriteGamesViewModel>(R.layout.fr
 
     private var adapter: FavouriteGamesAdapter? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initViews()
-        bindViewModel()
-    }
-
-    private fun initViews() {
+    override fun initViews() {
         adapter = FavouriteGamesAdapter()
         viewBinding.recyclerView.adapter = adapter
         viewBinding.noDataTextView.text = getString(R.string.no_saved_data_msg)

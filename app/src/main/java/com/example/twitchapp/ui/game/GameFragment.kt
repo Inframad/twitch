@@ -21,13 +21,10 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initViews()
-        bindViewModel()
         init()
     }
 
-    private fun initViews() {
+    override fun initViews() {
         viewBinding.noDataTextView.text = getString(R.string.no_saved_data_msg)
         viewBinding.favouriteGameImageButton.setOnClickListener {
             viewModel.favouriteGameImageButtonClicked()
