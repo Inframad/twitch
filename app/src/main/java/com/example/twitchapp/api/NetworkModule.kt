@@ -24,10 +24,17 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMoshi(): Moshi =
+    fun provideKotlinJsonAdapterFactory() =
+        KotlinJsonAdapterFactory()
+
+    @Provides
+    @Singleton
+    fun provideMoshi(
+        kotlinJsonAdapterFactory: KotlinJsonAdapterFactory
+    ): Moshi =
         Moshi.Builder()
             .add(UriAdapter.INSTANCE)
-            .addLast(KotlinJsonAdapterFactory()) //TODO Inject
+            .addLast(kotlinJsonAdapterFactory)
             .build()
 
     @Provides

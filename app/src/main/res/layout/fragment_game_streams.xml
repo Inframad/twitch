@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="16dp"
-            android:text="@string/no_saved_data_msg"
+            android:text="@string/no_saved_data_and_internet_msg"
             android:textAlignment="center"
             android:textSize="30sp"
             android:visibility="gone" />

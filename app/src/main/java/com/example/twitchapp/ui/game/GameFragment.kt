@@ -25,7 +25,7 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
     }
 
     override fun initViews() {
-        viewBinding.noDataTextView.text = getString(R.string.no_saved_data_msg)
+        viewBinding.noDataTextView.text = getString(R.string.no_saved_data_and_internet_msg)
         viewBinding.favouriteGameImageButton.setOnClickListener {
             viewModel.favouriteGameImageButtonClicked()
         }
