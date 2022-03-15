@@ -23,14 +23,10 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides
-    fun provideMoshi(
-        //uriJsonGameAdapter: UriJsonGameAdapter,
-        //uriJsonStreamAdapter: UriJsonStreamAdapter
-    ): Moshi =
+    @Singleton
+    fun provideMoshi(): Moshi =
         Moshi.Builder()
-            .add(MoshiCustomAdapter.INSTANCE)
-            //.add(uriJsonStreamAdapter)
-            //.add(uriJsonGameAdapter)
+            .add(UriAdapter.INSTANCE)
             .addLast(KotlinJsonAdapterFactory()) //TODO Inject
             .build()
 
@@ -42,11 +38,12 @@ object NetworkModule {
             .build()
 
     @Provides
+    @Singleton
     fun provideMoshiConverterFactory(moshi: Moshi): MoshiConverterFactory =
         MoshiConverterFactory.create(moshi)
 
-
     @Provides
+    @Singleton
     fun provideRetrofit(
         moshiConverterFactory: MoshiConverterFactory,
         client: OkHttpClient,
@@ -58,12 +55,14 @@ object NetworkModule {
             .build()
 
     @Provides
+    @Singleton
     fun provideTwitchStreamsApi(
         retrofit: Retrofit
     ): TwitchGameStreamsApi =
         retrofit.create(TwitchGameStreamsApi::class.java)
 
     @Provides
+    @Singleton
     fun provideTwitchGamesApi(
         retrofit: Retrofit
     ): TwitchGamesApi =
