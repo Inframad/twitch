@@ -22,7 +22,6 @@ class RemoteDatasourceImpl @Inject constructor(
                     gamesApi.getGames(name).data.first().toModel()
                 )
             } catch (e: Throwable) {
-                throw e //TODO
                 Result.Error(e)
             }
         }

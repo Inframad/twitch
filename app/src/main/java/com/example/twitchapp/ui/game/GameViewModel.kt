@@ -12,8 +12,6 @@ import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,7 +58,7 @@ class GameViewModel @Inject constructor(
                         )
                     }
                     Result.Empty -> UiState.Empty
-                    is Result.Error -> UiState.Error(handleError(result.e))
+                    is Result.Error -> UiState.Error(handleBaseError(result.e))
                 }
             )
         }
@@ -72,12 +70,4 @@ class GameViewModel @Inject constructor(
             else R.color.grey_400
         )
     }
-
-
-    private fun handleError(e: Throwable): String =
-        when (e) {
-            is SocketTimeoutException -> getString(R.string.check_internet_connection_msg)
-            is UnknownHostException -> getString(R.string.check_internet_connection_msg)
-            else -> getString(R.string.unknown_error_msg)
-        }
 }

@@ -2,10 +2,16 @@ package com.example.twitchapp.common
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
+import com.example.twitchapp.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import retrofit2.HttpException
+import java.io.IOException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 @SuppressLint("StaticFieldLeak")
 abstract class BaseViewModel(private val applicationContext: Context) : ViewModel() {
@@ -15,7 +21,8 @@ abstract class BaseViewModel(private val applicationContext: Context) : ViewMode
     protected fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
         applicationContext.getString(resId, *formatArgs)
 
-    protected fun Command(): ViewModelStateFlowSingleEvent<Unit?> = ViewModelStateFlowSingleEventImpl(null)
+    protected fun Command(): ViewModelStateFlowSingleEvent<Unit?> =
+        ViewModelStateFlowSingleEventImpl(null)
 
     protected fun <T> TCommand(value: T? = null): ViewModelStateFlowSingleEvent<T?> =
         ViewModelStateFlowSingleEventImpl(value)
@@ -34,6 +41,22 @@ abstract class BaseViewModel(private val applicationContext: Context) : ViewMode
 
     protected fun <T> ViewModelStateFlow<T>.setValue(value: T) = when (this) {
         is ViewModelStateFlowImpl -> wrapped.value = value
+    }
+
+    protected fun handleBaseError(e: Throwable): String {
+        Log.e("HandleBaseError", e.toString())
+        return when (e) {
+            is HttpException -> when (e.code()) {
+                429 -> getString(R.string.too_many_request_error)
+                404 -> getString(R.string.not_found_error_msg)
+                else -> e.localizedMessage
+            }
+            is IOException -> getString(R.string.check_internet_connection_msg)
+            is SocketTimeoutException -> getString(R.string.check_internet_connection_msg)
+            is UnknownHostException -> getString(R.string.check_internet_connection_msg)
+            else -> e.localizedMessage
+                ?: getString(R.string.unknown_error_msg)
+        }
     }
 }
 

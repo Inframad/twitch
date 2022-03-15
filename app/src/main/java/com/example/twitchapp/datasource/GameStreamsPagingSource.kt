@@ -83,7 +83,7 @@ class GameStreamsPagingSource @Inject constructor(
         } catch (e: UnknownHostException) {
             appNetworkMode = AppNetworkMode.OFFLINE
             return LoadResult.Error(e)
-        } catch (e: DatabaseException) {
+        } catch (e: Throwable) {
             return LoadResult.Error(e)
         }
     }

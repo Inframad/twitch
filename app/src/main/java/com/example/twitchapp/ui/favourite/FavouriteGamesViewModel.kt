@@ -2,7 +2,6 @@ package com.example.twitchapp.ui.favourite
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
@@ -33,10 +32,7 @@ class FavouriteGamesViewModel @Inject constructor(
     private fun handleResult(result: Result<List<Game>>): UiState<List<Game>> =
         when (result) {
             is Result.Success -> if(result.data.isEmpty()) UiState.Empty else UiState.Loaded(result.data) //TODO Изменить сообщение при доступном интернете
-            is Result.Error -> UiState.Error(handleError(result.e))
+            is Result.Error -> UiState.Error(handleBaseError(result.e))
             Result.Empty -> UiState.Empty
         }
-
-    private fun handleError(e: Throwable): String =
-        e.localizedMessage ?: getString(R.string.unknown_error_msg)
 }
