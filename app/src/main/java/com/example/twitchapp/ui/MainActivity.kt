@@ -6,21 +6,16 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.common.ViewModelStateFlowSingleEvent
+import com.example.twitchapp.common.bindCommandAction
 import com.example.twitchapp.common.getAppScreenFromResId
 import com.example.twitchapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -56,33 +51,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    private fun <T> bindCommandAction(flow: ViewModelStateFlowSingleEvent<T?>,
-                                      action: (T) -> Unit
-    ) {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                flow.collectLatest { event ->
-                    event.getContentIfNotHandled()?.let {
-                        action(it)
-                    }
-                }
-            }
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return item.onNavDestinationSelected(navController!!) || super.onOptionsItemSelected(
-            item
-        )
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        navController = null
+        return item.onNavDestinationSelected(navController!!)
+                || super.onOptionsItemSelected(item)
     }
 }

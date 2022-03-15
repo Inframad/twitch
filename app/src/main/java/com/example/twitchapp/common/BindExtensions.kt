@@ -1,6 +1,7 @@
 package com.example.twitchapp.common
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -25,6 +26,18 @@ fun <T> Fragment.bindAction(flow: Flow<T>, action: suspend (T) -> Unit) {
         viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             flow.collectLatest {
                 action(it)
+            }
+        }
+    }
+}
+
+fun <T> FragmentActivity.bindCommandAction(flow: ViewModelStateFlowSingleEvent<T?>, action: (T) -> Unit) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            flow.collectLatest { event ->
+                event.getContentIfNotHandled()?.let {
+                    action(it)
+                }
             }
         }
     }
