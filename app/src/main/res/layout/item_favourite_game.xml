@@ -20,10 +20,10 @@
 
         <TextView
             android:id="@+id/game_name_text_view"
+            style="@style/Widget.AppCompat.TextView.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="@dimen/game_screen_title_text_size"
             tools:text="Game's name" />
 
     </LinearLayout>

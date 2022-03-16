@@ -24,9 +24,9 @@
 
         <TextView
             android:id="@+id/game_name_text_view"
+            style="@style/Widget.AppCompat.TextView.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/game_screen_title_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/game_image_view"
@@ -74,13 +74,8 @@
 
         <FrameLayout
             android:id="@+id/progress_bar_layout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/background_light"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            style="@style/FrameLayoutFullScreenWithConstraints"
+            tools:ignore="MissingConstraints"
             tools:visibility="invisible">
 
             <ProgressBar
@@ -92,13 +87,8 @@
 
         <FrameLayout
             android:id="@+id/error_layout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/background_light"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            style="@style/FrameLayoutFullScreenWithConstraints"
+            tools:ignore="MissingConstraints"
             tools:visibility="invisible">
 
             <TextView
@@ -110,13 +100,8 @@
 
         <FrameLayout
             android:id="@+id/no_data_layout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/background_light"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            style="@style/FrameLayoutFullScreenWithConstraints"
+            tools:ignore="MissingConstraints"
             tools:visibility="invisible">
 
             <TextView

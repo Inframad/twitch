@@ -2,9 +2,31 @@
 <resources>
 
     <style name="MaterialCardStyle" parent="Widget.MaterialComponents.CardView">
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginEnd">16dp</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginStart">@dimen/card_text_margin_horizontal</item>
+        <item name="android:layout_marginEnd">@dimen/card_text_margin_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/card_view_margin_vertical</item>
+        <item name="android:layout_marginBottom">@dimen/card_view_margin_vertical</item>
+    </style>
+
+    <style name="Widget.AppCompat.TextView.Title">
+        <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.AppCompat.TextView.FullScreenText">
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:textSize">@dimen/full_screen_msg_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="FrameLayoutFullScreenWithConstraints">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:background">@android:color/background_light</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
     </style>
 </resources>
