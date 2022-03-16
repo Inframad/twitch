@@ -1,18 +1,18 @@
 package com.example.twitchapp.database.game
 
-import androidx.room.*
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
+import com.example.twitchapp.database.BaseDao
 import com.example.twitchapp.database.DbConstants
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface GameDao {
+interface GameDao: BaseDao<GameEntity> {
 
     @Query("SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE name=:name")
     suspend fun getGame(name: String): GameEntity
-
-    @Insert(onConflict = REPLACE)
-    suspend fun saveGame(game: GameEntity)
 
     @Query("SELECT EXISTS(SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE name = :name)")
     suspend fun isGameExist(name: String): Boolean
@@ -25,7 +25,7 @@ interface GameDao {
 
     @Transaction
     suspend fun saveAndGetGame(gameEntity: GameEntity): GameEntity {
-        saveGame(gameEntity)
+        replace(gameEntity)
         return getGame(gameEntity.name)
     }
 }

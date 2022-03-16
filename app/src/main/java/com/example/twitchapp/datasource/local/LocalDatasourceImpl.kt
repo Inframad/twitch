@@ -35,7 +35,7 @@ class LocalDatasourceImpl @Inject constructor(
 
     override suspend fun saveGameStreams(gameStreams: List<GameStreamEntity>) {
         withContext(ioDispatcher) {
-            gameStreamDao.insert(gameStreams)
+            gameStreamDao.replace(gameStreams)
         }
     }
 
