@@ -10,9 +10,9 @@ class GameStreamEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val accessKey: String,
-    val userName: String,
-    val gameName: String,
-    val viewerCount: Long,
+    val userName: String?,
+    val gameName: String?,
+    val viewerCount: Long?,
     val imageUrl: Uri?
 ) {
     fun toModel() =

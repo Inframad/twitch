@@ -50,8 +50,8 @@ class GameViewModel @Inject constructor(
                         }
                         UiState.Loaded(
                             GameScreenModel(
-                                name = result.data.name,
-                                streamerName = gameStream.userName,
+                                name = result.data.name ?: getString(R.string.scr_any_lbl_unknown),
+                                streamerName = gameStream.userName ?: getString(R.string.scr_any_lbl_unknown),
                                 viewersCount = gameStream.viewerCount.toString(),
                                 imageUrl = result.data.imageUrl
                             )

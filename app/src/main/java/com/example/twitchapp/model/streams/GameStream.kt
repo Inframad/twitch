@@ -8,8 +8,8 @@ import java.util.*
 @Parcelize
 data class GameStream(
     val accessKey: String = UUID.randomUUID().toString(),
-    val userName: String,
-    val gameName: String,
-    val viewerCount: Long,
+    val userName: String?,
+    val gameName: String?,
+    val viewerCount: Long?,
     val imageUrl: Uri?
 ) : Parcelable

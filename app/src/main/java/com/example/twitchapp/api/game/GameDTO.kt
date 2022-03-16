@@ -15,7 +15,7 @@ class GameDTO(
     fun toModel() =
         Game(
             id = 0,
-            name = name ?: "Unknown",
+            name = name,
             imageUrl = imageUrl
         )
 }

@@ -8,8 +8,8 @@ import com.example.twitchapp.model.game.Game
 @Entity
 class GameEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val name: String,
+    val id: Long = 0,
+    val name: String?,
     val imageUrl: Uri?,
     val isFavourite: Boolean = false
 ) {

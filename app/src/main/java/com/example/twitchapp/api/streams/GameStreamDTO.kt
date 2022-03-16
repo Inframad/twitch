@@ -18,9 +18,9 @@ class GameStreamDTO(
 ) {
     fun toModel() =
         GameStream(
-            userName = userName ?: "Unknown",
-            gameName = gameName ?: "Unknown",
-            viewerCount = viewerCount ?: 0,
+            userName = userName,
+            gameName = gameName,
+            viewerCount = viewerCount,
             imageUrl = imageUrl
         )
 }

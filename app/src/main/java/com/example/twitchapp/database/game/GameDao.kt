@@ -14,6 +14,9 @@ interface GameDao: BaseDao<GameEntity> {
     @Query("SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE name=:name")
     suspend fun getGame(name: String): GameEntity
 
+    @Query("SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE id=:id")
+    suspend fun getGameById(id: Long): GameEntity
+
     @Query("SELECT EXISTS(SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE name = :name)")
     suspend fun isGameExist(name: String): Boolean
 
@@ -25,7 +28,7 @@ interface GameDao: BaseDao<GameEntity> {
 
     @Transaction
     suspend fun saveAndGetGame(gameEntity: GameEntity): GameEntity {
-        replace(gameEntity)
-        return getGame(gameEntity.name)
+        val id = replace(gameEntity)
+        return getGameById(id)
     }
 }

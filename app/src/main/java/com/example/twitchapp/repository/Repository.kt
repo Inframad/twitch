@@ -11,7 +11,7 @@ interface Repository {
 
     fun getGameStreamsFlow(): Flow<PagingData<GameStream>>
     fun getCurrentNetworkState(): NetworkState
-    suspend fun getGame(name: String): Result<Game>
+    suspend fun getGame(name: String?): Result<Game>
     fun getFavouriteGames(): Flow<Result.Success<List<Game>>>
     suspend fun updateGame(game: Game)
 }

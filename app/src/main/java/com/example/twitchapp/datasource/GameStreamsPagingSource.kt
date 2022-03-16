@@ -1,7 +1,9 @@
 package com.example.twitchapp.datasource
 
+import android.content.Context
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.twitchapp.R
 import com.example.twitchapp.api.streams.TwitchGameStreamsApi
 import com.example.twitchapp.api.util.NetworkConnectionChecker
 import com.example.twitchapp.database.GAME_STREAMS_PAGE_SIZE
@@ -12,6 +14,7 @@ import com.example.twitchapp.model.DatabaseException
 import com.example.twitchapp.model.DatabaseState
 import com.example.twitchapp.model.NetworkState
 import com.example.twitchapp.model.streams.GameStream
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,6 +23,7 @@ import javax.inject.Singleton
 class GameStreamsPagingSource @Inject constructor(
     private val twitchGameStreamsApi: TwitchGameStreamsApi,
     private val localDatasource: LocalDatasource,
+    @ApplicationContext private val applicationContext: Context,
     networkConnectionChecker: NetworkConnectionChecker
 ) : PagingSource<String, GameStream>() {
 
@@ -76,7 +80,15 @@ class GameStreamsPagingSource @Inject constructor(
                 }
             }
             return LoadResult.Page(
-                data = data,
+                data = data.map { gameStream ->
+                    gameStream.copy(
+                        userName = gameStream.userName
+                            ?: applicationContext.getString(R.string.scr_any_lbl_unknown),
+                        gameName = gameStream.gameName
+                            ?: applicationContext.getString(R.string.scr_any_lbl_unknown),
+                        viewerCount = gameStream.viewerCount ?: 0L
+                    )
+                },
                 prevKey = null,
                 nextKey = nextKey
             )
