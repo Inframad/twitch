@@ -1,7 +1,7 @@
 package com.example.twitchapp.datasource.remote
 
 import com.example.twitchapp.api.game.TwitchGamesApi
-import com.example.twitchapp.datasource.di.IoDispatcher
+import com.example.twitchapp.common.dispatchers.IoDispatcher
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
 import kotlinx.coroutines.CoroutineDispatcher

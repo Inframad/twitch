@@ -1,4 +1,4 @@
-package com.example.twitchapp.datasource.di
+package com.example.twitchapp.common.dispatchers
 
 import dagger.Module
 import dagger.Provides

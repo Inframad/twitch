@@ -1,4 +1,4 @@
-package com.example.twitchapp.datasource.di
+package com.example.twitchapp.datasource
 
 import com.example.twitchapp.datasource.local.LocalDatasource
 import com.example.twitchapp.datasource.local.LocalDatasourceImpl

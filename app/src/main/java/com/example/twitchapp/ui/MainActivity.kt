@@ -12,8 +12,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.common.bindCommandAction
-import com.example.twitchapp.common.getAppScreenFromResId
+import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navController?.let {
             NavigationUI.setupWithNavController(viewBinding.bottomNavigation, it)
             it.addOnDestinationChangedListener { _, destination, _ ->
-                viewModel.onDestinationChanged(getAppScreenFromResId(destination.id))
+                viewModel.onDestinationChanged(AppScreen.fromResId(destination.id))
             }
         }
     }

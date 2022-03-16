@@ -4,7 +4,7 @@ import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseFragment
-import com.example.twitchapp.common.bindCommandAction
+import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.databinding.FragmentAppReviewBinding
 import com.example.twitchapp.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint

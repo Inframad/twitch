@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.example.twitchapp.common.extensions.bindCommandAction
 
 abstract class BaseFragment<TViewModel : BaseViewModel>(@LayoutRes lId: Int) :
     Fragment(lId) {
@@ -17,7 +18,7 @@ abstract class BaseFragment<TViewModel : BaseViewModel>(@LayoutRes lId: Int) :
         bindViewModel()
     }
 
-    protected abstract fun initViews()
+    protected open fun initViews() {}
 
     protected open fun bindViewModel() {
         with(viewModel) {

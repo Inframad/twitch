@@ -7,7 +7,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.common.*
+import com.example.twitchapp.common.BaseFragment
+import com.example.twitchapp.common.extensions.bindAction
+import com.example.twitchapp.common.extensions.bindCommandAction
+import com.example.twitchapp.common.extensions.glideImage
+import com.example.twitchapp.common.extensions.setTintColor
 import com.example.twitchapp.databinding.FragmentGameBinding
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint

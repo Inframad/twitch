@@ -1,10 +1,10 @@
 package com.example.twitchapp.datasource.local
 
+import com.example.twitchapp.common.dispatchers.IoDispatcher
 import com.example.twitchapp.database.game.GameDao
 import com.example.twitchapp.database.game.GameEntity
 import com.example.twitchapp.database.streams.GameStreamDao
 import com.example.twitchapp.database.streams.GameStreamEntity
-import com.example.twitchapp.datasource.di.IoDispatcher
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
 import kotlinx.coroutines.CoroutineDispatcher

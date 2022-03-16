@@ -5,7 +5,7 @@ import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseFragment
-import com.example.twitchapp.common.bindAction
+import com.example.twitchapp.common.extensions.bindAction
 import com.example.twitchapp.databinding.FragmentFavouriteGamesBinding
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.ui.UiState
