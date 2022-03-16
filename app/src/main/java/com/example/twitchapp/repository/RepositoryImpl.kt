@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.example.twitchapp.api.util.NetworkConnectionChecker
 import com.example.twitchapp.database.GAME_STREAMS_PAGE_SIZE
-import com.example.twitchapp.datasource.GameStreamsPagingSource
+import com.example.twitchapp.datasource.GameStreamsPagingSourceFactory
 import com.example.twitchapp.datasource.local.LocalDatasource
 import com.example.twitchapp.datasource.remote.RemoteDatasource
 import com.example.twitchapp.model.NetworkState
@@ -18,13 +18,13 @@ class RepositoryImpl @Inject constructor(
     private val localDatasource: LocalDatasource,
     private val remoteDatasource: RemoteDatasource,
     private val networkConnectionChecker: NetworkConnectionChecker,
-    private val gameStreamsPagingSource: GameStreamsPagingSource
+    private val pagingSourceFactory: GameStreamsPagingSourceFactory
 ) : Repository {
 
     override fun getGameStreamsFlow() = Pager(
         PagingConfig(pageSize = GAME_STREAMS_PAGE_SIZE)
     ) {
-        gameStreamsPagingSource
+        pagingSourceFactory.create()
     }.flow
 
     override fun getCurrentNetworkState(): NetworkState =

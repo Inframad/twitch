@@ -17,9 +17,7 @@ import com.example.twitchapp.model.streams.GameStream
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.net.UnknownHostException
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class GameStreamsPagingSource @Inject constructor(
     private val twitchGameStreamsApi: TwitchGameStreamsApi,
     private val localDatasource: LocalDatasource,
@@ -112,5 +110,4 @@ class GameStreamsPagingSource @Inject constructor(
             anchorPage?.nextKey
         }
     }
-
 }
