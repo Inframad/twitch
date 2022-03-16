@@ -6,5 +6,5 @@ import retrofit2.http.Query
 interface TwitchGamesApi {
 
     @GET("games/")
-    suspend fun getGames(@Query("name") name: String): GamesResponse
+    suspend fun getGames(@Query("name") name: String): GamesResponseDto
 }

@@ -8,7 +8,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-class GameStreamDTO(
+class GameStreamDto(
     @field:Json(name = "user_name") val userName: String?,
     @field:Json(name = "game_name") val gameName: String?,
     @field:Json(name = "viewer_count") val viewerCount: Long?,

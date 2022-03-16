@@ -8,13 +8,14 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-class GameDTO(
+class GameDto(
+    val id: String,
     val name: String?,
     @field:Json(name = "box_art_url") @ImageUri(ApiConst.GAME_IMAGE_HEIGHT,ApiConst.GAME_IMAGE_WIDTH) val imageUrl: Uri?
 ) {
     fun toModel() =
         Game(
-            id = 0,
+            id = id.toLong(),
             name = name,
             imageUrl = imageUrl
         )

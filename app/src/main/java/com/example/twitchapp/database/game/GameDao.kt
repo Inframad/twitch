@@ -1,9 +1,6 @@
 package com.example.twitchapp.database.game
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.Transaction
-import androidx.room.Update
+import androidx.room.*
 import com.example.twitchapp.database.BaseDao
 import com.example.twitchapp.database.DbConstants
 import kotlinx.coroutines.flow.Flow
@@ -26,9 +23,12 @@ interface GameDao: BaseDao<GameEntity> {
     @Update
     suspend fun updateGame(game: GameEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(gameEntity: GameEntity)
+
     @Transaction
     suspend fun saveAndGetGame(gameEntity: GameEntity): GameEntity {
-        val id = replace(gameEntity)
-        return getGameById(id)
+        insert(gameEntity)
+        return getGameById(gameEntity.id)
     }
 }

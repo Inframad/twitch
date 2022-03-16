@@ -11,7 +11,7 @@ class GameEntity(
     val id: Long = 0,
     val name: String?,
     val imageUrl: Uri?,
-    val isFavourite: Boolean = false
+    val isFavourite: Boolean
 ) {
     fun toModel() =
         Game(
