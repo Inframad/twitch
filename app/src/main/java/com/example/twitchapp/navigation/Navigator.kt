@@ -1,6 +1,8 @@
 package com.example.twitchapp.navigation
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.twitchapp.R
 import com.example.twitchapp.ui.game.GameFragmentArgs
@@ -14,4 +16,7 @@ object Navigator {
     fun goBack(f: Fragment) {
         f.findNavController().popBackStack()
     }
+
+    fun getCurrentScreen(activity: FragmentActivity) =
+        activity.findNavController(R.id.nav_host_fragment).currentDestination?.id
 }

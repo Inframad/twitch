@@ -32,7 +32,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(message)
 
         val intent = message.toIntent()
-        intent.action = "com.example.twitchapp.message"
+        intent.action = NotificationConst.INTENT_FILTER_FIREBASE
         val notificationModel = intent.extras?.let {
             createNotificationModel(it)
         }
@@ -48,32 +48,37 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 AppState.OnActivityResumed -> {
                     applicationContext.sendBroadcast(intent)
                 }
-                else -> { showNotification(it) }
+                else -> {
+                    createNotificationChannel()
+                    showNotification(it)
+                }
             }
         }
     }
 
-    private fun showNotification(notification: TwitchNotification) {
-        val CHANNEL_ID = "CHANNEL"
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "channel"
-            val descriptionText = "desc"
+            val name = NotificationConst.CHANNEL_NAME
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-            // Register the channel with the system
+            val channel = NotificationChannel(
+                NotificationConst.CHANNEL_ID,
+                name,
+                importance
+            )
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
 
+    private fun showNotification(notification: TwitchNotification) {
         with(NotificationManagerCompat.from(this)) {
             notify(
-                123, NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+                123,
+                NotificationCompat.Builder(applicationContext, NotificationConst.CHANNEL_ID)  //TODO
                     .setSmallIcon(R.drawable.ic_twitch)
-                    .setContentTitle("Test")
-                    .setContentText("textContent")
+                    .setContentTitle(notification.title)
+                    .setContentText(notification.description)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT).build()
             )
         }
@@ -83,15 +88,23 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         bundle.apply {
             return when (val type = bundle.getString("notification_type")) {
                 "STREAMS" -> TwitchNotification.StreamNotification(
+                    bundle.getString("title")
+                        ?: throw NullPointerException("Notification title from FCM is null"),
+                    bundle.getString("description")
+                        ?: throw NullPointerException("Notification desc from FCM is null"),
                     bundle.getInt("streams_amount"),
-                    123
-                ) //TODO date
+                    123 //TODO date
+                )
                 "GAME" -> TwitchNotification.GameNotification(
+                    bundle.getString("title")
+                        ?: throw NullPointerException("Notification title from FCM is null"),
+                    bundle.getString("description")
+                        ?: throw NullPointerException("Notification desc from FCM is null"),
                     gameName = getString("game_name")
                         ?: throw NullPointerException("gameName from FCM is null"),
                     streamerName = getString("streamer_name")
                         ?: throw java.lang.NullPointerException("streamerName from FCM is null"),
-                    viewersCount = getLong("viewers_count"),
+                    viewersCount = getString("viewers_count")!!.toLong(),
                     date = 12345678L
                 )
                 else -> throw IllegalArgumentException("Unknown notification type: $type")

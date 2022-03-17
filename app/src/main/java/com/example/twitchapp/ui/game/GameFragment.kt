@@ -1,5 +1,9 @@
 package com.example.twitchapp.ui.game
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -13,6 +17,7 @@ import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.common.extensions.glideImage
 import com.example.twitchapp.common.extensions.setTintColor
 import com.example.twitchapp.databinding.FragmentGameBinding
+import com.example.twitchapp.notification.NotificationConst
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,13 +28,34 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
     override val viewModel: GameViewModel by viewModels()
     private val navArgs: GameFragmentArgs by navArgs()
 
+    private val gameBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, intent: Intent?) {
+            val extras = intent?.extras
+            val gameName = extras?.getString("game_name")
+            val here = true
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        requireActivity().registerReceiver(
+            gameBroadcastReceiver,
+            IntentFilter(NotificationConst.INTENT_FILTER_FIREBASE))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
     }
 
+    override fun onPause() {
+        super.onPause()
+        requireActivity().unregisterReceiver(gameBroadcastReceiver)
+    }
+
     override fun initViews() {
-        viewBinding.noDataTextView.text = getString(R.string.src_streams_lbl_no_saved_data_and_internet)
+        viewBinding.noDataTextView.text =
+            getString(R.string.src_streams_lbl_no_saved_data_and_internet)
         viewBinding.favouriteGameImageButton.setOnClickListener {
             viewModel.favouriteGameImageButtonClicked()
         }

@@ -1,5 +1,8 @@
 package com.example.twitchapp.ui
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.Menu
@@ -15,7 +18,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.databinding.ActivityMainBinding
-import com.example.twitchapp.notification.MyBroadcastReceiver
+import com.example.twitchapp.navigation.Navigator
+import com.example.twitchapp.notification.NotificationConst
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,13 +30,20 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val viewModel: MainActivityViewModel by viewModels()
     private val viewBinding: ActivityMainBinding by viewBinding()
 
-    private val firebaseBroadcastReceiver = MyBroadcastReceiver()
+    private val firebaseBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, intent: Intent?) {
+            viewModel.messageReceived(
+                intent?.extras,
+                AppScreen.fromResId(Navigator.getCurrentScreen(this@MainActivity)!!)
+            )
+        }
+    }
 
     override fun onResume() {
         super.onResume()
         registerReceiver(
             firebaseBroadcastReceiver,
-            IntentFilter("com.example.twitchapp.message")
+            IntentFilter(NotificationConst.INTENT_FILTER_FIREBASE)
         )
     }
 
@@ -52,6 +63,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun bindViewModel() {
         bindCommandAction(viewModel.toggleBottomNavigationViewVisibility) {
             viewBinding.bottomNavigation.isVisible = it
+        }
+        bindCommandAction(viewModel.sendIntentToGameScreenCommand) {
+            sendBroadcast(Intent().apply {
+                action = NotificationConst.INTENT_FILTER_GAME
+                putExtras(it)
+            })
         }
     }
 

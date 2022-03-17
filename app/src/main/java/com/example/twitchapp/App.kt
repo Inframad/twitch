@@ -6,13 +6,13 @@ import android.os.Bundle
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class App: Application() {
+class App : Application() {
 
     private var _currentAppState: AppState? = null
     val currentAppState get() = _currentAppState
 
     init {
-        registerActivityLifecycleCallbacks(object: ActivityLifecycleCallbacks {
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(p0: Activity, p1: Bundle?) {
                 _currentAppState = AppState.OnActivityCreated
             }
