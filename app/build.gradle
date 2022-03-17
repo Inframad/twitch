@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -44,6 +45,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
 }
 
 dependencies {
@@ -82,9 +86,13 @@ dependencies {
 
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$view_binding_property_delegate_version"
 
-    implementation "com.squareup.moshi:moshi-kotlin:1.13.0" //TODO
+    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
     implementation 'com.squareup.moshi:moshi:1.13.0'
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.13.0'
+
+    implementation platform('com.google.firebase:firebase-bom:29.2.0')
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-analytics'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 

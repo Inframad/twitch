@@ -1,6 +1,8 @@
 package com.example.twitchapp.ui
 
+import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -14,6 +16,9 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.databinding.ActivityMainBinding
+import com.example.twitchapp.ui.temp.MyBroadcastReceiver
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +34,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         initNavigation()
         bindViewModel()
+
+        val br = MyBroadcastReceiver()
+        val filter = IntentFilter("com.example.twitchapp.message")
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+
+            Log.d("Token", task.result.toString())
+            task.result
+        })
+        registerReceiver(br, filter)
     }
 
     private fun bindViewModel() {
