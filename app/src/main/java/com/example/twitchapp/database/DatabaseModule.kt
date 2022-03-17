@@ -3,6 +3,7 @@ package com.example.twitchapp.database
 import android.content.Context
 import androidx.room.Room
 import com.example.twitchapp.database.game.GameDao
+import com.example.twitchapp.database.notification.GameNotificationDao
 import com.example.twitchapp.database.streams.GameStreamDao
 import dagger.Module
 import dagger.Provides
@@ -38,4 +39,9 @@ object DataModule {
     @Singleton
     fun provideGameDao(database: AppDatabase): GameDao =
         database.gameDao()
+
+    @Provides
+    @Singleton
+    fun provideGameNotificationDao(database: AppDatabase): GameNotificationDao =
+        database.gameNotificationDao()
 }

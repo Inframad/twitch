@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.temp
+package com.example.twitchapp.temp
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
