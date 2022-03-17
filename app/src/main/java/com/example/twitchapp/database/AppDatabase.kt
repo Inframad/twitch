@@ -6,15 +6,17 @@ import androidx.room.TypeConverters
 import com.example.twitchapp.database.game.GameDao
 import com.example.twitchapp.database.game.GameEntity
 import com.example.twitchapp.database.notification.GameNotificationDao
+import com.example.twitchapp.database.notification.GameNotificationEntity
 import com.example.twitchapp.database.streams.GameStreamDao
 import com.example.twitchapp.database.streams.GameStreamEntity
 
 @Database(
     entities = [
         GameStreamEntity::class,
-        GameEntity::class
+        GameEntity::class,
+        GameNotificationEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(UriConverter::class)

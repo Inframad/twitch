@@ -2,7 +2,6 @@ package com.example.twitchapp.ui
 
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -16,9 +15,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.databinding.ActivityMainBinding
-import com.example.twitchapp.temp.MyBroadcastReceiver
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
+import com.example.twitchapp.notification.MyBroadcastReceiver
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,20 +26,27 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val viewModel: MainActivityViewModel by viewModels()
     private val viewBinding: ActivityMainBinding by viewBinding()
 
+    private val firebaseBroadcastReceiver = MyBroadcastReceiver()
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(
+            firebaseBroadcastReceiver,
+            IntentFilter("com.example.twitchapp.message")
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initNavigation()
         bindViewModel()
+        viewModel.initialized()
+    }
 
-        val br = MyBroadcastReceiver()
-        val filter = IntentFilter("com.example.twitchapp.message")
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-
-            Log.d("Token", task.result.toString())
-            task.result
-        })
-        registerReceiver(br, filter)
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(firebaseBroadcastReceiver)
     }
 
     private fun bindViewModel() {

@@ -2,6 +2,7 @@ package com.example.twitchapp.ui
 
 import android.content.Context
 import com.example.twitchapp.common.BaseViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -20,5 +21,9 @@ class MainActivityViewModel @Inject constructor(
                 else -> true
             }
         )
+    }
+
+    fun initialized() {
+        FirebaseMessaging.getInstance().subscribeToTopic("main")
     }
 }

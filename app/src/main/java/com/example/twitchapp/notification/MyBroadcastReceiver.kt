@@ -1,4 +1,4 @@
-package com.example.twitchapp.temp
+package com.example.twitchapp.notification
 
 import android.content.BroadcastReceiver
 import android.content.Context
