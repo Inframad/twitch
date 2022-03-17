@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val firebaseBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, intent: Intent?) {
             viewModel.messageReceived(
-                intent?.extras,
+                intent?.extras?.getParcelable(NotificationConst.TWITCH_NOTIFICATION_KEY),
                 AppScreen.fromResId(Navigator.getCurrentScreen(this@MainActivity)!!)
             )
         }
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         bindCommandAction(viewModel.sendIntentToGameScreenCommand) {
             sendBroadcast(Intent().apply {
                 action = NotificationConst.INTENT_FILTER_GAME
-                putExtras(it)
+                putExtra(NotificationConst.TWITCH_NOTIFICATION_KEY, it)
             })
         }
     }

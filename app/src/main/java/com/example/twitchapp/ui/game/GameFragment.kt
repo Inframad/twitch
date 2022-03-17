@@ -30,9 +30,7 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
 
     private val gameBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, intent: Intent?) {
-            val extras = intent?.extras
-            val gameName = extras?.getString("game_name")
-            val here = true
+            viewModel.onMessageReceived(intent?.extras?.getParcelable(NotificationConst.TWITCH_NOTIFICATION_KEY))
         }
     }
 

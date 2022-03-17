@@ -6,6 +6,7 @@ import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
+import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.model.streams.GameStream
 import com.example.twitchapp.repository.Repository
 import com.example.twitchapp.ui.UiState
@@ -69,5 +70,9 @@ class GameViewModel @Inject constructor(
             if (game?.isFavourite == true) R.color.red_400
             else R.color.grey_400
         )
+    }
+
+    fun onMessageReceived(twitchNotification: TwitchNotification?) {
+        val weAreHere = true
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
@@ -12,6 +13,8 @@ import com.example.twitchapp.App
 import com.example.twitchapp.AppState
 import com.example.twitchapp.R
 import com.example.twitchapp.model.notifications.TwitchNotification
+import com.example.twitchapp.notification.NotificationConst.MessageKeys
+import com.example.twitchapp.notification.NotificationConst.NotificationType
 import com.example.twitchapp.repository.notification.NotificationRepositoryImpl
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -31,13 +34,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val intent = message.toIntent()
-        intent.action = NotificationConst.INTENT_FILTER_FIREBASE
-        val notificationModel = intent.extras?.let {
+        val notificationModel = message.toIntent().extras?.let {
             createNotificationModel(it)
         }
 
+        val intent = Intent()
+        intent.action = NotificationConst.INTENT_FILTER_FIREBASE
+
         notificationModel?.let {
+
+            intent.putExtra(
+                NotificationConst.TWITCH_NOTIFICATION_KEY,
+                when (notificationModel) {
+                    is TwitchNotification.GameNotification ->
+                        notificationModel
+                    is TwitchNotification.StreamNotification ->
+                        notificationModel
+                }
+            )
+
             CoroutineScope(Dispatchers.IO).launch {
                 notificationRepository.save(it)
             }
@@ -74,8 +89,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun showNotification(notification: TwitchNotification) {
         with(NotificationManagerCompat.from(this)) {
             notify(
-                123,
-                NotificationCompat.Builder(applicationContext, NotificationConst.CHANNEL_ID)  //TODO
+                123, //TODO
+                NotificationCompat.Builder(applicationContext, NotificationConst.CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_twitch)
                     .setContentTitle(notification.title)
                     .setContentText(notification.description)
@@ -86,25 +101,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private fun createNotificationModel(bundle: Bundle): TwitchNotification {
         bundle.apply {
-            return when (val type = bundle.getString("notification_type")) {
-                "STREAMS" -> TwitchNotification.StreamNotification(
-                    bundle.getString("title")
-                        ?: throw NullPointerException("Notification title from FCM is null"),
-                    bundle.getString("description")
-                        ?: throw NullPointerException("Notification desc from FCM is null"),
-                    bundle.getInt("streams_amount"),
-                    123 //TODO date
+            return when (val type = getString(MessageKeys.NOTIFICATION_TYPE)) {
+                NotificationType.STREAMS -> TwitchNotification.StreamNotification(
+                    title = getString(MessageKeys.TITLE),
+                    description = getString(MessageKeys.DESCRIPTION),
+                    date = 123 //TODO date
                 )
-                "GAME" -> TwitchNotification.GameNotification(
-                    bundle.getString("title")
-                        ?: throw NullPointerException("Notification title from FCM is null"),
-                    bundle.getString("description")
-                        ?: throw NullPointerException("Notification desc from FCM is null"),
-                    gameName = getString("game_name")
-                        ?: throw NullPointerException("gameName from FCM is null"),
-                    streamerName = getString("streamer_name")
-                        ?: throw java.lang.NullPointerException("streamerName from FCM is null"),
-                    viewersCount = getString("viewers_count")!!.toLong(),
+                NotificationType.GAME -> TwitchNotification.GameNotification(
+                    title = getString(MessageKeys.TITLE),
+                    description = getString(MessageKeys.DESCRIPTION),
+                    gameName = getString(MessageKeys.GAME_NAME),
+                    streamerName = getString(MessageKeys.STREAMER_NAME),
+                    viewersCount = getString(MessageKeys.VIEWERS_COUNT)?.toLong(),
                     date = 12345678L
                 )
                 else -> throw IllegalArgumentException("Unknown notification type: $type")

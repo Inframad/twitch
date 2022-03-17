@@ -8,12 +8,12 @@ import com.example.twitchapp.model.notifications.TwitchNotification
 class GameNotificationEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val title: String,
-    val description: String,
-    val gameName: String,
-    val streamerName: String,
-    val viewersCount: Long,
-    val date: Long
+    val title: String?,
+    val description: String?,
+    val gameName: String?,
+    val streamerName: String?,
+    val viewersCount: Long?,
+    val date: Long?
 ) {
     fun toModel() =
         TwitchNotification.GameNotification(

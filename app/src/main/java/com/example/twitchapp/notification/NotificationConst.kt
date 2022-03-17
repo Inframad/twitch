@@ -5,6 +5,7 @@ object NotificationConst {
     const val CHANNEL_NAME = "FIREBASE NOTIFICATION"
     const val INTENT_FILTER_FIREBASE = "com.example.twitchapp.message"
     const val INTENT_FILTER_GAME = "com.example.twitchapp.game"
+    const val TWITCH_NOTIFICATION_KEY = "TWITCH_NOTIFICATION"
 
     object MessageKeys {
         const val NOTIFICATION_TYPE = "notification_type"
