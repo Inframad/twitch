@@ -3,6 +3,7 @@ package com.example.twitchapp.database.notification
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.twitchapp.model.notifications.TwitchNotification
+import java.util.*
 
 @Entity
 class GameNotificationEntity (
@@ -13,7 +14,7 @@ class GameNotificationEntity (
     val gameName: String?,
     val streamerName: String?,
     val viewersCount: Long?,
-    val date: Long?
+    val date: Date
 ) {
     fun toModel() =
         TwitchNotification.GameNotification(

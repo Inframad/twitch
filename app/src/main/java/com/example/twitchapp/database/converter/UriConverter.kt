@@ -1,4 +1,4 @@
-package com.example.twitchapp.database
+package com.example.twitchapp.database.converter
 
 import android.net.Uri
 import androidx.room.TypeConverter

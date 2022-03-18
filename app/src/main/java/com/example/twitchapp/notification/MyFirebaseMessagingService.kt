@@ -22,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
@@ -100,7 +101,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 NotificationType.STREAMS -> TwitchNotification.StreamNotification(
                     title = getString(MessageKeys.TITLE),
                     description = getString(MessageKeys.DESCRIPTION),
-                    date = 123 //TODO date
+                    date = Date()
                 )
                 NotificationType.GAME -> TwitchNotification.GameNotification(
                     title = getString(MessageKeys.TITLE),
@@ -108,7 +109,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     gameName = getString(MessageKeys.GAME_NAME),
                     streamerName = getString(MessageKeys.STREAMER_NAME),
                     viewersCount = getString(MessageKeys.VIEWERS_COUNT)?.toLong(),
-                    date = 12345678L
+                    date = Date()
                 )
                 else -> throw IllegalArgumentException("Unknown notification type: $type")
             }
