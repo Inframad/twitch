@@ -45,12 +45,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             intent.putExtra(
                 NotificationConst.TWITCH_NOTIFICATION_KEY,
-                when (notificationModel) {
-                    is TwitchNotification.GameNotification ->
-                        notificationModel
-                    is TwitchNotification.StreamNotification ->
-                        notificationModel
-                }
+                notificationModel
             )
 
             CoroutineScope(Dispatchers.IO).launch {

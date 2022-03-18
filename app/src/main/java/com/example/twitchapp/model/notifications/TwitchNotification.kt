@@ -3,7 +3,7 @@ package com.example.twitchapp.model.notifications
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-sealed class TwitchNotification {
+sealed class TwitchNotification: Parcelable {
     abstract val title: String?
     abstract val description: String?
 
@@ -15,12 +15,12 @@ sealed class TwitchNotification {
         val streamerName: String?,
         val viewersCount: Long?,
         val date: Long?
-    ): TwitchNotification(), Parcelable
+    ): TwitchNotification()
 
     @Parcelize
     data class StreamNotification(
         override val title: String?,
         override val description: String?,
         val date: Long?
-    ): TwitchNotification(), Parcelable
+    ): TwitchNotification()
 }

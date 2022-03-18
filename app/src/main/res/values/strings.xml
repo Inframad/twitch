@@ -24,5 +24,6 @@
 
     <!-- Favourite games -->
     <string name="scr_favourite_games_no_favourite_games">Вы еще ничего не добавили в избранное</string>
+    <string name="scr_game_lbl_game_data_updated">Данные по текущей игре обновлены</string>
 
 </resources>

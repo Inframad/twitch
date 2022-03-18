@@ -52,7 +52,8 @@ class GameViewModel @Inject constructor(
                         UiState.Loaded(
                             GameScreenModel(
                                 name = result.data.name ?: getString(R.string.scr_any_lbl_unknown),
-                                streamerName = gameStream.userName ?: getString(R.string.scr_any_lbl_unknown),
+                                streamerName = gameStream.userName
+                                    ?: getString(R.string.scr_any_lbl_unknown),
                                 viewersCount = gameStream.viewerCount.toString(),
                                 imageUrl = result.data.imageUrl
                             )
@@ -72,7 +73,25 @@ class GameViewModel @Inject constructor(
         )
     }
 
-    fun onMessageReceived(twitchNotification: TwitchNotification?) {
-        val weAreHere = true
+    fun onMessageReceived(twitchNotification: TwitchNotification.GameNotification?) {
+        game?.let { game ->
+            twitchNotification?.let {
+                if (twitchNotification.gameName == game.name) {
+                    showToastCommand.setValue(getString(R.string.scr_game_lbl_game_data_updated))
+                    uiState.setValue(
+                        UiState.Loaded(
+                            GameScreenModel(
+                                name = it.gameName!!,
+                                streamerName = it.streamerName!!,
+                                viewersCount = it.viewersCount!!.toString(),
+                                imageUrl = game.imageUrl
+                            )
+                        )
+                    )
+                } else {
+                    showToastCommand.setValue("Данные по игре ${it.gameName} изменились") //TODO Hardcore
+                }
+            }
+        }
     }
 }
