@@ -35,6 +35,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         CoroutineScope(Dispatchers.IO).launch {
+
             val notificationModel = message.toIntent().extras?.let {
                 createNotificationModel(it)
             }

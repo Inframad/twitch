@@ -11,7 +11,7 @@ class NotificationRepositoryImpl @Inject constructor(
 ) {
 
     suspend fun getAll(): List<TwitchNotification> =
-        notificationDatasource.getAllGameNotifications()
+        notificationDatasource.getAllNotifications()
 
     suspend fun save(notification: TwitchNotification) {
         notificationDatasource.saveNotification(notification)

@@ -8,6 +8,6 @@ import com.example.twitchapp.database.DbConstants
 @Dao
 interface GameNotificationDao:BaseDao<GameNotificationEntity> {
 
-    @Query("SELECT * FROM ${DbConstants.GAME_NOTIFICATIONS_TABLE_NAME}")
-    suspend fun getAllGameNotifications(): List<GameNotificationEntity>
+    @Query("SELECT * FROM ${DbConstants.GAME_NOTIFICATIONS_TABLE_NAME} WHERE id=:id")
+    fun getGameNotification(id: Long): GameNotificationEntity
 }

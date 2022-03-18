@@ -14,9 +14,16 @@ class NotificationDatasource @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun getAllNotifications() =
-        gameNotificationDao.getAllGameNotifications()
-            .map { it.toModel() }
+    suspend fun getAllNotifications(): List<TwitchNotification> =
+        withContext(ioDispatcher) {
+            twitchNotificationDao.getAllNotifications().map {
+                when(it.childType) {
+                    "GameNotification" -> gameNotificationDao.getGameNotification(it.childId).toModel()
+                    "StreamNotification" -> streamNotificationDao.getStreamNotification(it.childId).toModel()
+                    else -> throw IllegalArgumentException() //TODO
+                }
+            }
+        }
 
     suspend fun saveNotification(
         notification: TwitchNotification
