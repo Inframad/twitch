@@ -8,6 +8,7 @@ import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.model.streams.GameStream
+import com.example.twitchapp.notification.TwitchNotifier
 import com.example.twitchapp.repository.Repository
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class GameViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val repository: Repository
+    private val repository: Repository,
+    private val notifier: TwitchNotifier
 ) : BaseViewModel(context) {
 
     val uiState = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
@@ -26,8 +28,12 @@ class GameViewModel @Inject constructor(
 
     val toggleFavouriteCommand = TCommand<Int>()
 
-    fun init(stream: GameStream) {
-        fetchGameModel(stream)
+    fun init(stream: GameStream?, notification: TwitchNotification.GameNotification?) {
+        stream?.let {
+            fetchGameModel(stream.gameName, stream.userName, stream.viewerCount)
+            return
+        }
+        notification?.let { fetchGameModel(it.gameName, it.streamerName, it.viewersCount)}
     }
 
     fun favouriteGameImageButtonClicked() {
@@ -40,10 +46,10 @@ class GameViewModel @Inject constructor(
         toggleFavourite()
     }
 
-    private fun fetchGameModel(gameStream: GameStream) {
+    private fun fetchGameModel(gameName: String?, streamerName: String?, viewersCount: Long?) {
         viewModelScope.launch {
             uiState.setValue(
-                when (val result = repository.getGame(gameStream.gameName)) {
+                when (val result = repository.getGame(gameName)) {
                     is Result.Success -> {
                         result.data.apply {
                             game = this
@@ -52,9 +58,9 @@ class GameViewModel @Inject constructor(
                         UiState.Loaded(
                             GameScreenModel(
                                 name = result.data.name ?: getString(R.string.scr_any_lbl_unknown),
-                                streamerName = gameStream.userName
+                                streamerName = streamerName
                                     ?: getString(R.string.scr_any_lbl_unknown),
-                                viewersCount = gameStream.viewerCount.toString(),
+                                viewersCount = viewersCount.toString(),
                                 imageUrl = result.data.imageUrl
                             )
                         )
@@ -78,7 +84,7 @@ class GameViewModel @Inject constructor(
             twitchNotification?.let {
                 if (twitchNotification.gameName == game.name) {
                     showToastCommand.setValue(getString(R.string.scr_game_lbl_game_data_updated))
-                    uiState.setValue(
+                    uiState.setValue( //TODO Сохранить при повороте
                         UiState.Loaded(
                             GameScreenModel(
                                 name = it.gameName!!,
@@ -89,7 +95,7 @@ class GameViewModel @Inject constructor(
                         )
                     )
                 } else {
-                    showToastCommand.setValue("Данные по игре ${it.gameName} изменились") //TODO Hardcore
+                    notifier.showNotification(twitchNotification)
                 }
             }
         }

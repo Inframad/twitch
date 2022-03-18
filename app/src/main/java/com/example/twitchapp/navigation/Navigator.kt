@@ -13,10 +13,11 @@ object Navigator {
         f.findNavController().navigate(R.id.gameFragment, args.toBundle())
     }
 
+    fun goToGameScreen(a: FragmentActivity, args: GameFragmentArgs) {
+        a.findNavController(R.id.nav_host_fragment).navigate(R.id.gameFragment, args.toBundle())
+    }
+
     fun goBack(f: Fragment) {
         f.findNavController().popBackStack()
     }
-
-    fun getCurrentScreen(activity: FragmentActivity) =
-        activity.findNavController(R.id.nav_host_fragment).currentDestination?.id
 }

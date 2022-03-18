@@ -17,6 +17,7 @@ import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.common.extensions.glideImage
 import com.example.twitchapp.common.extensions.setTintColor
 import com.example.twitchapp.databinding.FragmentGameBinding
+import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.notification.NotificationConst
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +39,7 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
         super.onStart()
         requireActivity().registerReceiver(
             gameBroadcastReceiver,
-            IntentFilter(NotificationConst.INTENT_FILTER_FIREBASE))
+            IntentFilter(NotificationConst.INTENT_FILTER_GAME))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,6 +110,6 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
     }
 
     private fun init() {
-        viewModel.init(navArgs.stream)
+        viewModel.init(navArgs.stream, navArgs.notification as TwitchNotification.GameNotification?) //TODO
     }
 }

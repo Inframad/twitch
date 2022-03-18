@@ -14,6 +14,13 @@
         android:label="GameFragment">
         <argument
             android:name="stream"
-            app:argType="com.example.twitchapp.model.streams.GameStream" />
+            app:argType="com.example.twitchapp.model.streams.GameStream"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+        <argument
+            android:name="notification"
+            app:argType="com.example.twitchapp.model.notifications.TwitchNotification"
+            android:defaultValue="@null"
+            app:nullable="true"/>
     </fragment>
 </navigation>

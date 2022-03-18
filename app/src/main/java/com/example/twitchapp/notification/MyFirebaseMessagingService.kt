@@ -1,17 +1,10 @@
 package com.example.twitchapp.notification
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.example.twitchapp.App
 import com.example.twitchapp.AppState
-import com.example.twitchapp.R
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.notification.NotificationConst.MessageKeys
 import com.example.twitchapp.notification.NotificationConst.NotificationType
@@ -31,6 +24,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var notificationRepository: NotificationRepositoryImpl
+    @Inject
+    lateinit var notifier: TwitchNotifier
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
@@ -44,13 +39,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.action = NotificationConst.INTENT_FILTER_FIREBASE
 
             notificationModel?.let {
+                notificationRepository.save(it)
 
                 intent.putExtra(
                     NotificationConst.TWITCH_NOTIFICATION_KEY,
                     notificationModel
                 )
-
-                notificationRepository.save(it)
 
                 when ((application as App).currentAppState) {
                     AppState.OnActivityCreated,
@@ -59,39 +53,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                         applicationContext.sendBroadcast(intent)
                     }
                     else -> {
-                        createNotificationChannel()
-                        showNotification(it)
+                        notifier.showNotification(it)
                     }
                 }
             }
-        }
-    }
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = NotificationConst.CHANNEL_NAME
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(
-                NotificationConst.CHANNEL_ID,
-                name,
-                importance
-            )
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
-    private fun showNotification(notification: TwitchNotification) {
-        with(NotificationManagerCompat.from(this)) {
-            notify(
-                123, //TODO
-                NotificationCompat.Builder(applicationContext, NotificationConst.CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_twitch)
-                    .setContentTitle(notification.title)
-                    .setContentText(notification.description)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT).build()
-            )
         }
     }
 

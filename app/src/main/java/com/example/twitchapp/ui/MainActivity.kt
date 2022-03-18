@@ -19,8 +19,10 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.databinding.ActivityMainBinding
+import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.navigation.Navigator
 import com.example.twitchapp.notification.NotificationConst
+import com.example.twitchapp.ui.game.GameFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,8 +36,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val firebaseBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, intent: Intent?) {
             viewModel.messageReceived(
-                intent?.extras?.getParcelable(NotificationConst.TWITCH_NOTIFICATION_KEY),
-                AppScreen.fromResId(Navigator.getCurrentScreen(this@MainActivity)!!)
+                intent?.extras?.getParcelable(NotificationConst.TWITCH_NOTIFICATION_KEY)
             )
         }
     }
@@ -50,10 +51,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initNavigation()
         bindViewModel()
-        viewModel.initialized()
+        init()
     }
 
     override fun onPause() {
@@ -75,6 +75,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             bindCommandAction(showToastCommand) {
                 Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
             }
+            bindCommandAction(navigateToGameScreenCommand) {
+                Navigator.goToGameScreen(this@MainActivity, GameFragmentArgs(notification = it))
+            }
         }
     }
 
@@ -89,6 +92,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 viewModel.onDestinationChanged(AppScreen.fromResId(destination.id))
             }
         }
+    }
+
+    private fun init() {
+        viewModel.initialized()
+        intent?.extras?.getParcelable<TwitchNotification.GameNotification>(NotificationConst.TWITCH_NOTIFICATION_KEY)
+            ?.let {
+                viewModel.onIntent(it)
+                intent.removeExtra(NotificationConst.TWITCH_NOTIFICATION_KEY) //TODO Что-то из этого помогает
+                intent.action = "" //TODO Что-то из этого помогает
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
