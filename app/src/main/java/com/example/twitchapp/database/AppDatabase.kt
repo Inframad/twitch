@@ -7,8 +7,7 @@ import com.example.twitchapp.database.converter.DateConverter
 import com.example.twitchapp.database.converter.UriConverter
 import com.example.twitchapp.database.game.GameDao
 import com.example.twitchapp.database.game.GameEntity
-import com.example.twitchapp.database.notification.GameNotificationDao
-import com.example.twitchapp.database.notification.GameNotificationEntity
+import com.example.twitchapp.database.notification.*
 import com.example.twitchapp.database.streams.GameStreamDao
 import com.example.twitchapp.database.streams.GameStreamEntity
 
@@ -16,9 +15,11 @@ import com.example.twitchapp.database.streams.GameStreamEntity
     entities = [
         GameStreamEntity::class,
         GameEntity::class,
-        GameNotificationEntity::class
+        TwitchNotificationEntity::class,
+        GameNotificationEntity::class,
+        StreamNotificationEntity::class
     ],
-    version = 5,
+    version = 9,
     exportSchema = false
 )
 @TypeConverters(
@@ -29,5 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun gameStreamDao(): GameStreamDao
     abstract fun gameDao(): GameDao
+    abstract fun twitchNotificationDao(): TwitchNotificationDao
     abstract fun gameNotificationDao(): GameNotificationDao
+    abstract fun streamNotificationDao(): StreamNotificationDao
 }

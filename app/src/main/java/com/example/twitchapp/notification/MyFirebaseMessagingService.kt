@@ -34,34 +34,33 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-
-        val notificationModel = message.toIntent().extras?.let {
-            createNotificationModel(it)
-        }
-
-        val intent = Intent()
-        intent.action = NotificationConst.INTENT_FILTER_FIREBASE
-
-        notificationModel?.let {
-
-            intent.putExtra(
-                NotificationConst.TWITCH_NOTIFICATION_KEY,
-                notificationModel
-            )
-
-            CoroutineScope(Dispatchers.IO).launch {
-                notificationRepository.save(it)
+        CoroutineScope(Dispatchers.IO).launch {
+            val notificationModel = message.toIntent().extras?.let {
+                createNotificationModel(it)
             }
 
-            when ((application as App).currentAppState) {
-                AppState.OnActivityCreated,
-                AppState.OnActivityStarted,
-                AppState.OnActivityResumed -> {
-                    applicationContext.sendBroadcast(intent)
-                }
-                else -> {
-                    createNotificationChannel()
-                    showNotification(it)
+            val intent = Intent()
+            intent.action = NotificationConst.INTENT_FILTER_FIREBASE
+
+            notificationModel?.let {
+
+                intent.putExtra(
+                    NotificationConst.TWITCH_NOTIFICATION_KEY,
+                    notificationModel
+                )
+
+                notificationRepository.save(it)
+
+                when ((application as App).currentAppState) {
+                    AppState.OnActivityCreated,
+                    AppState.OnActivityStarted,
+                    AppState.OnActivityResumed -> {
+                        applicationContext.sendBroadcast(intent)
+                    }
+                    else -> {
+                        createNotificationChannel()
+                        showNotification(it)
+                    }
                 }
             }
         }

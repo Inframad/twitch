@@ -31,9 +31,8 @@ class MainActivityViewModel @Inject constructor(
 
     fun messageReceived(twitchNotification: TwitchNotification?, currentScreen: AppScreen) {
         twitchNotification?.let {
-            if(it is TwitchNotification.GameNotification) {
-                if(currentScreen == AppScreen.GAME)
-                    sendIntentToGameScreenCommand.setValue(twitchNotification as TwitchNotification.GameNotification)
+            if (currentScreen == AppScreen.GAME && it is TwitchNotification.GameNotification) {
+                sendIntentToGameScreenCommand.setValue(twitchNotification as TwitchNotification.GameNotification)
             } else {
                 showToastCommand.setValue(twitchNotification.description)
             }

@@ -12,5 +12,5 @@ interface BaseDao<T> {
     suspend fun replace(item: List<T>)
 
     @Insert
-    suspend fun insert(item: T)
+    suspend fun insert(item: T): Long
 }

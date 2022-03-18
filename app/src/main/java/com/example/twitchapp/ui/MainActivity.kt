@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -61,14 +62,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun bindViewModel() {
-        bindCommandAction(viewModel.toggleBottomNavigationViewVisibility) {
-            viewBinding.bottomNavigation.isVisible = it
-        }
-        bindCommandAction(viewModel.sendIntentToGameScreenCommand) {
-            sendBroadcast(Intent().apply {
-                action = NotificationConst.INTENT_FILTER_GAME
-                putExtra(NotificationConst.TWITCH_NOTIFICATION_KEY, it)
-            })
+        with(viewModel) {
+            bindCommandAction(toggleBottomNavigationViewVisibility) {
+                viewBinding.bottomNavigation.isVisible = it
+            }
+            bindCommandAction(sendIntentToGameScreenCommand) {
+                sendBroadcast(Intent().apply {
+                    action = NotificationConst.INTENT_FILTER_GAME
+                    putExtra(NotificationConst.TWITCH_NOTIFICATION_KEY, it)
+                })
+            }
+            bindCommandAction(showToastCommand) {
+                Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

@@ -6,7 +6,7 @@ import com.example.twitchapp.model.notifications.TwitchNotification
 import java.util.*
 
 @Entity
-class GameNotificationEntity (
+class GameNotificationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val title: String?,
@@ -25,6 +25,7 @@ class GameNotificationEntity (
             viewersCount = viewersCount,
             date = date
         )
+
     companion object {
         fun fromModel(gameNotification: TwitchNotification.GameNotification) =
             GameNotificationEntity(
