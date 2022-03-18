@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/drawable/ic_gray_heart.xml" value="0.305" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/drawable/ic_heart.xml" value="0.305" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/drawable/ic_notification.xml" value="0.119" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout-land/item_game_stream.xml" value="0.13139329805996472" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/activity_main.xml" value="0.13269927536231885" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_app_review.xml" value="0.1" />
@@ -13,11 +14,13 @@
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_game_layout.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_game_streams.xml" value="0.1" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_notifications_list.xml" value="0.1" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/game_streams_load_state_footer.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/item_favourite_game.xml" value="0.16979166666666667" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/item_game_stream.xml" value="0.43209876543209874" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/item_twitch_notification.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/styles.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.33" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

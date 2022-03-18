@@ -2,6 +2,7 @@ package com.example.twitchapp.repository.notification
 
 import com.example.twitchapp.datasource.local.NotificationDatasource
 import com.example.twitchapp.model.notifications.TwitchNotification
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -10,7 +11,7 @@ class NotificationRepositoryImpl @Inject constructor(
     private val notificationDatasource: NotificationDatasource
 ) {
 
-    suspend fun getAll(): List<TwitchNotification> =
+    fun getAll(): Flow<List<TwitchNotification>> = //TODO Naming
         notificationDatasource.getAllNotifications()
 
     suspend fun save(notification: TwitchNotification) {
