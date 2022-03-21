@@ -1,18 +1,42 @@
 package com.example.twitchapp.ui.notification
 
 import android.content.Context
+import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.common.BaseViewModel
-import com.example.twitchapp.repository.notification.NotificationRepositoryImpl
+import com.example.twitchapp.model.Result
+import com.example.twitchapp.model.notifications.TwitchNotification
+import com.example.twitchapp.repository.notification.NotificationRepository
+import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NotificationsListViewModel
 @Inject constructor(
     @ApplicationContext context: Context,
-    private val repository: NotificationRepositoryImpl //TODO Inject interface impl
+    private val repository: NotificationRepository
 ): BaseViewModel(context) {
 
-    val notifications = repository.getAll()
+    val uiState = mutableStateFlow(UiState.Loading as UiState<List<TwitchNotification>>)
+
+    init {
+        viewModelScope.launch {
+            repository.getAllNotifications().collect { result ->
+                uiState.setValue(handleResult(result))
+            }
+        }
+    }
+
+    private fun handleResult(result: Result<List<TwitchNotification>>): UiState<List<TwitchNotification>> =
+        when (result) {
+            is Result.Success -> {
+                if (result.data.isEmpty()) UiState.Empty else UiState.Loaded(result.data)
+            }
+            is Result.Error -> UiState.Error(handleBaseError(result.e))
+            Result.Empty -> UiState.Empty
+            Result.Loading -> UiState.Loading
+        }
 }

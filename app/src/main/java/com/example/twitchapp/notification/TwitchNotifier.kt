@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.twitchapp.R
+import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.ui.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -50,7 +51,7 @@ class TwitchNotifier @Inject constructor(
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
 
-            if (notification is TwitchNotification.GameNotification) {
+            if (notification is GameNotification) {
                 clickIntent.putExtra(NotificationConst.TWITCH_NOTIFICATION_KEY, notification)
             }
 

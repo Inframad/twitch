@@ -6,15 +6,15 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseFragment
 import com.example.twitchapp.common.extensions.bindAction
-import com.example.twitchapp.databinding.FragmentFavouriteGamesBinding
+import com.example.twitchapp.databinding.FragmentSimpleListBinding
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FavouriteGamesFragment : BaseFragment<FavouriteGamesViewModel>(R.layout.fragment_favourite_games) {
+class FavouriteGamesFragment : BaseFragment<FavouriteGamesViewModel>(R.layout.fragment_simple_list) {
 
-    private val viewBinding: FragmentFavouriteGamesBinding by viewBinding()
+    private val viewBinding: FragmentSimpleListBinding by viewBinding()
     override val viewModel: FavouriteGamesViewModel by viewModels()
 
     private var adapter: FavouriteGamesAdapter? = null

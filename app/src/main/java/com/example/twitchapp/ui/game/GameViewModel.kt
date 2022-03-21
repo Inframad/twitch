@@ -6,7 +6,7 @@ import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
-import com.example.twitchapp.model.notifications.TwitchNotification
+import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.streams.GameStream
 import com.example.twitchapp.notification.TwitchNotifier
 import com.example.twitchapp.repository.Repository
@@ -28,7 +28,7 @@ class GameViewModel @Inject constructor(
 
     val toggleFavouriteCommand = TCommand<Int>()
 
-    fun init(stream: GameStream?, notification: TwitchNotification.GameNotification?) {
+    fun init(stream: GameStream?, notification: GameNotification?) {
         stream?.let {
             fetchGameModel(stream.gameName, stream.userName, stream.viewerCount)
             return
@@ -67,6 +67,7 @@ class GameViewModel @Inject constructor(
                     }
                     Result.Empty -> UiState.Empty
                     is Result.Error -> UiState.Error(handleBaseError(result.e))
+                    Result.Loading -> UiState.Loading
                 }
             )
         }
@@ -79,7 +80,7 @@ class GameViewModel @Inject constructor(
         )
     }
 
-    fun onMessageReceived(twitchNotification: TwitchNotification.GameNotification?) {
+    fun onMessageReceived(twitchNotification: GameNotification?) {
         game?.let { game ->
             twitchNotification?.let {
                 if (twitchNotification.gameName == game.name) {

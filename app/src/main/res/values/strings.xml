@@ -29,5 +29,7 @@
     <string name="scr_favourite_games_no_favourite_games">Вы еще ничего не добавили в избранное</string>
     <string name="scr_game_lbl_game_data_updated">Данные по текущей игре обновлены</string>
     <string name="scr_any_lbl_notifications">Уведомления</string>
+    <string name="scr_any_lbl_no_notifications">У вас нет уведомлений</string>
+    <string name="scr_any_date_time_pattern">dd.MM hh:mm</string>
 
 </resources>

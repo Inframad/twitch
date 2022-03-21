@@ -19,7 +19,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.databinding.ActivityMainBinding
-import com.example.twitchapp.model.notifications.TwitchNotification
+import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.navigation.Navigator
 import com.example.twitchapp.notification.NotificationConst
 import com.example.twitchapp.ui.game.GameFragmentArgs
@@ -96,12 +96,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private fun init() {
         viewModel.initialized()
-        intent?.extras?.getParcelable<TwitchNotification.GameNotification>(NotificationConst.TWITCH_NOTIFICATION_KEY)
-            ?.let {
-                viewModel.onIntent(it)
-                intent.removeExtra(NotificationConst.TWITCH_NOTIFICATION_KEY) //TODO Что-то из этого помогает
-                intent.action = "" //TODO Что-то из этого помогает
-            }
+        intent?.extras?.getParcelable<GameNotification>(NotificationConst.TWITCH_NOTIFICATION_KEY)
+            ?.let { viewModel.onIntent(it) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

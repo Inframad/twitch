@@ -19,7 +19,7 @@ import com.example.twitchapp.database.streams.GameStreamEntity
         GameNotificationEntity::class,
         StreamNotificationEntity::class
     ],
-    version = 11,
+    version = 13,
     exportSchema = false
 )
 @TypeConverters(

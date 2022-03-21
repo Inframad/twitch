@@ -6,6 +6,8 @@ import android.os.Bundle
 import com.example.twitchapp.App
 import com.example.twitchapp.AppState
 import com.example.twitchapp.R
+import com.example.twitchapp.model.notifications.GameNotification
+import com.example.twitchapp.model.notifications.StreamNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.notification.NotificationConst.MessageKeys
 import com.example.twitchapp.notification.NotificationConst.NotificationType
@@ -40,7 +42,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.action = NotificationConst.INTENT_FILTER_FIREBASE
 
             notificationModel?.let {
-                notificationRepository.save(it)
+                notificationRepository.saveNotification(it)
 
                 intent.putExtra(
                     NotificationConst.TWITCH_NOTIFICATION_KEY,
@@ -64,11 +66,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun createNotificationModel(bundle: Bundle): TwitchNotification {
         bundle.apply {
             return when (val type = getString(MessageKeys.NOTIFICATION_TYPE)) {
-                NotificationType.STREAMS -> TwitchNotification.StreamNotification(
+                NotificationType.STREAMS -> StreamNotification(
+                    messageId = getString(MessageKeys.MESSAGE_ID),
                     title = applicationContext.getString(R.string.scr_any_lbl_new_streams_available),
                     date = Date()
                 )
-                NotificationType.GAME -> TwitchNotification.GameNotification(
+                NotificationType.GAME -> GameNotification(
+                    messageId = getString(MessageKeys.MESSAGE_ID),
                     title = getString(MessageKeys.GAME_NAME),
                     description = getString(R.string.scr_any_lbl_game_info_updated),
                     gameName = getString(MessageKeys.GAME_NAME),

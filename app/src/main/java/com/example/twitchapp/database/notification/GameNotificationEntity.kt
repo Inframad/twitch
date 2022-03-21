@@ -2,13 +2,14 @@ package com.example.twitchapp.database.notification
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.twitchapp.model.notifications.TwitchNotification
+import com.example.twitchapp.model.notifications.GameNotification
 import java.util.*
 
 @Entity
 class GameNotificationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
+    val messageId: String?,
     val title: String?,
     val description: String?,
     val gameName: String?,
@@ -17,7 +18,8 @@ class GameNotificationEntity(
     val date: Date
 ) {
     fun toModel() =
-        TwitchNotification.GameNotification(
+        GameNotification(
+            messageId = messageId,
             title = title,
             description = description,
             gameName = gameName,
@@ -27,8 +29,9 @@ class GameNotificationEntity(
         )
 
     companion object {
-        fun fromModel(gameNotification: TwitchNotification.GameNotification) =
+        fun fromModel(gameNotification: GameNotification) =
             GameNotificationEntity(
+                messageId = gameNotification.messageId,
                 title = gameNotification.title,
                 description = gameNotification.description,
                 gameName = gameNotification.gameName,

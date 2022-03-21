@@ -2,6 +2,9 @@ package com.example.twitchapp.datasource.local
 
 import com.example.twitchapp.common.dispatchers.IoDispatcher
 import com.example.twitchapp.database.notification.*
+import com.example.twitchapp.model.Result
+import com.example.twitchapp.model.notifications.GameNotification
+import com.example.twitchapp.model.notifications.StreamNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -17,27 +20,32 @@ class NotificationDatasource @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    fun getAllNotifications(): Flow<List<TwitchNotification>> =
-        twitchNotificationDao.getAllNotifications().map {
-            it.map { twitchNotificationEntity ->
-                when (twitchNotificationEntity.childType) {
-                    TwitchNotificationType.GAME -> gameNotificationDao.getGameNotification(
-                        twitchNotificationEntity.childId
-                    ).toModel()
-                    TwitchNotificationType.STREAMS -> streamNotificationDao.getStreamNotification(
-                        twitchNotificationEntity.childId
-                    ).toModel()
+    fun getAllNotifications(): Flow<Result<List<TwitchNotification>>> {
+        return twitchNotificationDao.getAllNotifications().map {
+            try {
+                Result.Success(it.map { twitchNotificationEntity ->
+                    when (twitchNotificationEntity.childType) {
+                        TwitchNotificationType.GAME -> gameNotificationDao.getGameNotification(
+                            twitchNotificationEntity.childId
+                        ).toModel()
+                        TwitchNotificationType.STREAMS -> streamNotificationDao.getStreamNotification(
+                            twitchNotificationEntity.childId
+                        ).toModel()
+                    }
                 }
+                )
+            } catch (e: Exception) {
+                Result.Error(e)
             }
         }.flowOn(ioDispatcher)
-
+    }
 
     suspend fun saveNotification(
         notification: TwitchNotification
     ) {
         withContext(ioDispatcher) {
             when (notification) {
-                is TwitchNotification.GameNotification -> {
+                is GameNotification -> {
                     twitchNotificationDao.insert(
                         TwitchNotificationEntity(
                             date = notification.date,
@@ -50,7 +58,7 @@ class NotificationDatasource @Inject constructor(
                         )
                     )
                 }
-                is TwitchNotification.StreamNotification ->
+                is StreamNotification ->
                     twitchNotificationDao.insert(
                         TwitchNotificationEntity(
                             date = notification.date,

@@ -9,5 +9,5 @@ import com.example.twitchapp.database.DbConstants
 interface GameNotificationDao:BaseDao<GameNotificationEntity> {
 
     @Query("SELECT * FROM ${DbConstants.GAME_NOTIFICATIONS_TABLE_NAME} WHERE id=:id")
-    fun getGameNotification(id: Long): GameNotificationEntity
+    suspend fun getGameNotification(id: Long): GameNotificationEntity
 }

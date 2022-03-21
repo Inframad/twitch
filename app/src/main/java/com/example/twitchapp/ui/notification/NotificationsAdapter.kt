@@ -2,9 +2,8 @@ package com.example.twitchapp.ui.notification
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.example.twitchapp.model.notifications.TwitchNotification
 
-class NotificationsAdapter: ListAdapter<TwitchNotification, TwitchNotificationViewHolder>(TwitchNotificationComparator()) {
+class NotificationsAdapter: ListAdapter<TwitchNotificationPresentation, TwitchNotificationViewHolder>(TwitchNotificationComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TwitchNotificationViewHolder =
         TwitchNotificationViewHolder.from(parent)

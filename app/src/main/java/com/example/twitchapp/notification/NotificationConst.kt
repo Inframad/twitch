@@ -10,6 +10,7 @@ object NotificationConst {
     const val NOTIFICATION_ID = 0
 
     object MessageKeys {
+        const val MESSAGE_ID = "google.message_id"
         const val NOTIFICATION_TYPE = "notification_type"
         const val GAME_NAME = "game_name"
         const val STREAMER_NAME = "streamer_name"

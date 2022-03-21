@@ -19,7 +19,7 @@
             app:nullable="true"/>
         <argument
             android:name="notification"
-            app:argType="com.example.twitchapp.model.notifications.TwitchNotification"
+            app:argType="com.example.twitchapp.model.notifications.GameNotification"
             android:defaultValue="@null"
             app:nullable="true"/>
     </fragment>
