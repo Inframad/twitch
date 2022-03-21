@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class NotificationDatasource @Inject constructor(
-    private val twitchNotificationDao: TwitchNotificationDao,
+    private val twitchNotificationDao: TwitchNotificationPivotDao,
     private val gameNotificationDao: GameNotificationDao,
     private val streamNotificationDao: StreamNotificationDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
@@ -47,7 +47,7 @@ class NotificationDatasource @Inject constructor(
             when (notification) {
                 is GameNotification -> {
                     twitchNotificationDao.insert(
-                        TwitchNotificationEntity(
+                        TwitchNotificationPivotEntity(
                             date = notification.date,
                             childType = TwitchNotificationType.GAME,
                             childId = gameNotificationDao.insert(
@@ -60,7 +60,7 @@ class NotificationDatasource @Inject constructor(
                 }
                 is StreamNotification ->
                     twitchNotificationDao.insert(
-                        TwitchNotificationEntity(
+                        TwitchNotificationPivotEntity(
                             date = notification.date,
                             childType = TwitchNotificationType.STREAMS,
                             childId = streamNotificationDao.insert(

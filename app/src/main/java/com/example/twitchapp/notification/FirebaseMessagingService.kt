@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 @AndroidEntryPoint
-class MyFirebaseMessagingService : FirebaseMessagingService() {
+class FirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var notificationRepository: NotificationRepositoryImpl

@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.example.twitchapp.model.notifications.GameNotification
 import java.util.*
 
-@Entity
+@Entity(tableName = "GAME_NOTIFICATIONS")
 class GameNotificationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,

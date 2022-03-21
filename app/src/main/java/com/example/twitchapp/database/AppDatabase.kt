@@ -15,11 +15,11 @@ import com.example.twitchapp.database.streams.GameStreamEntity
     entities = [
         GameStreamEntity::class,
         GameEntity::class,
-        TwitchNotificationEntity::class,
+        TwitchNotificationPivotEntity::class,
         GameNotificationEntity::class,
         StreamNotificationEntity::class
     ],
-    version = 13,
+    version = 14,
     exportSchema = false
 )
 @TypeConverters(
@@ -30,7 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun gameStreamDao(): GameStreamDao
     abstract fun gameDao(): GameDao
-    abstract fun twitchNotificationDao(): TwitchNotificationDao
+    abstract fun twitchNotificationDao(): TwitchNotificationPivotDao
     abstract fun gameNotificationDao(): GameNotificationDao
     abstract fun streamNotificationDao(): StreamNotificationDao
 }

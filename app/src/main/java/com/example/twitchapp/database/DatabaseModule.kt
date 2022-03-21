@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.example.twitchapp.database.game.GameDao
 import com.example.twitchapp.database.notification.GameNotificationDao
 import com.example.twitchapp.database.notification.StreamNotificationDao
-import com.example.twitchapp.database.notification.TwitchNotificationDao
+import com.example.twitchapp.database.notification.TwitchNotificationPivotDao
 import com.example.twitchapp.database.streams.GameStreamDao
 import dagger.Module
 import dagger.Provides
@@ -44,7 +44,7 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideTwitchNotificationDao(database: AppDatabase): TwitchNotificationDao =
+    fun provideTwitchNotificationDao(database: AppDatabase): TwitchNotificationPivotDao =
         database.twitchNotificationDao()
 
     @Provides

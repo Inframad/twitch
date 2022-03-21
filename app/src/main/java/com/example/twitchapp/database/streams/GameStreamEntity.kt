@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.twitchapp.model.streams.GameStream
 
-@Entity
+@Entity(tableName = "STREAMS")
 class GameStreamEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,

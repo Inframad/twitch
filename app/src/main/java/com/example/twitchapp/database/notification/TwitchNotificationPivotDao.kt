@@ -7,8 +7,8 @@ import com.example.twitchapp.database.DbConstants
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface TwitchNotificationDao: BaseDao<TwitchNotificationEntity> {
+interface TwitchNotificationPivotDao: BaseDao<TwitchNotificationPivotEntity> {
 
     @Query("SELECT * FROM ${DbConstants.TWITCH_NOTIFICATIONS_TABLE_NAME} ORDER BY date DESC")
-    fun getAllNotifications(): Flow<List<TwitchNotificationEntity>>
+    fun getAllNotifications(): Flow<List<TwitchNotificationPivotEntity>>
 }

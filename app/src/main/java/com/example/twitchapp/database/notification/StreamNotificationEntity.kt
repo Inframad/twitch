@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.example.twitchapp.model.notifications.StreamNotification
 import java.util.*
 
-@Entity
+@Entity(tableName = "STREAMS_NOTIFICATIONS")
 class StreamNotificationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,

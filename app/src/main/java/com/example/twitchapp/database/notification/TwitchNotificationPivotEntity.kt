@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity
-class TwitchNotificationEntity(
+@Entity(tableName = "NOTIFICATIONS_PIVOT")
+class TwitchNotificationPivotEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val date: Date,
