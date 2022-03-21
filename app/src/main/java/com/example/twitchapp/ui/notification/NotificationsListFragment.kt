@@ -31,9 +31,8 @@ class NotificationsListFragment
         bindAction(viewModel.uiState) { uiState ->
             when (uiState) {
                 is UiState.Loaded -> showFavouriteGamesList(
-                    uiState.data.map {
-                        TwitchNotificationPresentation.fromModel(it, getString(R.string.scr_any_date_time_pattern))
-                    })
+                    uiState.data
+                )
                 is UiState.Error -> showError(uiState.msg)
                 UiState.Loading -> showLoading()
                 UiState.Empty -> showNoDataPlaceholder()

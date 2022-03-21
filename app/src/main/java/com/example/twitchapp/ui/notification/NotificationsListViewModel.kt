@@ -2,6 +2,7 @@ package com.example.twitchapp.ui.notification
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.notifications.TwitchNotification
@@ -18,9 +19,9 @@ class NotificationsListViewModel
 @Inject constructor(
     @ApplicationContext context: Context,
     private val repository: NotificationRepository
-): BaseViewModel(context) {
+) : BaseViewModel(context) {
 
-    val uiState = mutableStateFlow(UiState.Loading as UiState<List<TwitchNotification>>)
+    val uiState = mutableStateFlow(UiState.Loading as UiState<List<TwitchNotificationPresentation>>)
 
     init {
         viewModelScope.launch {
@@ -30,10 +31,18 @@ class NotificationsListViewModel
         }
     }
 
-    private fun handleResult(result: Result<List<TwitchNotification>>): UiState<List<TwitchNotification>> =
+    private fun handleResult(
+        result: Result<List<TwitchNotification>>
+    ): UiState<List<TwitchNotificationPresentation>> =
         when (result) {
             is Result.Success -> {
-                if (result.data.isEmpty()) UiState.Empty else UiState.Loaded(result.data)
+                if (result.data.isEmpty()) UiState.Empty
+                else UiState.Loaded(result.data.map {
+                    TwitchNotificationPresentation.fromModel(
+                        it,
+                        getString(R.string.scr_any_date_time_pattern)
+                    )
+                })
             }
             is Result.Error -> UiState.Error(handleBaseError(result.e))
             Result.Empty -> UiState.Empty
