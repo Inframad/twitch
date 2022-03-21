@@ -25,15 +25,18 @@ class GameViewModel @Inject constructor(
 
     val uiState = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
     private var game: Game? = null
+    private var isGameModelFetched = false
 
     val toggleFavouriteCommand = TCommand<Int>()
 
     fun init(stream: GameStream?, notification: GameNotification?) {
-        stream?.let {
-            fetchGameModel(stream.gameName, stream.userName, stream.viewerCount)
-            return
+        if(!isGameModelFetched) {
+            stream?.let {
+                fetchGameModel(stream.gameName, stream.userName, stream.viewerCount)
+                return
+            }
+            notification?.let { fetchGameModel(it.gameName, it.streamerName, it.viewersCount)}
         }
-        notification?.let { fetchGameModel(it.gameName, it.streamerName, it.viewersCount)}
     }
 
     fun favouriteGameImageButtonClicked() {
@@ -51,6 +54,7 @@ class GameViewModel @Inject constructor(
             uiState.setValue(
                 when (val result = repository.getGame(gameName)) {
                     is Result.Success -> {
+                        isGameModelFetched = true
                         result.data.apply {
                             game = this
                             toggleFavourite()
@@ -85,7 +89,7 @@ class GameViewModel @Inject constructor(
             twitchNotification?.let {
                 if (twitchNotification.gameName == game.name) {
                     showToastCommand.setValue(getString(R.string.scr_game_lbl_game_data_updated))
-                    uiState.setValue( //TODO Сохранить при повороте
+                    uiState.setValue(
                         UiState.Loaded(
                             GameScreenModel(
                                 name = it.gameName!!,

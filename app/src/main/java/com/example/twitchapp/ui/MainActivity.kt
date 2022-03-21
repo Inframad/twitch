@@ -97,7 +97,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun init() {
         viewModel.initialized()
         intent?.extras?.getParcelable<GameNotification>(NotificationConst.TWITCH_NOTIFICATION_KEY)
-            ?.let { viewModel.onIntent(it) }
+            ?.let {
+                viewModel.onIntent(it)
+                intent.removeExtra(NotificationConst.TWITCH_NOTIFICATION_KEY)
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
