@@ -12,6 +12,9 @@
     <string name="scr_any_lbl_favorite">Избранное</string>
     <string name="scr_any_lbl_unknown">Unknown</string>
     <string name="src_any_menu_leave_review">Оставить отзыв</string>
+    <string name="scr_any_lbl_new_streams_available">Доступны новые стримы</string>
+    <string name="scr_any_lbl_press_to_open_list">Нажмите чтобы открыть список</string>
+    <string name="scr_any_lbl_game_info_updated">Информация об игре обновилась</string>
 
     <!-- Streams -->
     <string name="src_streams_lbl_saved_data_is_loaded">Интернет соединение недоступно, загружены сохраненные данные</string>

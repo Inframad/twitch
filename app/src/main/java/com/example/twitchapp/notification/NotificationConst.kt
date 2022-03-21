@@ -11,8 +11,6 @@ object NotificationConst {
 
     object MessageKeys {
         const val NOTIFICATION_TYPE = "notification_type"
-        const val TITLE = "title"
-        const val DESCRIPTION = "description"
         const val GAME_NAME = "game_name"
         const val STREAMER_NAME = "streamer_name"
         const val VIEWERS_COUNT = "viewers_count"

@@ -46,7 +46,7 @@ class MainActivityViewModel @Inject constructor(
                     sendIntentToGameScreenCommand.setValue(twitchNotification as TwitchNotification.GameNotification)
                 _currentScreen == AppScreen.GAME && it !is TwitchNotification.GameNotification ->
                     notifier.showNotification(it)
-                else -> showToastCommand.setValue(twitchNotification.description)
+                else -> showToastCommand.setValue("${twitchNotification.title}\n${twitchNotification.description}")
             }
         }
     }

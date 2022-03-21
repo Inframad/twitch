@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.example.twitchapp.App
 import com.example.twitchapp.AppState
+import com.example.twitchapp.R
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.notification.NotificationConst.MessageKeys
 import com.example.twitchapp.notification.NotificationConst.NotificationType
@@ -64,13 +65,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         bundle.apply {
             return when (val type = getString(MessageKeys.NOTIFICATION_TYPE)) {
                 NotificationType.STREAMS -> TwitchNotification.StreamNotification(
-                    title = getString(MessageKeys.TITLE),
-                    description = getString(MessageKeys.DESCRIPTION),
+                    title = applicationContext.getString(R.string.scr_any_lbl_new_streams_available),
                     date = Date()
                 )
                 NotificationType.GAME -> TwitchNotification.GameNotification(
-                    title = getString(MessageKeys.TITLE),
-                    description = getString(MessageKeys.DESCRIPTION),
+                    title = getString(MessageKeys.GAME_NAME),
+                    description = getString(R.string.scr_any_lbl_game_info_updated),
                     gameName = getString(MessageKeys.GAME_NAME),
                     streamerName = getString(MessageKeys.STREAMER_NAME),
                     viewersCount = getString(MessageKeys.VIEWERS_COUNT)?.toLong(),

@@ -22,7 +22,7 @@ sealed class TwitchNotification: Parcelable {
     @Parcelize
     data class StreamNotification(
         override val title: String?,
-        override val description: String?,
+        override val description: String? = "",
         override val date: Date
     ): TwitchNotification()
 }

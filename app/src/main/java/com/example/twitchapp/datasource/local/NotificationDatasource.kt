@@ -21,15 +21,12 @@ class NotificationDatasource @Inject constructor(
         twitchNotificationDao.getAllNotifications().map {
             it.map { twitchNotificationEntity ->
                 when (twitchNotificationEntity.childType) {
-                    "GameNotification" -> gameNotificationDao.getGameNotification(
+                    TwitchNotificationType.GAME -> gameNotificationDao.getGameNotification(
                         twitchNotificationEntity.childId
-                    )
-                        .toModel()
-                    "StreamNotification" -> streamNotificationDao.getStreamNotification(
+                    ).toModel()
+                    TwitchNotificationType.STREAMS -> streamNotificationDao.getStreamNotification(
                         twitchNotificationEntity.childId
-                    )
-                        .toModel()
-                    else -> throw IllegalArgumentException() //TODO
+                    ).toModel()
                 }
             }
         }.flowOn(ioDispatcher)
@@ -43,10 +40,8 @@ class NotificationDatasource @Inject constructor(
                 is TwitchNotification.GameNotification -> {
                     twitchNotificationDao.insert(
                         TwitchNotificationEntity(
-                            title = notification.title,
-                            description = notification.description,
                             date = notification.date,
-                            childType = "GameNotification", //TODO
+                            childType = TwitchNotificationType.GAME,
                             childId = gameNotificationDao.insert(
                                 GameNotificationEntity.fromModel(
                                     notification
@@ -58,14 +53,10 @@ class NotificationDatasource @Inject constructor(
                 is TwitchNotification.StreamNotification ->
                     twitchNotificationDao.insert(
                         TwitchNotificationEntity(
-                            title = notification.title,
-                            description = notification.description,
                             date = notification.date,
-                            childType = "StreamNotification", //TODO
+                            childType = TwitchNotificationType.STREAMS,
                             childId = streamNotificationDao.insert(
-                                StreamNotificationEntity.fromModel(
-                                    notification
-                                )
+                                StreamNotificationEntity.fromModel(notification)
                             )
                         )
                     )

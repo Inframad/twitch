@@ -18,7 +18,7 @@ class TwitchNotificationViewHolder(
             notificationDescriptionTextView.text = notification.description
             notificationDateTextView.text =
                 DateTimeFormatter.ofPattern("MM.dd hh:mm").format(notification.date.toInstant().atOffset(
-                    ZoneOffset.UTC).toLocalDateTime()).toString()
+                    ZoneOffset.UTC).toLocalDateTime()).toString() //TODO
         }
     }
 

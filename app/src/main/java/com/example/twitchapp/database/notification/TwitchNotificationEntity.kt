@@ -8,9 +8,7 @@ import java.util.*
 class TwitchNotificationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val title: String?,
-    val description: String?,
     val date: Date,
-    val childType: String, //TODO
+    val childType: TwitchNotificationType,
     val childId: Long
 )
