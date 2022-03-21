@@ -8,6 +8,7 @@ object NotificationConst {
     const val TWITCH_NOTIFICATION_KEY = "TWITCH_NOTIFICATION"
     const val FCM_TOPIC_NAME = "main"
     const val NOTIFICATION_ID = 0
+    const val NOTIFICATION_REQUEST_CODE = 0
 
     object MessageKeys {
         const val MESSAGE_ID = "google.message_id"
