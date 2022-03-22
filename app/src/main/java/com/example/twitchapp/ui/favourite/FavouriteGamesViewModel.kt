@@ -36,5 +36,6 @@ class FavouriteGamesViewModel @Inject constructor(
             }
             is Result.Error -> UiState.Error(handleBaseError(result.e))
             Result.Empty -> UiState.Empty
+            Result.Loading -> UiState.Loading
         }
 }

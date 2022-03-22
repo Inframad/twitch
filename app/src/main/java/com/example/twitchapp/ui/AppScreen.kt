@@ -7,6 +7,7 @@ enum class AppScreen {
     STREAMS,
     GAME,
     FAVOURITE,
+    NOTIFICATIONS,
     APP_REVIEW;
 
     companion object {
@@ -16,6 +17,7 @@ enum class AppScreen {
                 R.id.gameFragment -> GAME
                 R.id.appReviewFragment -> APP_REVIEW
                 R.id.favouriteGamesFragment -> FAVOURITE
+                R.id.notificationsListFragment -> NOTIFICATIONS
                 else -> throw IllegalArgumentException("AppScreens don't contain mapper for id ($id)")
             }
     }

@@ -24,11 +24,11 @@ interface GameDao: BaseDao<GameEntity> {
     suspend fun updateGame(game: GameEntity)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(gameEntity: GameEntity)
+    suspend fun insertWithIgnore(gameEntity: GameEntity)
 
     @Transaction
     suspend fun saveAndGetGame(gameEntity: GameEntity): GameEntity {
-        insert(gameEntity)
+        insertWithIgnore(gameEntity)
         return getGameById(gameEntity.id)
     }
 }
