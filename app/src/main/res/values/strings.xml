@@ -15,6 +15,10 @@
     <string name="scr_any_lbl_new_streams_available">Доступны новые стримы</string>
     <string name="scr_any_lbl_press_to_open_list">Нажмите чтобы открыть список</string>
     <string name="scr_any_lbl_game_info_updated">Информация об игре обновилась</string>
+    <string name="scr_any_lbl_notifications">Уведомления</string>
+    <string name="scr_any_lbl_no_notifications">У вас нет уведомлений</string>
+    <string name="scr_any_date_time_pattern">dd.MM hh:mm</string>
+    <string name="scr_any_lbl_go_to">Перейти</string>
 
     <!-- Streams -->
     <string name="src_streams_lbl_saved_data_is_loaded">Интернет соединение недоступно, загружены сохраненные данные</string>
@@ -28,9 +32,5 @@
     <!-- Favourite games -->
     <string name="scr_favourite_games_no_favourite_games">Вы еще ничего не добавили в избранное</string>
     <string name="scr_game_lbl_game_data_updated">Данные по текущей игре обновлены</string>
-    <string name="scr_any_lbl_notifications">Уведомления</string>
-    <string name="scr_any_lbl_no_notifications">У вас нет уведомлений</string>
-    <string name="scr_any_date_time_pattern">dd.MM hh:mm</string>
-    <string name="scr_any_lbl_go_to">Перейти</string>
 
 </resources>

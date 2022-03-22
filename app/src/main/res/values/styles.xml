@@ -2,6 +2,7 @@
 <resources>
 
     <style name="MaterialCardStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">8dp</item>
         <item name="android:layout_marginStart">@dimen/card_text_margin_horizontal</item>
         <item name="android:layout_marginEnd">@dimen/card_text_margin_horizontal</item>
         <item name="android:layout_marginTop">@dimen/card_view_margin_vertical</item>
@@ -13,9 +14,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Widget.AppCompat.TextView.SecondaryText">
+        <item name="android:textSize">@dimen/secondary_text_size</item>
+    </style>
+
     <style name="Widget.AppCompat.TextView.FullScreenText">
         <item name="android:layout_margin">16dp</item>
-        <item name="android:textSize">@dimen/full_screen_msg_text_size</item>
+        <item name="android:textSize">@dimen/full_screen_text_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_gravity">center</item>
     </style>

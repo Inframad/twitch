@@ -21,13 +21,14 @@
             style="@style/Widget.AppCompat.TextView.FullScreenText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/src_streams_lbl_no_saved_data_and_internet" />
+            android:text="@string/src_streams_lbl_no_saved_data_and_internet"
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/main_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"/>
 
     </FrameLayout>
 

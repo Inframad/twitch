@@ -14,7 +14,8 @@
         <ImageView
             android:id="@+id/game_stream_image_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/image_view_height_200dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1.774"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
