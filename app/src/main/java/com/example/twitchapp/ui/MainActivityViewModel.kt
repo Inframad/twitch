@@ -1,10 +1,10 @@
 package com.example.twitchapp.ui
 
 import android.content.Context
+import com.example.twitchapp.BuildConfig
 import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
-import com.example.twitchapp.notification.NotificationConst
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -32,7 +32,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun initialized() {
-        FirebaseMessaging.getInstance().subscribeToTopic(NotificationConst.FCM_TOPIC_NAME)
+        FirebaseMessaging.getInstance().subscribeToTopic(BuildConfig.FCM_TOPIC_NAME)
     }
 
     fun onIntent(notification: GameNotification) {

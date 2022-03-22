@@ -11,6 +11,10 @@ plugins {
 android {
     compileSdk 32
 
+    lintOptions {
+        baseline file("lint-baseline.xml")
+    }
+
     defaultConfig {
         applicationId "com.example.twitchapp"
         minSdk 21
@@ -25,11 +29,13 @@ android {
         debug {
             buildConfigField "String", "TOKEN", "\"w70n5qwx7zi4qufg12212nh3m4yx8w\""
             buildConfigField "String", "CLIENT_ID", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
+            buildConfigField "String", "FCM_TOPIC_NAME", "\"dev\""
             buildConfigField "String", "BASE_URL", "\"https://api.twitch.tv/helix/\""
         }
         release {
             buildConfigField "String", "TOKEN", "\"w70n5qwx7zi4qufg12212nh3m4yx8w\""
             buildConfigField "String", "CLIENT_ID", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
+            buildConfigField "String", "FCM_TOPIC_NAME", "\"main\""
             buildConfigField "String", "BASE_URL", "\"https://api.twitch.tv/helix/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
