@@ -12,9 +12,9 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/game_stream_iv"
+            android:id="@+id/game_stream_image_view"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="@dimen/image_view_height_300dp"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
@@ -23,32 +23,32 @@
             tools:src="@tools:sample/backgrounds/scenic" />
 
         <TextView
-            android:id="@+id/game_name_tv"
+            android:id="@+id/game_name_text_view"
             style="@style/Widget.AppCompat.TextView.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/game_stream_iv"
+            app:layout_constraintTop_toBottomOf="@id/game_stream_image_view"
             tools:text="Name of a game" />
 
         <TextView
-            android:id="@+id/username_tv"
+            android:id="@+id/streamer_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/card_text_margin_horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/game_name_tv"
+            app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
             tools:text="Username" />
 
         <ImageView
             android:id="@+id/views_iv"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/image_view_width_25dp"
+            android:layout_height="@dimen/image_view_height_25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/amount_of_views_tv"
-            app:layout_constraintTop_toBottomOf="@id/game_name_tv"
+            app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
             app:srcCompat="@android:drawable/ic_menu_view" />
 
         <TextView
@@ -58,7 +58,7 @@
             android:layout_marginEnd="@dimen/card_text_margin_horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/game_name_tv"
+            app:layout_constraintTop_toBottomOf="@id/game_name_text_view"
             tools:text="123" />
 
 
