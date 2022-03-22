@@ -3,9 +3,10 @@ package com.example.twitchapp.database.game
 import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.twitchapp.database.DbConstants
 import com.example.twitchapp.model.game.Game
 
-@Entity(tableName = "GAMES")
+@Entity(tableName = DbConstants.GAMES_TABLE_NAME)
 class GameEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,

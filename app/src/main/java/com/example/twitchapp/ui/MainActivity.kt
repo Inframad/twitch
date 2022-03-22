@@ -72,6 +72,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     putExtra(NotificationConst.TWITCH_NOTIFICATION_KEY, it)
                 })
             }
+            bindCommandAction(sendIntentToNotificationsScreenCommand) {
+                sendBroadcast(Intent().apply {
+                    action = NotificationConst.INTENT_FILTER_NOTIFICATIONS_SCREEN
+                })
+            }
             bindCommandAction(showToastCommand) {
                 Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
             }

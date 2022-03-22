@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.Result
+import com.example.twitchapp.model.SnackbarData
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.streams.GameStream
-import com.example.twitchapp.notification.TwitchNotifier
 import com.example.twitchapp.repository.Repository
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,15 +19,18 @@ import javax.inject.Inject
 @HiltViewModel
 class GameViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val repository: Repository,
-    private val notifier: TwitchNotifier
+    private val repository: Repository
 ) : BaseViewModel(context) {
 
     val uiState = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
     private var game: Game? = null
     private var isGameModelFetched = false
 
+    val showSnackbarCommand = TCommand<SnackbarData>(null)
+    val navigateToGameScreenCommand = TCommand<GameNotification>()
+
     val toggleFavouriteCommand = TCommand<Int>()
+
 
     fun init(stream: GameStream?, notification: GameNotification?) {
         if(!isGameModelFetched) {
@@ -61,7 +64,8 @@ class GameViewModel @Inject constructor(
                         }
                         UiState.Loaded(
                             GameScreenModel(
-                                name = result.data.name ?: getString(R.string.scr_any_lbl_unknown),
+                                name = result.data.name
+                                    ?: getString(R.string.scr_any_lbl_unknown),
                                 streamerName = streamerName
                                     ?: getString(R.string.scr_any_lbl_unknown),
                                 viewersCount = viewersCount.toString(),
@@ -92,15 +96,21 @@ class GameViewModel @Inject constructor(
                     uiState.setValue(
                         UiState.Loaded(
                             GameScreenModel(
-                                name = it.gameName!!,
-                                streamerName = it.streamerName!!,
-                                viewersCount = it.viewersCount!!.toString(),
+                                name = it.gameName
+                                    ?: getString(R.string.scr_any_lbl_unknown),
+                                streamerName = it.streamerName
+                                    ?: getString(R.string.scr_any_lbl_unknown),
+                                viewersCount = it.viewersCount?.toString()
+                                    ?: "0",
                                 imageUrl = game.imageUrl
                             )
                         )
                     )
                 } else {
-                    notifier.showNotification(twitchNotification)
+                    showSnackbarCommand.setValue(SnackbarData(
+                        message = "${twitchNotification.title}\n${twitchNotification.description}",
+                        actionName = getString(R.string.scr_any_lbl_go_to)
+                    ){navigateToGameScreenCommand.setValue(twitchNotification)})
                 }
             }
         }

@@ -22,6 +22,8 @@ class NotificationsListViewModel
 ) : BaseViewModel(context) {
 
     val uiState = mutableStateFlow(UiState.Loading as UiState<List<TwitchNotificationPresentation>>)
+    val toggleFabVisibilityCommand = mutableStateFlow(false)
+    val scrollUpCommand = Command()
 
     init {
         viewModelScope.launch {
@@ -29,6 +31,10 @@ class NotificationsListViewModel
                 uiState.setValue(handleResult(result))
             }
         }
+    }
+
+    fun onMessageReceived(scrollPosition: Int, canScrollDown: Boolean) {
+        if(scrollPosition != 0 || canScrollDown) toggleFabVisibilityCommand.setValue(true)
     }
 
     private fun handleResult(
@@ -48,4 +54,13 @@ class NotificationsListViewModel
             Result.Empty -> UiState.Empty
             Result.Loading -> UiState.Loading
         }
+
+    fun onFloatingActionButtonClicked() {
+        toggleFabVisibilityCommand.setValue(false)
+        scrollUpCommand.setValue(Unit)
+    }
+
+    fun onRecyclerViewScrollStateChanged(canScrollUp: Boolean) {
+        if(!canScrollUp) toggleFabVisibilityCommand.setValue(false)
+    }
 }

@@ -26,6 +26,6 @@ data class GameNotification(
 data class StreamNotification(
     override val messageId: String?,
     override val title: String?,
-    override val description: String? = "",
+    override val description: String? = null,
     override val date: Date
 ): TwitchNotification()

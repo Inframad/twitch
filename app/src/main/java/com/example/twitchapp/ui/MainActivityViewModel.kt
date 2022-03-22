@@ -5,7 +5,6 @@ import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.notification.NotificationConst
-import com.example.twitchapp.notification.TwitchNotifier
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -13,13 +12,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    @ApplicationContext context: Context,
-    private val notifier: TwitchNotifier
+    @ApplicationContext context: Context
 ) : BaseViewModel(context) {
 
     private var _currentScreen = AppScreen.STREAMS
     val toggleBottomNavigationViewVisibility = TCommand<Boolean>()
     val sendIntentToGameScreenCommand = TCommand<GameNotification>()
+    val sendIntentToNotificationsScreenCommand = Command()
     val navigateToGameScreenCommand = TCommand<GameNotification>()
 
     fun onDestinationChanged(screen: AppScreen) {
@@ -45,9 +44,16 @@ class MainActivityViewModel @Inject constructor(
             when {
                 _currentScreen == AppScreen.GAME && it is GameNotification ->
                     sendIntentToGameScreenCommand.setValue(twitchNotification as GameNotification)
-                _currentScreen == AppScreen.GAME && it !is GameNotification ->
-                    notifier.showNotification(it)
-                else -> showToastCommand.setValue("${twitchNotification.title}\n${twitchNotification.description}")
+                _currentScreen == AppScreen.NOTIFICATIONS ->
+                    sendIntentToNotificationsScreenCommand.setValue(Unit)
+                else -> {
+                    showToastCommand.setValue(
+                        twitchNotification.description?.let { description ->
+                            "${twitchNotification.title}\n$description"
+                        }
+                            ?: twitchNotification.title
+                    )
+                }
             }
         }
     }

@@ -1,12 +1,20 @@
 package com.example.twitchapp.ui.notification
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseFragment
 import com.example.twitchapp.common.extensions.bindAction
+import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.databinding.FragmentSimpleListBinding
+import com.example.twitchapp.notification.NotificationConst
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,23 +27,65 @@ class NotificationsListFragment
 
     private var adapter: NotificationsAdapter? = null
 
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, intent: Intent?) {
+            viewModel.onMessageReceived(
+                (viewBinding.recyclerView.layoutManager as LinearLayoutManager)
+                    .findFirstCompletelyVisibleItemPosition(),
+                viewBinding.recyclerView.canScrollVertically(1)
+            )
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        requireActivity().registerReceiver(
+            broadcastReceiver,
+            IntentFilter(NotificationConst.INTENT_FILTER_NOTIFICATIONS_SCREEN)
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireActivity().unregisterReceiver(broadcastReceiver)
+    }
+
     override fun initViews() {
         super.initViews()
         adapter = NotificationsAdapter()
-        viewBinding.recyclerView.adapter = adapter
-        viewBinding.noDataTextView.text = getString(R.string.scr_any_lbl_no_notifications)
+        viewBinding.apply {
+            recyclerView.adapter = adapter
+            noDataTextView.text = getString(R.string.scr_any_lbl_no_notifications)
+            floatingActionButton.setOnClickListener {
+                viewModel.onFloatingActionButtonClicked()
+            }
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    viewModel.onRecyclerViewScrollStateChanged(recyclerView.canScrollVertically(-1))
+                }
+            })
+        }
     }
 
     override fun bindViewModel() {
         super.bindViewModel()
-        bindAction(viewModel.uiState) { uiState ->
-            when (uiState) {
-                is UiState.Loaded -> showFavouriteGamesList(
-                    uiState.data
-                )
-                is UiState.Error -> showError(uiState.msg)
-                UiState.Loading -> showLoading()
-                UiState.Empty -> showNoDataPlaceholder()
+        with(viewModel) {
+            bindAction(uiState) { uiState ->
+                when (uiState) {
+                    is UiState.Loaded -> showFavouriteGamesList(
+                        uiState.data
+                    )
+                    is UiState.Error -> showError(uiState.msg)
+                    UiState.Loading -> showLoading()
+                    UiState.Empty -> showNoDataPlaceholder()
+                }
+            }
+            bindAction(toggleFabVisibilityCommand) {
+                viewBinding.floatingActionButton.isVisible = it
+            }
+            bindCommandAction(scrollUpCommand) {
+                viewBinding.recyclerView.smoothScrollToPosition(0)
             }
         }
     }
@@ -73,4 +123,6 @@ class NotificationsListFragment
         }
         adapter?.submitList(notifications)
     }
+
+
 }

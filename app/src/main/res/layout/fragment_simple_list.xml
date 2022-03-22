@@ -9,6 +9,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <FrameLayout
@@ -50,5 +51,15 @@
             android:layout_height="wrap_content"
             tools:text="@tools:sample/lorem" />
     </FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_up_arrow"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
 
 </FrameLayout>

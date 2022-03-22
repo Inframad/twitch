@@ -17,8 +17,10 @@ import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.common.extensions.glideImage
 import com.example.twitchapp.common.extensions.setTintColor
 import com.example.twitchapp.databinding.FragmentGameBinding
+import com.example.twitchapp.navigation.Navigator
 import com.example.twitchapp.notification.NotificationConst
 import com.example.twitchapp.ui.UiState
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +40,8 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
         super.onStart()
         requireActivity().registerReceiver(
             gameBroadcastReceiver,
-            IntentFilter(NotificationConst.INTENT_FILTER_GAME))
+            IntentFilter(NotificationConst.INTENT_FILTER_GAME)
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,6 +75,18 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
             }
             bindCommandAction(toggleFavouriteCommand) { color ->
                 viewBinding.favouriteGameImageButton.setTintColor(color)
+            }
+            bindCommandAction(navigateToGameScreenCommand) {
+                Navigator.goToGameScreen(this@GameFragment, GameFragmentArgs(notification = it))
+            }
+            bindCommandAction(showSnackbarCommand) {
+                Snackbar.make(
+                    viewBinding.root,
+                    it.message,
+                    Snackbar.LENGTH_LONG
+                ).setAction(it.actionName, it.action)
+                    .setAnchorView(R.id.bottom_navigation)
+                    .show()
             }
         }
     }

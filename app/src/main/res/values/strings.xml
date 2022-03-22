@@ -31,5 +31,6 @@
     <string name="scr_any_lbl_notifications">Уведомления</string>
     <string name="scr_any_lbl_no_notifications">У вас нет уведомлений</string>
     <string name="scr_any_date_time_pattern">dd.MM hh:mm</string>
+    <string name="scr_any_lbl_go_to">Перейти</string>
 
 </resources>

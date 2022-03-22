@@ -3,9 +3,10 @@ package com.example.twitchapp.database.streams
 import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.twitchapp.database.DbConstants
 import com.example.twitchapp.model.streams.GameStream
 
-@Entity(tableName = "STREAMS")
+@Entity(tableName = DbConstants.STREAMS_TABLE_NAME)
 class GameStreamEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,

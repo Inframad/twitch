@@ -2,10 +2,11 @@ package com.example.twitchapp.database.notification
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.twitchapp.database.DbConstants
 import com.example.twitchapp.model.notifications.StreamNotification
 import java.util.*
 
-@Entity(tableName = "STREAMS_NOTIFICATIONS")
+@Entity(tableName = DbConstants.STREAM_NOTIFICATIONS_TABLE_NAME)
 class StreamNotificationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,

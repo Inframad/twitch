@@ -12,9 +12,10 @@
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_favourite_games.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_game.xml" value="0.3005050505050505" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_game_layout.xml" value="0.21770833333333334" />
-        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_game_streams.xml" value="0.1" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_game_streams.xml" value="0.22" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_notifications_list.xml" value="0.1" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/fragment_simple_list.xml" value="0.1" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/game_streams_load_state_footer.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/item_favourite_game.xml" value="0.16979166666666667" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/TwitchApp/app/src/main/res/layout/item_game_stream.xml" value="0.43209876543209874" />
