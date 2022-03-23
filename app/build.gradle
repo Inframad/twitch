@@ -85,6 +85,8 @@ dependencies {
     def nav_version = "2.4.1"
     def hilt_version = "2.38.1"
     def view_binding_property_delegate_version = "1.4.4"
+    def moshi_version = "1.13.0"
+    def firebase_version = "29.2.0"
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
@@ -113,13 +115,12 @@ dependencies {
 
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$view_binding_property_delegate_version"
 
-    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
-    implementation 'com.squareup.moshi:moshi:1.13.0'
-    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.13.0'
+    implementation "com.squareup.moshi:moshi-kotlin:${moshi_version}"
+    implementation "com.squareup.moshi:moshi:${moshi_version}"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:${moshi_version}"
 
-    implementation platform('com.google.firebase:firebase-bom:29.2.0')
+    implementation platform("com.google.firebase:firebase-bom:$firebase_version")
     implementation 'com.google.firebase:firebase-messaging'
-    implementation 'com.google.firebase:firebase-analytics'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
