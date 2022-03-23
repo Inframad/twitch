@@ -31,7 +31,7 @@ class GameViewModel @Inject constructor(
     private var game: Game? = null
     private var isGameModelFetched = false
 
-    val toggleFavouriteCommand = TCommand<Int>()
+    val toggleFavourite = mutableStateFlow(R.color.grey_400)
 
     fun init(stream: GameStream?, notification: GameNotification?) {
         viewModelScope.launch {
@@ -90,7 +90,7 @@ class GameViewModel @Inject constructor(
     }
 
     private fun toggleFavourite() {
-        toggleFavouriteCommand.setValue(
+        toggleFavourite.setValue(
             if (game?.isFavourite == true) R.color.red_400
             else R.color.grey_400
         )

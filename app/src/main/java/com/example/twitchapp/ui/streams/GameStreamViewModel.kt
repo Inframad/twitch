@@ -57,6 +57,7 @@ class GameStreamViewModel @Inject constructor(
             retryButtonIsVisible = loadState is LoadState.Error,
             errorMsgIsVisible = loadState is LoadState.Error
         )
+
     fun onPagesUpdated() {
         isNoDataPlaceholderVisible.setValue(false)
         isRefreshing.setValue(false)
