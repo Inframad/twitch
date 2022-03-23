@@ -3,6 +3,7 @@ package com.example.twitchapp.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -14,6 +15,9 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.databinding.ActivityMainBinding
+import com.example.twitchapp.model.notifications.GameNotification
+import com.example.twitchapp.navigation.Navigator
+import com.example.twitchapp.notification.NotificationConst
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,14 +30,22 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initNavigation()
         bindViewModel()
+        init()
     }
 
     private fun bindViewModel() {
-        bindCommandAction(viewModel.toggleBottomNavigationViewVisibility) {
-            viewBinding.bottomNavigation.isVisible = it
+        with(viewModel) {
+            bindCommandAction(toggleBottomNavigationViewVisibility) {
+                viewBinding.bottomNavigation.isVisible = it
+            }
+            bindCommandAction(showToastCommand) {
+                Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
+            }
+            bindCommandAction(navigateToGameScreenCommand) {
+                Navigator.goToGameScreen(this@MainActivity, it)
+            }
         }
     }
 
@@ -48,6 +60,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 viewModel.onDestinationChanged(AppScreen.fromResId(destination.id))
             }
         }
+    }
+
+    private fun init() {
+        lifecycle.addObserver(viewModel)
+        viewModel.initialized()
+        intent?.extras?.getParcelable<GameNotification>(NotificationConst.TWITCH_NOTIFICATION_KEY)
+            ?.let {
+                viewModel.onIntent(it)
+                intent.removeExtra(NotificationConst.TWITCH_NOTIFICATION_KEY)
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

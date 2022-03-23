@@ -16,4 +16,12 @@
         android:orderInCategory="2"
         android:icon="@drawable/ic_heart"
         android:title="@string/scr_any_lbl_favorite"/>
+
+    <item
+        android:id="@+id/nav_notifications"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:orderInCategory="2"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/scr_any_lbl_notifications"/>
 </menu>

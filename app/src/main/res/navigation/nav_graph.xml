@@ -6,6 +6,7 @@
 
     <include app:graph="@navigation/nav_streams" />
     <include app:graph="@navigation/nav_favourite" />
+    <include app:graph="@navigation/nav_notifications" />
 
     <fragment
         android:id="@+id/appReviewFragment"

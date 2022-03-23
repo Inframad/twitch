@@ -5,10 +5,31 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
 }
+
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+def keystoreProperties = new Properties()
+
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdk 32
+
+    lintOptions {
+        baseline file("lint-baseline.xml")
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
 
     defaultConfig {
         applicationId "com.example.twitchapp"
@@ -18,23 +39,28 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
         debug {
             buildConfigField "String", "TOKEN", "\"w70n5qwx7zi4qufg12212nh3m4yx8w\""
             buildConfigField "String", "CLIENT_ID", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
+            buildConfigField "String", "FCM_TOPIC_NAME", "\"dev\""
             buildConfigField "String", "BASE_URL", "\"https://api.twitch.tv/helix/\""
         }
         release {
+            applicationIdSuffix ".release"
             buildConfigField "String", "TOKEN", "\"w70n5qwx7zi4qufg12212nh3m4yx8w\""
             buildConfigField "String", "CLIENT_ID", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
+            buildConfigField "String", "FCM_TOPIC_NAME", "\"main\""
             buildConfigField "String", "BASE_URL", "\"https://api.twitch.tv/helix/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -43,6 +69,9 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
     }
 }
 
@@ -56,6 +85,10 @@ dependencies {
     def nav_version = "2.4.1"
     def hilt_version = "2.38.1"
     def view_binding_property_delegate_version = "1.4.4"
+    def moshi_version = "1.13.0"
+    def firebase_version = "29.2.0"
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
@@ -82,9 +115,12 @@ dependencies {
 
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$view_binding_property_delegate_version"
 
-    implementation "com.squareup.moshi:moshi-kotlin:1.13.0" //TODO
-    implementation 'com.squareup.moshi:moshi:1.13.0'
-    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.13.0'
+    implementation "com.squareup.moshi:moshi-kotlin:${moshi_version}"
+    implementation "com.squareup.moshi:moshi:${moshi_version}"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:${moshi_version}"
+
+    implementation platform("com.google.firebase:firebase-bom:$firebase_version")
+    implementation 'com.google.firebase:firebase-messaging'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 

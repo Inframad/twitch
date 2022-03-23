@@ -24,7 +24,7 @@ class GameStreamsFragment : BaseFragment<GameStreamViewModel>(R.layout.fragment_
 
     override fun initViews() {
         pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator()) { gameStream ->
-            Navigator.goToGameScreen(this, GameFragmentArgs(gameStream))
+            Navigator.goToGameScreen(this, GameFragmentArgs(stream = gameStream))
         }
 
         viewBinding.apply {

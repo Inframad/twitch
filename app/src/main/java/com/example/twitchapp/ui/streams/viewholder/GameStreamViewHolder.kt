@@ -13,10 +13,10 @@ class GameStreamViewHolder(private val binding: ItemGameStreamBinding) :
     fun bind(gameStream: GameStream, onClick: (GameStream) -> Unit) {
         binding.apply {
 
-            gameStreamIv.glideImage(gameStream.imageUrl)
+            gameStreamImageView.glideImage(gameStream.imageUrl)
 
-            gameNameTv.text = gameStream.gameName
-            usernameTv.text = gameStream.userName
+            gameNameTextView.text = gameStream.gameName
+            streamerNameTextView.text = gameStream.userName
             amountOfViewsTv.text = gameStream.viewerCount.toString()
 
             root.setOnClickListener { onClick(gameStream) }

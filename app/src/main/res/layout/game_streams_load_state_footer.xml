@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="@dimen/padding_8dp">
     <TextView
         android:id="@+id/error_msg"
         android:textSize="@dimen/footer_error_text_size"

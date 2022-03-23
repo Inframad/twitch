@@ -29,7 +29,8 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
     }
 
     override fun initViews() {
-        viewBinding.noDataTextView.text = getString(R.string.src_streams_lbl_no_saved_data_and_internet)
+        viewBinding.noDataTextView.text =
+            getString(R.string.src_streams_lbl_no_saved_data_and_internet)
         viewBinding.favouriteGameImageButton.setOnClickListener {
             viewModel.favouriteGameImageButtonClicked()
         }
@@ -46,7 +47,7 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
                     UiState.Empty -> showNoDataPlaceholder()
                 }
             }
-            bindCommandAction(toggleFavouriteCommand) { color ->
+            bindAction(toggleFavourite) { color ->
                 viewBinding.favouriteGameImageButton.setTintColor(color)
             }
         }
@@ -85,6 +86,6 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
     }
 
     private fun init() {
-        viewModel.init(navArgs.stream)
+        viewModel.init(navArgs.stream, navArgs.notification)
     }
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "411445696811",
+    "project_id": "twitchapp-4c85e",
+    "storage_bucket": "twitchapp-4c85e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411445696811:android:eb3a869f27d2989b860d6e",
+        "android_client_info": {
+          "package_name": "com.example.twitchapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "411445696811-27hvrohgo3s3vinhjul8gu3oqkpj5l65.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8ocBWdHitKqcEbzdBDnZgwpxYkV55A1g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "411445696811-27hvrohgo3s3vinhjul8gu3oqkpj5l65.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
