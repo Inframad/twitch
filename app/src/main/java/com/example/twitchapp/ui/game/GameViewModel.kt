@@ -26,19 +26,16 @@ class GameViewModel @Inject constructor(
     private var game: Game? = null
     private var isGameModelFetched = false
 
-    val showSnackbarCommand = TCommand<SnackbarData>(null)
-    val navigateToGameScreenCommand = TCommand<GameNotification>()
-
     val toggleFavouriteCommand = TCommand<Int>()
 
 
     fun init(stream: GameStream?, notification: GameNotification?) {
-        if(!isGameModelFetched) {
+        if (!isGameModelFetched) {
             stream?.let {
                 fetchGameModel(stream.gameName, stream.userName, stream.viewerCount)
                 return
             }
-            notification?.let { fetchGameModel(it.gameName, it.streamerName, it.viewersCount)}
+            notification?.let { fetchGameModel(it.gameName, it.streamerName, it.viewersCount) }
         }
     }
 
@@ -101,7 +98,7 @@ class GameViewModel @Inject constructor(
                                 streamerName = it.streamerName
                                     ?: getString(R.string.scr_any_lbl_unknown),
                                 viewersCount = it.viewersCount?.toString()
-                                    ?: "0",
+                                    ?: getString(R.string.scr_any_lbl_null_viewers_count),
                                 imageUrl = game.imageUrl
                             )
                         )
@@ -110,7 +107,11 @@ class GameViewModel @Inject constructor(
                     showSnackbarCommand.setValue(SnackbarData(
                         message = "${twitchNotification.title}\n${twitchNotification.description}",
                         actionName = getString(R.string.scr_any_lbl_go_to)
-                    ){navigateToGameScreenCommand.setValue(twitchNotification)})
+                    ) {
+                        navigateToGameScreenCommand.setValue(
+                            GameFragmentArgs(notification = twitchNotification)
+                        )
+                    })
                 }
             }
         }

@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import com.example.twitchapp.R
+import com.example.twitchapp.model.SnackbarData
+import com.example.twitchapp.ui.game.GameFragmentArgs
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import retrofit2.HttpException
@@ -17,6 +19,8 @@ import java.net.UnknownHostException
 abstract class BaseViewModel(private val applicationContext: Context) : ViewModel() {
 
     val showToastCommand = TCommand<String?>()
+    val showSnackbarCommand = TCommand<SnackbarData?>()
+    val navigateToGameScreenCommand = TCommand<GameFragmentArgs?>()
 
     protected fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
         applicationContext.getString(resId, *formatArgs)

@@ -22,7 +22,6 @@ import com.example.twitchapp.databinding.ActivityMainBinding
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.navigation.Navigator
 import com.example.twitchapp.notification.NotificationConst
-import com.example.twitchapp.ui.game.GameFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -81,7 +80,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
             }
             bindCommandAction(navigateToGameScreenCommand) {
-                Navigator.goToGameScreen(this@MainActivity, GameFragmentArgs(notification = it))
+                Navigator.goToGameScreen(this@MainActivity, it)
             }
         }
     }

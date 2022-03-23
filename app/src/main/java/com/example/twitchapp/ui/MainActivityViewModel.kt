@@ -5,6 +5,7 @@ import com.example.twitchapp.BuildConfig
 import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
+import com.example.twitchapp.ui.game.GameFragmentArgs
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -19,7 +20,6 @@ class MainActivityViewModel @Inject constructor(
     val toggleBottomNavigationViewVisibility = TCommand<Boolean>()
     val sendIntentToGameScreenCommand = TCommand<GameNotification>()
     val sendIntentToNotificationsScreenCommand = Command()
-    val navigateToGameScreenCommand = TCommand<GameNotification>()
 
     fun onDestinationChanged(screen: AppScreen) {
         _currentScreen = screen
@@ -36,7 +36,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun onIntent(notification: GameNotification) {
-        navigateToGameScreenCommand.setValue(notification)
+        navigateToGameScreenCommand.setValue(GameFragmentArgs(notification = notification))
     }
 
     fun messageReceived(twitchNotification: TwitchNotification?) {
