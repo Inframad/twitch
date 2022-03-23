@@ -1,32 +1,33 @@
 package com.example.twitchapp.ui.favourite
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
-import com.example.twitchapp.common.BaseViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.twitchapp.common.BaseViewModelRx
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.repository.Repository
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @HiltViewModel
 class FavouriteGamesViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val repository: Repository
-) : BaseViewModel(context) {
+    repository: Repository
+) : BaseViewModelRx(context) {
 
-    val uiState = mutableStateFlow(UiState.Loading as UiState<List<Game>>)
+    private val _uiState = MutableLiveData<UiState<List<Game>>>()
+    val uiState: LiveData<UiState<List<Game>>> = _uiState
 
     init {
-        viewModelScope.launch {
-            repository.getFavouriteGames().collect { result ->
-                uiState.setValue(handleResult(result))
+        repository.getFavouriteGames()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                _uiState.value = handleResult(result)
             }
-        }
     }
 
     private fun handleResult(result: Result<List<Game>>): UiState<List<Game>> =

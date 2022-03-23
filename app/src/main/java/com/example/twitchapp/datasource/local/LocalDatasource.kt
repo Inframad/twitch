@@ -3,7 +3,7 @@ package com.example.twitchapp.datasource.local
 import com.example.twitchapp.database.streams.GameStreamEntity
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.rxjava3.core.Observable
 
 interface LocalDatasource {
 
@@ -14,7 +14,7 @@ interface LocalDatasource {
     suspend fun getGameStreamsFirstPage(): List<GameStreamEntity>
     suspend fun getGame(name: String): Game
     suspend fun isGameExist(name: String): Boolean
-    fun getFavouriteGames(): Flow<Result.Success<List<Game>>>
+    fun getFavouriteGames(): Observable<Result.Success<List<Game>>>
     suspend fun updateGame(game: Game)
     suspend fun saveAndGetGame(game: Game): Game
 }

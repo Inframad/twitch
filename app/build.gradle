@@ -87,6 +87,7 @@ dependencies {
     def view_binding_property_delegate_version = "1.4.4"
     def moshi_version = "1.13.0"
     def firebase_version = "29.2.0"
+    def rx_version = "3.0.0"
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
@@ -100,6 +101,7 @@ dependencies {
 
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-rxjava3:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
@@ -121,6 +123,10 @@ dependencies {
 
     implementation platform("com.google.firebase:firebase-bom:$firebase_version")
     implementation 'com.google.firebase:firebase-messaging'
+
+    implementation "io.reactivex.rxjava3:rxandroid:$rx_version"
+    implementation "io.reactivex.rxjava3:rxjava:$rx_version"
+    implementation "io.reactivex.rxjava3:rxkotlin:$rx_version"
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 

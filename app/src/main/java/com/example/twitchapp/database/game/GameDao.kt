@@ -3,7 +3,7 @@ package com.example.twitchapp.database.game
 import androidx.room.*
 import com.example.twitchapp.database.BaseDao
 import com.example.twitchapp.database.DbConstants
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.rxjava3.core.Observable
 
 @Dao
 interface GameDao: BaseDao<GameEntity> {
@@ -18,7 +18,7 @@ interface GameDao: BaseDao<GameEntity> {
     suspend fun isGameExist(name: String): Boolean
 
     @Query("SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE isFavourite=1")
-    fun getFavoriteGames(): Flow<List<GameEntity>>
+    fun getFavoriteGames(): Observable<List<GameEntity>>
 
     @Update
     suspend fun updateGame(game: GameEntity)
