@@ -29,7 +29,7 @@ class GameViewModel @Inject constructor(
     val showSnackbarCommand = TCommand<SnackbarData>(null)
     val navigateToGameScreenCommand = TCommand<GameNotification>()
 
-    val toggleFavouriteCommand = TCommand<Int>()
+    val toggleFavourite = mutableStateFlow(R.color.grey_400)
 
 
     fun init(stream: GameStream?, notification: GameNotification?) {
@@ -82,7 +82,7 @@ class GameViewModel @Inject constructor(
     }
 
     private fun toggleFavourite() {
-        toggleFavouriteCommand.setValue(
+        toggleFavourite.setValue(
             if (game?.isFavourite == true) R.color.red_400
             else R.color.grey_400
         )

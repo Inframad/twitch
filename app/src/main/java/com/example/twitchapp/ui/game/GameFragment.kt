@@ -73,7 +73,7 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
                     UiState.Empty -> showNoDataPlaceholder()
                 }
             }
-            bindCommandAction(toggleFavouriteCommand) { color ->
+            bindAction(toggleFavourite) { color ->
                 viewBinding.favouriteGameImageButton.setTintColor(color)
             }
             bindCommandAction(navigateToGameScreenCommand) {

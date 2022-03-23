@@ -22,4 +22,6 @@
     <dimen name="image_view_height_300dp">300dp</dimen>
     <dimen name="image_view_width_25dp">25dp</dimen>
     <dimen name="image_view_height_25dp">25dp</dimen>
+    <string name="game_image_dimension_ratio">0.752</string>
+    <string name="game_stream_image_view_dimension_ratio">1.774</string>
 </resources>
