@@ -1,9 +1,5 @@
 package com.example.twitchapp.ui.notification
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +10,6 @@ import com.example.twitchapp.common.BaseFragment
 import com.example.twitchapp.common.extensions.bindAction
 import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.databinding.FragmentSimpleListBinding
-import com.example.twitchapp.notification.NotificationConst
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,29 +21,6 @@ class NotificationsListFragment
     override val viewModel: NotificationsListViewModel by viewModels()
 
     private var adapter: NotificationsAdapter? = null
-
-    private val broadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(p0: Context?, intent: Intent?) {
-            viewModel.onMessageReceived(
-                (viewBinding.recyclerView.layoutManager as LinearLayoutManager)
-                    .findFirstCompletelyVisibleItemPosition(),
-                viewBinding.recyclerView.canScrollVertically(1)
-            )
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        requireActivity().registerReceiver(
-            broadcastReceiver,
-            IntentFilter(NotificationConst.INTENT_FILTER_NOTIFICATIONS_SCREEN)
-        )
-    }
-
-    override fun onPause() {
-        super.onPause()
-        requireActivity().unregisterReceiver(broadcastReceiver)
-    }
 
     override fun initViews() {
         super.initViews()
@@ -87,6 +59,13 @@ class NotificationsListFragment
             bindCommandAction(scrollUpCommand) {
                 viewBinding.recyclerView.smoothScrollToPosition(0)
             }
+            bindCommandAction(sendScrollStateCommand) {
+                onSendScrollStateCommand(
+                    (viewBinding.recyclerView.layoutManager as LinearLayoutManager)
+                        .findFirstCompletelyVisibleItemPosition(),
+                    viewBinding.recyclerView.canScrollVertically(1)
+                )
+            }
         }
     }
 
@@ -123,6 +102,4 @@ class NotificationsListFragment
         }
         adapter?.submitList(notifications)
     }
-
-
 }

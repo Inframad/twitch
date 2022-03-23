@@ -1,9 +1,5 @@
 package com.example.twitchapp.ui
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -32,22 +28,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val viewModel: MainActivityViewModel by viewModels()
     private val viewBinding: ActivityMainBinding by viewBinding()
 
-    private val firebaseBroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(p0: Context?, intent: Intent?) {
-            viewModel.messageReceived(
-                intent?.extras?.getParcelable(NotificationConst.TWITCH_NOTIFICATION_KEY)
-            )
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        registerReceiver(
-            firebaseBroadcastReceiver,
-            IntentFilter(NotificationConst.INTENT_FILTER_FIREBASE)
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initNavigation()
@@ -55,26 +35,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         init()
     }
 
-    override fun onPause() {
-        super.onPause()
-        unregisterReceiver(firebaseBroadcastReceiver)
-    }
-
     private fun bindViewModel() {
         with(viewModel) {
             bindCommandAction(toggleBottomNavigationViewVisibility) {
                 viewBinding.bottomNavigation.isVisible = it
-            }
-            bindCommandAction(sendIntentToGameScreenCommand) {
-                sendBroadcast(Intent().apply {
-                    action = NotificationConst.INTENT_FILTER_GAME
-                    putExtra(NotificationConst.TWITCH_NOTIFICATION_KEY, it)
-                })
-            }
-            bindCommandAction(sendIntentToNotificationsScreenCommand) {
-                sendBroadcast(Intent().apply {
-                    action = NotificationConst.INTENT_FILTER_NOTIFICATIONS_SCREEN
-                })
             }
             bindCommandAction(showToastCommand) {
                 Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
@@ -99,6 +63,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun init() {
+        lifecycle.addObserver(viewModel)
         viewModel.initialized()
         intent?.extras?.getParcelable<GameNotification>(NotificationConst.TWITCH_NOTIFICATION_KEY)
             ?.let {

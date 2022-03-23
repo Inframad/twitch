@@ -1,7 +1,6 @@
 package com.example.twitchapp.notification
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import com.example.twitchapp.App
 import com.example.twitchapp.AppState
@@ -38,26 +37,14 @@ class FirebaseMessagingService : FirebaseMessagingService() {
                 createNotificationModel(it)
             }
 
-            val intent = Intent()
-            intent.action = NotificationConst.INTENT_FILTER_FIREBASE
-
             notificationModel?.let {
                 notificationRepository.saveNotification(it)
-
-                intent.putExtra(
-                    NotificationConst.TWITCH_NOTIFICATION_KEY,
-                    notificationModel
-                )
 
                 when ((application as App).currentAppState) {
                     AppState.OnActivityCreated,
                     AppState.OnActivityStarted,
-                    AppState.OnActivityResumed -> {
-                        applicationContext.sendBroadcast(intent)
-                    }
-                    else -> {
-                        notifier.showNotification(it)
-                    }
+                    AppState.OnActivityResumed -> {}
+                    else -> { notifier.showNotification(it) }
                 }
             }
         }

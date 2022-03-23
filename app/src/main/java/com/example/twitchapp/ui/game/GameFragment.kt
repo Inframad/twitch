@@ -1,9 +1,5 @@
 package com.example.twitchapp.ui.game
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -17,7 +13,6 @@ import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.common.extensions.glideImage
 import com.example.twitchapp.common.extensions.setTintColor
 import com.example.twitchapp.databinding.FragmentGameBinding
-import com.example.twitchapp.notification.NotificationConst
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,28 +23,9 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
     override val viewModel: GameViewModel by viewModels()
     private val navArgs: GameFragmentArgs by navArgs()
 
-    private val gameBroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(p0: Context?, intent: Intent?) {
-            viewModel.onMessageReceived(intent?.extras?.getParcelable(NotificationConst.TWITCH_NOTIFICATION_KEY))
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        requireActivity().registerReceiver(
-            gameBroadcastReceiver,
-            IntentFilter(NotificationConst.INTENT_FILTER_GAME)
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        requireActivity().unregisterReceiver(gameBroadcastReceiver)
     }
 
     override fun initViews() {

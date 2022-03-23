@@ -25,6 +25,7 @@ abstract class BaseFragment<TViewModel : BaseViewModel>(@LayoutRes lId: Int) :
 
     protected open fun bindViewModel() {
         with(viewModel) {
+            lifecycle.addObserver(viewModel)
             bindCommandAction(navigateToGameScreenCommand) {
                 Navigator.goToGameScreen(this@BaseFragment, it)
             }

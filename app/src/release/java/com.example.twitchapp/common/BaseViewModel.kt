@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.annotation.StringRes
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.example.twitchapp.R
 import com.example.twitchapp.model.SnackbarData
@@ -16,8 +19,10 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 @SuppressLint("StaticFieldLeak")
-abstract class BaseViewModel(private val applicationContext: Context) : ViewModel() {
+abstract class BaseViewModel(private val applicationContext: Context)
+    : ViewModel(), LifecycleEventObserver {
 
+    protected var _currentLifecycleOwnerState = Lifecycle.Event.ON_ANY
     val showToastCommand = TCommand<String?>()
     val showSnackbarCommand = TCommand<SnackbarData?>()
     val navigateToGameScreenCommand = TCommand<GameFragmentArgs?>()
@@ -59,6 +64,10 @@ abstract class BaseViewModel(private val applicationContext: Context) : ViewMode
             is UnknownHostException -> getString(R.string.scr_any_lbl_check_internet_connection)
             else -> getString(R.string.scr_any_lbl_unknown_error)
         }
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        _currentLifecycleOwnerState = event
     }
 }
 

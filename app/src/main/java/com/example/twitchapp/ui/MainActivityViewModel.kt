@@ -1,25 +1,38 @@
 package com.example.twitchapp.ui
 
 import android.content.Context
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.BuildConfig
 import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
+import com.example.twitchapp.repository.notification.NotificationRepository
 import com.example.twitchapp.ui.game.GameFragmentArgs
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
+    private val notificationRepository: NotificationRepository
 ) : BaseViewModel(context) {
 
     private var _currentScreen = AppScreen.STREAMS
     val toggleBottomNavigationViewVisibility = TCommand<Boolean>()
-    val sendIntentToGameScreenCommand = TCommand<GameNotification>()
-    val sendIntentToNotificationsScreenCommand = Command()
+
+    init {
+        viewModelScope.launch {
+            notificationRepository.getNotificationsEvent()
+                .takeWhile { _currentLifecycleOwnerState == Lifecycle.Event.ON_RESUME }
+                .collect { messageReceived(it) }
+        }
+    }
 
     fun onDestinationChanged(screen: AppScreen) {
         _currentScreen = screen
@@ -39,23 +52,17 @@ class MainActivityViewModel @Inject constructor(
         navigateToGameScreenCommand.setValue(GameFragmentArgs(notification = notification))
     }
 
-    fun messageReceived(twitchNotification: TwitchNotification?) {
+    private fun messageReceived(twitchNotification: TwitchNotification?) {
         twitchNotification?.let {
-            when {
-                _currentScreen == AppScreen.GAME && it is GameNotification ->
-                    sendIntentToGameScreenCommand.setValue(twitchNotification as GameNotification)
-                _currentScreen == AppScreen.NOTIFICATIONS ->
-                    sendIntentToNotificationsScreenCommand.setValue(Unit)
-                else -> {
-                    showToastCommand.setValue(
-                        twitchNotification.description?.let { description ->
-                            "${twitchNotification.title}\n$description"
-                        }
-                            ?: twitchNotification.title
-                    )
-                }
+            if(_currentScreen != AppScreen.NOTIFICATIONS
+                && _currentScreen != AppScreen.GAME) {
+                showToastCommand.setValue(
+                    twitchNotification.description?.let { description ->
+                        "${twitchNotification.title}\n$description"
+                    }
+                        ?: twitchNotification.title
+                )
             }
         }
     }
-
 }

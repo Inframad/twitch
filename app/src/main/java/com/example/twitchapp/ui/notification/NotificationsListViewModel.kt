@@ -1,6 +1,7 @@
 package com.example.twitchapp.ui.notification
 
 import android.content.Context
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseViewModel
@@ -11,6 +12,7 @@ import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,12 +20,15 @@ import javax.inject.Inject
 class NotificationsListViewModel
 @Inject constructor(
     @ApplicationContext context: Context,
-    private val repository: NotificationRepository
+    private val repository: NotificationRepository,
+    private val notificationRepository: NotificationRepository
 ) : BaseViewModel(context) {
+
+    val scrollUpCommand = Command()
+    val sendScrollStateCommand = Command()
 
     val uiState = mutableStateFlow(UiState.Loading as UiState<List<TwitchNotificationPresentation>>)
     val toggleFabVisibilityCommand = mutableStateFlow(false)
-    val scrollUpCommand = Command()
 
     init {
         viewModelScope.launch {
@@ -31,9 +36,16 @@ class NotificationsListViewModel
                 uiState.setValue(handleResult(result))
             }
         }
+        viewModelScope.launch {
+            notificationRepository.getNotificationsEvent()
+                .takeWhile { _currentLifecycleOwnerState == Lifecycle.Event.ON_RESUME }
+                .collect {
+                    sendScrollStateCommand.setValue(Unit)
+                }
+        }
     }
 
-    fun onMessageReceived(scrollPosition: Int, canScrollDown: Boolean) {
+    fun onSendScrollStateCommand(scrollPosition: Int, canScrollDown: Boolean) {
         if(scrollPosition != 0 || canScrollDown) toggleFabVisibilityCommand.setValue(true)
     }
 

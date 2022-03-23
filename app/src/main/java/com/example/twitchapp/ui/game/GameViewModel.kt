@@ -1,6 +1,7 @@
 package com.example.twitchapp.ui.game
 
 import android.content.Context
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseViewModel
@@ -10,16 +11,20 @@ import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.streams.GameStream
 import com.example.twitchapp.repository.Repository
+import com.example.twitchapp.repository.notification.NotificationRepository
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val repository: Repository
+    private val repository: Repository,
+    private val notificationRepository: NotificationRepository
 ) : BaseViewModel(context) {
 
     val uiState = mutableStateFlow(UiState.Loading as UiState<GameScreenModel>)
@@ -28,8 +33,14 @@ class GameViewModel @Inject constructor(
 
     val toggleFavouriteCommand = TCommand<Int>()
 
-
     fun init(stream: GameStream?, notification: GameNotification?) {
+        viewModelScope.launch {
+            notificationRepository.getNotificationsEvent()
+                .takeWhile { _currentLifecycleOwnerState == Lifecycle.Event.ON_RESUME }
+                .collect {
+                    if (it is GameNotification) onMessageReceived(it)
+                }
+        }
         if (!isGameModelFetched) {
             stream?.let {
                 fetchGameModel(stream.gameName, stream.userName, stream.viewerCount)
@@ -85,7 +96,7 @@ class GameViewModel @Inject constructor(
         )
     }
 
-    fun onMessageReceived(twitchNotification: GameNotification?) {
+    private fun onMessageReceived(twitchNotification: GameNotification?) {
         game?.let { game ->
             twitchNotification?.let {
                 if (twitchNotification.gameName == game.name) {
