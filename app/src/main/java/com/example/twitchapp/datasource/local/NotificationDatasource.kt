@@ -21,7 +21,6 @@ class NotificationDatasource @Inject constructor(
 
     fun getAllNotifications(): Observable<Result<List<TwitchNotification>>> {
         return twitchNotificationDao.getAllNotifications()
-            .subscribeOn(Schedulers.io())
             .map {
                 try {
                     Result.Success(it.map { twitchNotificationEntity ->
@@ -38,7 +37,7 @@ class NotificationDatasource @Inject constructor(
                 } catch (e: Exception) {
                     Result.Error(e)
                 }
-            }
+            }.subscribeOn(Schedulers.io())
     }
 
     suspend fun saveNotification(

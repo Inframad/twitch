@@ -2,11 +2,9 @@ package com.example.twitchapp.ui.notification
 
 import android.content.Context
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
-import com.example.twitchapp.common.BaseViewModel
+import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.repository.notification.NotificationRepository
@@ -23,24 +21,24 @@ import javax.inject.Inject
 class NotificationsListViewModel
 @Inject constructor(
     @ApplicationContext context: Context,
-    private val repository: NotificationRepository,
+    repository: NotificationRepository,
     private val notificationRepository: NotificationRepository
-) : BaseViewModel(context) {
+) : BaseViewModelLiveData(context) {
 
     val scrollUpCommand = Command()
     val sendScrollStateCommand = Command()
 
-    private val _uiState = MutableLiveData<UiState<List<TwitchNotificationPresentation>>>()
-    val uiState: LiveData<UiState<List<TwitchNotificationPresentation>>> = _uiState
+    val uiState = mutableLiveData<UiState<List<TwitchNotificationPresentation>>>()
 
-    val toggleFabVisibilityCommand = mutableStateFlow(false)
+    val toggleFabVisibilityCommand = mutableLiveData<Boolean>()
 
     init {
         repository.getAllNotifications()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                _uiState.value = handleResult(result)
+                uiState.setValue(handleResult(result))
             }
+
         viewModelScope.launch {
             notificationRepository.getNotificationsEvent()
                 .takeWhile { _currentLifecycleOwnerState == Lifecycle.Event.ON_RESUME }
@@ -51,7 +49,7 @@ class NotificationsListViewModel
     }
 
     fun onSendScrollStateCommand(scrollPosition: Int, canScrollDown: Boolean) {
-        if(scrollPosition != 0 || canScrollDown) toggleFabVisibilityCommand.setValue(true)
+        if (scrollPosition != 0 || canScrollDown) toggleFabVisibilityCommand.setValue(true)
     }
 
     private fun handleResult(
@@ -78,6 +76,6 @@ class NotificationsListViewModel
     }
 
     fun onRecyclerViewScrollStateChanged(canScrollUp: Boolean) {
-        if(!canScrollUp) toggleFabVisibilityCommand.setValue(false)
+        if (!canScrollUp) toggleFabVisibilityCommand.setValue(false)
     }
 }
