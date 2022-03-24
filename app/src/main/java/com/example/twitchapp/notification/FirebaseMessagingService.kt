@@ -38,7 +38,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
             }
 
             notificationModel?.let {
-                notificationRepository.saveNotification(it)
+                notificationRepository.saveNotification(it).subscribe()
 
                 when ((application as App).currentAppState) {
                     AppState.OnActivityCreated,

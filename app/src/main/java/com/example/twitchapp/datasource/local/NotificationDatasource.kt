@@ -1,22 +1,19 @@
 package com.example.twitchapp.datasource.local
 
-import com.example.twitchapp.common.dispatchers.IoDispatcher
 import com.example.twitchapp.database.notification.*
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.StreamNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class NotificationDatasource @Inject constructor(
     private val twitchNotificationDao: TwitchNotificationPivotDao,
     private val gameNotificationDao: GameNotificationDao,
-    private val streamNotificationDao: StreamNotificationDao,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val streamNotificationDao: StreamNotificationDao
 ) {
 
     fun getAllNotifications(): Observable<Result<List<TwitchNotification>>> {
@@ -40,10 +37,8 @@ class NotificationDatasource @Inject constructor(
             }.subscribeOn(Schedulers.io())
     }
 
-    suspend fun saveNotification(
-        notification: TwitchNotification
-    ) {
-        withContext(ioDispatcher) {
+    fun saveNotification(notification: TwitchNotification): Completable =
+        Completable.create {
             when (notification) {
                 is GameNotification -> {
                     twitchNotificationDao.insert(
@@ -69,6 +64,6 @@ class NotificationDatasource @Inject constructor(
                         )
                     )
             }
-        }
-    }
+            it.onComplete()
+        }.subscribeOn(Schedulers.io())
 }
