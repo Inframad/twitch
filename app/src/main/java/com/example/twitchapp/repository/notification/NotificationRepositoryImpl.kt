@@ -4,9 +4,7 @@ import com.example.twitchapp.datasource.local.NotificationDatasource
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.notifications.TwitchNotification
 import io.reactivex.rxjava3.core.Observable
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import io.reactivex.rxjava3.subjects.PublishSubject
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,16 +13,16 @@ class NotificationRepositoryImpl @Inject constructor(
     private val notificationDatasource: NotificationDatasource
 ): NotificationRepository {
 
-    private val _notificationsEventFlow = MutableSharedFlow<TwitchNotification>()
+    private val _notificationsEventSubject = PublishSubject.create<TwitchNotification>()
 
     override fun getAllNotifications(): Observable<Result<List<TwitchNotification>>> =
         notificationDatasource.getAllNotifications()
 
     override suspend fun saveNotification(notification: TwitchNotification) {
-        _notificationsEventFlow.emit(notification)
+        _notificationsEventSubject.onNext(notification)
         notificationDatasource.saveNotification(notification)
     }
 
-    override fun getNotificationsEvent(): SharedFlow<TwitchNotification> =
-        _notificationsEventFlow.asSharedFlow()
+    override fun getNotificationsEvent(): Observable<TwitchNotification> =
+        _notificationsEventSubject
 }

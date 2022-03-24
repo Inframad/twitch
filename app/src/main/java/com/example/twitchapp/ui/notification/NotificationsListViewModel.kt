@@ -1,8 +1,6 @@
 package com.example.twitchapp.ui.notification
 
 import android.content.Context
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.Result
@@ -12,9 +10,6 @@ import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,30 +17,28 @@ class NotificationsListViewModel
 @Inject constructor(
     @ApplicationContext context: Context,
     repository: NotificationRepository,
-    private val notificationRepository: NotificationRepository
+    notificationRepository: NotificationRepository
 ) : BaseViewModelLiveData(context) {
 
     val scrollUpCommand = Command()
     val sendScrollStateCommand = Command()
 
-    val uiState = mutableLiveData<UiState<List<TwitchNotificationPresentation>>>()
+    val uiState = Data<UiState<List<TwitchNotificationPresentation>>>()
 
-    val toggleFabVisibilityCommand = mutableLiveData<Boolean>()
+    val toggleFabVisibilityCommand = Data<Boolean>()
 
     init {
         repository.getAllNotifications()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 uiState.setValue(handleResult(result))
-            }
+            }.addToCompositeDisposable()
 
-        viewModelScope.launch {
-            notificationRepository.getNotificationsEvent()
-                .takeWhile { _currentLifecycleOwnerState == Lifecycle.Event.ON_RESUME }
-                .collect {
-                    sendScrollStateCommand.setValue(Unit)
-                }
-        }
+        notificationRepository.getNotificationsEvent()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                sendScrollStateCommand.setValue(Unit)
+            }.addToCompositeDisposable()
     }
 
     fun onSendScrollStateCommand(scrollPosition: Int, canScrollDown: Boolean) {
