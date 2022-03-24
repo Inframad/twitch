@@ -7,9 +7,9 @@ import com.example.twitchapp.database.streams.GameStreamDao
 import com.example.twitchapp.database.streams.GameStreamEntity
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -61,14 +61,15 @@ class LocalDatasourceImpl @Inject constructor(
             gameDao.isGameExist(name)
         }
 
-    override fun getFavouriteGames() =
-        gameDao.getFavoriteGames().map { list ->
-            Result.Success(
-                list.map { gameEntity ->
-                    gameEntity.toModel()
-                }
-            )
-        }.flowOn(ioDispatcher)
+    override fun getFavouriteGames(): Observable<Result.Success<List<Game>>> =
+        gameDao.getFavoriteGames()
+            .map { list ->
+                Result.Success(
+                    list.map { gameEntity ->
+                        gameEntity.toModel()
+                    }
+                )
+            }.subscribeOn(Schedulers.io())
 
     override suspend fun updateGame(game: Game) {
         withContext(ioDispatcher) {

@@ -1,4 +1,4 @@
-package com.example.twitchapp.common
+package com.example.twitchapp.common.flow
 
 import android.os.Bundle
 import android.view.View
@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.example.twitchapp.R
+import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.common.extensions.bindCommandAction
 import com.example.twitchapp.navigation.Navigator
 import com.google.android.material.snackbar.Snackbar
@@ -44,4 +45,3 @@ abstract class BaseFragment<TViewModel : BaseViewModel>(@LayoutRes lId: Int) :
         }
     }
 }
-
