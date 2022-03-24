@@ -3,8 +3,8 @@ package com.example.twitchapp.ui.game
 import android.content.Context
 import com.example.twitchapp.R
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
-import com.example.twitchapp.model.DatabaseException
 import com.example.twitchapp.model.SnackbarData
+import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.streams.GameStream
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class GameViewModel @Inject constructor(
     @ApplicationContext context: Context,
     private val repository: Repository,
-    private val notificationRepository: NotificationRepository
+    notificationRepository: NotificationRepository
 ) : BaseViewModelLiveData(context) {
 
     val uiState = Data<UiState<GameScreenModel>>()
@@ -30,11 +30,6 @@ class GameViewModel @Inject constructor(
     val toggleFavourite = Data<Int>()
 
     fun init(stream: GameStream?, notification: GameNotification?) {
-        notificationRepository.getNotificationsEvent()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (it is GameNotification) onMessageReceived(it)
-            }.addToCompositeDisposable()
         if (!isGameModelFetched) {
             stream?.let {
                 fetchGameModel(stream.gameName, stream.userName, stream.viewerCount)
@@ -42,6 +37,14 @@ class GameViewModel @Inject constructor(
             }
             notification?.let { fetchGameModel(it.gameName, it.streamerName, it.viewersCount) }
         }
+    }
+
+    init {
+        notificationRepository.getNotificationsEvent()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                if (it is GameNotification) onMessageReceived(it)
+            }.addToCompositeDisposable()
     }
 
     fun favouriteGameImageButtonClicked() {
@@ -59,21 +62,25 @@ class GameViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { uiState.setValue(UiState.Loading) }
             .map {
-                UiState.Loaded(
-                    GameScreenModel(
-                        name = it.name
-                            ?: getString(R.string.scr_any_lbl_unknown),
-                        streamerName = streamerName
-                            ?: getString(R.string.scr_any_lbl_unknown),
-                        viewersCount = viewersCount.toString(),
-                        imageUrl = it.imageUrl
-                    )
+                isGameModelFetched = true
+                game = it
+                GameScreenModel(
+                    name = it.name
+                        ?: getString(R.string.scr_any_lbl_unknown),
+                    streamerName = streamerName
+                        ?: getString(R.string.scr_any_lbl_unknown),
+                    viewersCount = viewersCount.toString(),
+                    imageUrl = it.imageUrl
                 )
-            }.subscribe({uiState.setValue(it)}, ::handleError)
+            }.subscribe(::handleSuccess, ::handleError)
+    }
+
+    private fun handleSuccess(data: GameScreenModel) {
+        uiState.setValue(UiState.Loaded(data))
     }
 
     private fun handleError(t: Throwable) {
-        when(t) {
+        when (t) {
             is DatabaseException -> uiState.setValue(UiState.Empty)
         }
     }

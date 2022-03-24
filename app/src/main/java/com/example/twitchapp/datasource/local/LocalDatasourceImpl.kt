@@ -1,11 +1,13 @@
 package com.example.twitchapp.datasource.local
 
+import androidx.room.rxjava3.EmptyResultSetException
 import com.example.twitchapp.common.dispatchers.IoDispatcher
 import com.example.twitchapp.database.game.GameDao
 import com.example.twitchapp.database.game.GameEntity
 import com.example.twitchapp.database.streams.GameStreamDao
 import com.example.twitchapp.database.streams.GameStreamEntity
-import com.example.twitchapp.model.Result
+import com.example.twitchapp.model.exception.DatabaseException
+import com.example.twitchapp.model.exception.DatabaseState
 import com.example.twitchapp.model.game.Game
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -58,16 +60,21 @@ class LocalDatasourceImpl @Inject constructor(
             .subscribeOn(Schedulers.io())
 
     override fun isGameExist(name: String): Boolean =
-            gameDao.isGameExist(name)
+        gameDao.isGameExist(name)
 
-    override fun getFavouriteGames(): Observable<Result.Success<List<Game>>> =
+    override fun getFavouriteGames(): Observable<List<Game>> =
         gameDao.getFavoriteGames()
-            .map { list ->
-                Result.Success(
-                    list.map { gameEntity ->
-                        gameEntity.toModel()
+            .onErrorResumeNext {
+                Observable.error(
+                    when(it) {
+                        is EmptyResultSetException -> DatabaseException(DatabaseState.EMPTY)
+                        else -> it
                     }
                 )
+            }.map { list ->
+                list.map { gameEntity ->
+                    gameEntity.toModel()
+                }
             }.subscribeOn(Schedulers.io())
 
     override fun updateGame(game: Game): Completable =

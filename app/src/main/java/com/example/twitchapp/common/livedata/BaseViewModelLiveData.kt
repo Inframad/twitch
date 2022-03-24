@@ -18,8 +18,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 @SuppressLint("StaticFieldLeak")
-abstract class BaseViewModelLiveData(private val applicationContext: Context)
-    : ViewModel() {
+abstract class BaseViewModelLiveData(private val applicationContext: Context) : ViewModel() {
 
     protected val compositeDisposable = CompositeDisposable()
     val showToastCommand = TCommand<String>()

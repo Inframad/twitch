@@ -3,7 +3,7 @@ package com.example.twitchapp.ui.notification
 import android.content.Context
 import com.example.twitchapp.R
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
-import com.example.twitchapp.model.Result
+import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.repository.notification.NotificationRepository
 import com.example.twitchapp.ui.UiState
@@ -30,9 +30,9 @@ class NotificationsListViewModel
     init {
         repository.getAllNotifications()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { result ->
-                uiState.setValue(handleResult(result))
-            }.addToCompositeDisposable()
+            .doOnSubscribe { uiState.setValue(UiState.Loading) }
+            .subscribe(::handleSuccess, ::handleError)
+            .addToCompositeDisposable()
 
         notificationRepository.getNotificationsEvent()
             .observeOn(AndroidSchedulers.mainThread())
@@ -45,23 +45,22 @@ class NotificationsListViewModel
         if (scrollPosition != 0 || canScrollDown) toggleFabVisibilityCommand.setValue(true)
     }
 
-    private fun handleResult(
-        result: Result<List<TwitchNotification>>
-    ): UiState<List<TwitchNotificationPresentation>> =
-        when (result) {
-            is Result.Success -> {
-                if (result.data.isEmpty()) UiState.Empty
-                else UiState.Loaded(result.data.map {
-                    TwitchNotificationPresentation.fromModel(
-                        it,
-                        getString(R.string.scr_any_date_time_pattern)
-                    )
-                })
+    private fun handleSuccess(list: List<TwitchNotification>) {
+        uiState.setValue(UiState.Loaded(
+            list.map {
+                TwitchNotificationPresentation.fromModel(
+                    it,
+                    getString(R.string.scr_any_date_time_pattern)
+                )
             }
-            is Result.Error -> UiState.Error(handleBaseError(result.e))
-            Result.Empty -> UiState.Empty
-            Result.Loading -> UiState.Loading
+        ))
+    }
+
+    private fun handleError(t: Throwable) {
+        when(t) {
+            is DatabaseException -> uiState.setValue(UiState.Empty)
         }
+    }
 
     fun onFloatingActionButtonClicked() {
         toggleFabVisibilityCommand.setValue(false)

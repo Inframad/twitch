@@ -1,7 +1,9 @@
 package com.example.twitchapp.datasource.local
 
+import androidx.room.rxjava3.EmptyResultSetException
 import com.example.twitchapp.database.notification.*
-import com.example.twitchapp.model.Result
+import com.example.twitchapp.model.exception.DatabaseException
+import com.example.twitchapp.model.exception.DatabaseState
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.StreamNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
@@ -16,23 +18,26 @@ class NotificationDatasource @Inject constructor(
     private val streamNotificationDao: StreamNotificationDao
 ) {
 
-    fun getAllNotifications(): Observable<Result<List<TwitchNotification>>> {
+    fun getAllNotifications(): Observable<List<TwitchNotification>> {
         return twitchNotificationDao.getAllNotifications()
-            .map {
-                try {
-                    Result.Success(it.map { twitchNotificationEntity ->
-                        when (twitchNotificationEntity.childType) {
-                            TwitchNotificationType.GAME -> gameNotificationDao.getGameNotification(
-                                twitchNotificationEntity.childId
-                            ).toModel()
-                            TwitchNotificationType.STREAMS -> streamNotificationDao.getStreamNotification(
-                                twitchNotificationEntity.childId
-                            ).toModel()
-                        }
+            .onErrorResumeNext {
+                Observable.error(
+                    when(it) {
+                        is EmptyResultSetException -> DatabaseException(DatabaseState.EMPTY)
+                        else -> it
                     }
-                    )
-                } catch (e: Exception) {
-                    Result.Error(e)
+                )
+            }
+            .map { notificationList ->
+                notificationList.map { twitchNotificationEntity ->
+                    when (twitchNotificationEntity.childType) {
+                        TwitchNotificationType.GAME -> gameNotificationDao.getGameNotification(
+                            twitchNotificationEntity.childId
+                        ).toModel()
+                        TwitchNotificationType.STREAMS -> streamNotificationDao.getStreamNotification(
+                            twitchNotificationEntity.childId
+                        ).toModel()
+                    }
                 }
             }.subscribeOn(Schedulers.io())
     }

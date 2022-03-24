@@ -1,7 +1,6 @@
 package com.example.twitchapp.repository.notification
 
 import com.example.twitchapp.datasource.local.NotificationDatasource
-import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.notifications.TwitchNotification
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -16,7 +15,7 @@ class NotificationRepositoryImpl @Inject constructor(
 
     private val _notificationsEventSubject = PublishSubject.create<TwitchNotification>()
 
-    override fun getAllNotifications(): Observable<Result<List<TwitchNotification>>> =
+    override fun getAllNotifications(): Observable<List<TwitchNotification>> =
         notificationDatasource.getAllNotifications()
 
     override fun saveNotification(notification: TwitchNotification): Completable {

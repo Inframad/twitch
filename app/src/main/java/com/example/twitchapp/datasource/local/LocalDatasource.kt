@@ -1,7 +1,6 @@
 package com.example.twitchapp.datasource.local
 
 import com.example.twitchapp.database.streams.GameStreamEntity
-import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -16,7 +15,7 @@ interface LocalDatasource {
     suspend fun getGameStreamsFirstPage(): List<GameStreamEntity>
     fun getGame(name: String): Single<Game>
     fun isGameExist(name: String): Boolean
-    fun getFavouriteGames(): Observable<Result.Success<List<Game>>>
+    fun getFavouriteGames(): Observable<List<Game>>
     fun updateGame(game: Game): Completable
     fun saveAndGetGame(game: Game): Single<Game>
 }

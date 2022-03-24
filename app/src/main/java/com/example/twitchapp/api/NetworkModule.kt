@@ -30,7 +30,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRxCallAdapterFactory() =
+    fun provideRxCallAdapterFactory(): RxJava3CallAdapterFactory =
         RxJava3CallAdapterFactory.create()
 
     @Provides

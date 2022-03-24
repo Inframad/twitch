@@ -8,9 +8,9 @@ import com.example.twitchapp.database.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.datasource.GameStreamsPagingSourceFactory
 import com.example.twitchapp.datasource.local.LocalDatasource
 import com.example.twitchapp.datasource.remote.RemoteDatasource
-import com.example.twitchapp.model.DatabaseException
-import com.example.twitchapp.model.DatabaseState
 import com.example.twitchapp.model.NetworkState
+import com.example.twitchapp.model.exception.DatabaseException
+import com.example.twitchapp.model.exception.DatabaseState
 import com.example.twitchapp.model.exception.NoInternetConnectionException
 import com.example.twitchapp.model.game.Game
 import io.reactivex.rxjava3.core.Single

@@ -10,9 +10,9 @@ import com.example.twitchapp.database.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.database.streams.GameStreamEntity
 import com.example.twitchapp.datasource.local.LocalDatasource
 import com.example.twitchapp.model.AppNetworkMode
-import com.example.twitchapp.model.DatabaseException
-import com.example.twitchapp.model.DatabaseState
 import com.example.twitchapp.model.NetworkState
+import com.example.twitchapp.model.exception.DatabaseException
+import com.example.twitchapp.model.exception.DatabaseState
 import com.example.twitchapp.model.streams.GameStream
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.net.UnknownHostException
