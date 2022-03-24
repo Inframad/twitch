@@ -2,6 +2,7 @@ package com.example.twitchapp.common.extensions
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.twitchapp.common.ViewModelStateFlowSingleEvent
@@ -28,5 +29,11 @@ fun <T> Fragment.bindAction(flow: Flow<T>, action: suspend (T) -> Unit) {
                 action(it)
             }
         }
+    }
+}
+
+fun <T> Fragment.bindActionLiveData(liveData: LiveData<T>, action: (T) -> Unit) {
+    liveData.observe(viewLifecycleOwner) {
+        action(it)
     }
 }

@@ -63,14 +63,13 @@ class LocalDatasourceImpl @Inject constructor(
 
     override fun getFavouriteGames(): Observable<Result.Success<List<Game>>> =
         gameDao.getFavoriteGames()
-            .subscribeOn(Schedulers.io())
             .map { list ->
                 Result.Success(
                     list.map { gameEntity ->
                         gameEntity.toModel()
                     }
                 )
-            }
+            }.subscribeOn(Schedulers.io())
 
     override suspend fun updateGame(game: Game) {
         withContext(ioDispatcher) {
