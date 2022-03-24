@@ -7,7 +7,9 @@ import com.example.twitchapp.database.streams.GameStreamDao
 import com.example.twitchapp.database.streams.GameStreamEntity
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -50,16 +52,13 @@ class LocalDatasourceImpl @Inject constructor(
             gameStreamDao.getFirstPage()
         }
 
-    override suspend fun getGame(name: String): Game =
-        withContext(ioDispatcher) {
-            gameDao.getGame(name).toModel()
-        }
+    override fun getGame(name: String): Single<Game> =
+        gameDao.getGame(name)
+            .map { it.toModel() }
+            .subscribeOn(Schedulers.io())
 
-
-    override suspend fun isGameExist(name: String): Boolean =
-        withContext(ioDispatcher) {
+    override fun isGameExist(name: String): Boolean =
             gameDao.isGameExist(name)
-        }
 
     override fun getFavouriteGames(): Observable<Result.Success<List<Game>>> =
         gameDao.getFavoriteGames()
@@ -71,12 +70,13 @@ class LocalDatasourceImpl @Inject constructor(
                 )
             }.subscribeOn(Schedulers.io())
 
-    override suspend fun updateGame(game: Game) {
-        withContext(ioDispatcher) {
-            gameDao.updateGame(GameEntity.fromModel(game))
-        }
-    }
+    override fun updateGame(game: Game): Completable =
+        gameDao.updateGame(GameEntity.fromModel(game))
+            .subscribeOn(Schedulers.io())
 
-    override suspend fun saveAndGetGame(game: Game): Game =
-        gameDao.saveAndGetGame(GameEntity.fromModel(game)).toModel()
+    override fun saveAndGetGame(game: Game): Single<Game> =
+        Single.just(gameDao.saveAndGetGame(GameEntity.fromModel(game)))
+            .map {
+                it.toModel()
+            }.subscribeOn(Schedulers.io())
 }

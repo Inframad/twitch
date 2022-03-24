@@ -15,6 +15,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
@@ -26,6 +27,11 @@ object NetworkModule {
     @Singleton
     fun provideKotlinJsonAdapterFactory() =
         KotlinJsonAdapterFactory()
+
+    @Provides
+    @Singleton
+    fun provideRxCallAdapterFactory() =
+        RxJava3CallAdapterFactory.create()
 
     @Provides
     @Singleton
@@ -53,12 +59,14 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(
         moshiConverterFactory: MoshiConverterFactory,
+        rxJava3CallAdapterFactory: RxJava3CallAdapterFactory,
         client: OkHttpClient,
     ): Retrofit =
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(client)
             .addConverterFactory(moshiConverterFactory)
+            .addCallAdapterFactory(rxJava3CallAdapterFactory)
             .build()
 
     @Provides

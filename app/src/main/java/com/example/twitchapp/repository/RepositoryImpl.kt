@@ -2,14 +2,18 @@ package com.example.twitchapp.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.room.rxjava3.EmptyResultSetException
 import com.example.twitchapp.api.util.NetworkConnectionChecker
 import com.example.twitchapp.database.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.datasource.GameStreamsPagingSourceFactory
 import com.example.twitchapp.datasource.local.LocalDatasource
 import com.example.twitchapp.datasource.remote.RemoteDatasource
+import com.example.twitchapp.model.DatabaseException
+import com.example.twitchapp.model.DatabaseState
 import com.example.twitchapp.model.NetworkState
-import com.example.twitchapp.model.Result
+import com.example.twitchapp.model.exception.NoInternetConnectionException
 import com.example.twitchapp.model.game.Game
+import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,30 +34,30 @@ class RepositoryImpl @Inject constructor(
     override fun getCurrentNetworkState(): NetworkState =
         networkConnectionChecker.getNetworkState()
 
-    override suspend fun getGame(name: String?): Result<Game> {
-        return if (name.isNullOrBlank()) Result.Empty
-        else when (getCurrentNetworkState()) {
-            NetworkState.AVAILABLE -> {
-                return when (val result = remoteDatasource.getGame(name)) {
-                    is Result.Success ->
-                        Result.Success(localDatasource.saveAndGetGame(result.data))
-                    else -> result
+    override fun getGame(name: String): Single<Game> =
+        remoteDatasource.getGame(name)
+            .onErrorResumeNext {
+                when(it) {
+                    is NoInternetConnectionException ->
+                        return@onErrorResumeNext localDatasource.getGame(name)
+                    else -> throw it
                 }
+            }.onErrorResumeNext {
+                Single.error(
+                    when(it) {
+                        is EmptyResultSetException -> DatabaseException(DatabaseState.EMPTY)
+                        else -> it
+                    }
+                )
             }
-            NetworkState.NOT_AVAILABLE -> {
-                if (localDatasource.isGameExist(name)) {
-                    Result.Success(localDatasource.getGame(name))
-                } else {
-                    Result.Empty
-                }
+            .doOnSuccess {
+                localDatasource.saveAndGetGame(it)
             }
-        }
-    }
 
     override fun getFavouriteGames() =
         localDatasource.getFavouriteGames()
 
-    override suspend fun updateGame(game: Game) =
+    override fun updateGame(game: Game) =
         localDatasource.updateGame(game)
 }
 

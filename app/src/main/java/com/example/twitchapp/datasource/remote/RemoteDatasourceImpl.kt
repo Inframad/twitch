@@ -1,28 +1,32 @@
 package com.example.twitchapp.datasource.remote
 
 import com.example.twitchapp.api.game.TwitchGamesApi
-import com.example.twitchapp.common.dispatchers.IoDispatcher
-import com.example.twitchapp.model.Result
+import com.example.twitchapp.model.exception.NoInternetConnectionException
 import com.example.twitchapp.model.game.Game
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RemoteDatasourceImpl @Inject constructor(
-    private val gamesApi: TwitchGamesApi,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-): RemoteDatasource {
+    private val gamesApi: TwitchGamesApi
+) : RemoteDatasource {
 
-    override suspend fun getGame(name: String): Result<Game> =
-        withContext(ioDispatcher) {
-            try {
-                Result.Success(
-                    gamesApi.getGames(name).data.first().toModel()
+    override fun getGame(name: String): Single<Game> =
+        gamesApi.getGames(name)
+            .onErrorResumeNext {
+                Single.error(
+                    when (it) {
+                        is UnknownHostException,
+                        is SocketTimeoutException ->
+                            NoInternetConnectionException()
+                        else -> it
+                    }
                 )
-            } catch (e: Throwable) {
-                Result.Error(e)
             }
-        }
+            .map { it.data.first().toModel() }
+            .subscribeOn(Schedulers.io())
 }

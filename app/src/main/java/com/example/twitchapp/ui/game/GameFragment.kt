@@ -7,16 +7,16 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.common.extensions.bindAction
+import com.example.twitchapp.common.extensions.bindActionLiveData
 import com.example.twitchapp.common.extensions.glideImage
 import com.example.twitchapp.common.extensions.setTintColor
-import com.example.twitchapp.common.flow.BaseFragment
+import com.example.twitchapp.common.livedata.BaseFragmentLiveData
 import com.example.twitchapp.databinding.FragmentGameBinding
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
+class GameFragment : BaseFragmentLiveData<GameViewModel>(R.layout.fragment_game) {
 
     private val viewBinding: FragmentGameBinding by viewBinding()
     override val viewModel: GameViewModel by viewModels()
@@ -38,7 +38,7 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
     override fun bindViewModel() {
         super.bindViewModel()
         with(viewModel) {
-            bindAction(uiState) {
+            bindActionLiveData(uiState) {
                 when (it) {
                     is UiState.Loaded -> showGame(it.data)
                     is UiState.Error -> showError(it.msg)
@@ -46,7 +46,7 @@ class GameFragment : BaseFragment<GameViewModel>(R.layout.fragment_game) {
                     UiState.Empty -> showNoDataPlaceholder()
                 }
             }
-            bindAction(toggleFavourite) { color ->
+            bindActionLiveData(toggleFavourite) { color ->
                 viewBinding.favouriteGameImageButton.setTintColor(color)
             }
         }
