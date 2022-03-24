@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
+import com.example.twitchapp.common.extensions.bindActionLiveData
 import com.example.twitchapp.common.livedata.BaseFragmentLiveData
 import com.example.twitchapp.databinding.FragmentSimpleListBinding
 import com.example.twitchapp.model.game.Game
@@ -31,7 +32,7 @@ class FavouriteGamesFragment :
 
     override fun bindViewModel() {
         super.bindViewModel()
-        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
+        bindActionLiveData(viewModel.uiState) { uiState ->
             when (uiState) {
                 is UiState.Loaded -> showFavouriteGamesList(uiState.data)
                 is UiState.Error -> showError(uiState.msg)

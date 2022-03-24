@@ -17,14 +17,15 @@ class FavouriteGamesViewModel @Inject constructor(
     repository: Repository
 ) : BaseViewModelLiveData(context) {
 
-    val uiState = mutableLiveData<UiState<List<Game>>>()
+    val uiState = Data<UiState<List<Game>>>()
 
     init {
         repository.getFavouriteGames()
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { uiState.setValue(UiState.Loading) }
             .subscribe { result ->
                 uiState.setValue(handleResult(result))
-            }
+            }.addToCompositeDisposable()
     }
 
     private fun handleResult(result: Result<List<Game>>): UiState<List<Game>> =
