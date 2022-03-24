@@ -2,6 +2,8 @@ package com.example.twitchapp.ui.notification
 
 import android.content.Context
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.R
 import com.example.twitchapp.common.BaseViewModel
@@ -11,6 +13,7 @@ import com.example.twitchapp.repository.notification.NotificationRepository
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
@@ -27,15 +30,17 @@ class NotificationsListViewModel
     val scrollUpCommand = Command()
     val sendScrollStateCommand = Command()
 
-    val uiState = mutableStateFlow(UiState.Loading as UiState<List<TwitchNotificationPresentation>>)
+    private val _uiState = MutableLiveData<UiState<List<TwitchNotificationPresentation>>>()
+    val uiState: LiveData<UiState<List<TwitchNotificationPresentation>>> = _uiState
+
     val toggleFabVisibilityCommand = mutableStateFlow(false)
 
     init {
-        viewModelScope.launch {
-            repository.getAllNotifications().collect { result ->
-                uiState.setValue(handleResult(result))
+        repository.getAllNotifications()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                _uiState.value = handleResult(result)
             }
-        }
         viewModelScope.launch {
             notificationRepository.getNotificationsEvent()
                 .takeWhile { _currentLifecycleOwnerState == Lifecycle.Event.ON_RESUME }

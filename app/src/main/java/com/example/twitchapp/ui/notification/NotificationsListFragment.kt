@@ -43,7 +43,7 @@ class NotificationsListFragment
     override fun bindViewModel() {
         super.bindViewModel()
         with(viewModel) {
-            bindAction(uiState) { uiState ->
+            viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
                 when (uiState) {
                     is UiState.Loaded -> showFavouriteGamesList(
                         uiState.data

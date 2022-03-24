@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.annotation.StringRes
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.twitchapp.R
 import retrofit2.HttpException
 import java.io.IOException
@@ -22,6 +19,14 @@ abstract class BaseViewModelRx(private val applicationContext: Context) : ViewMo
 
     protected fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
         applicationContext.getString(resId, *formatArgs)
+
+    protected fun <T> liveData(): LiveData<T> =
+        MutableLiveData()
+
+    protected fun <T> LiveData<T>.setValue(newValue: T) = when(this) {
+        is MutableLiveData<T> -> value = newValue
+        else -> throw IllegalArgumentException("Is not MutableLiveData")
+    }
 
     protected fun handleBaseError(e: Throwable): String {
         Log.e("HandleBaseError", e.toString())
