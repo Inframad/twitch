@@ -1,9 +1,7 @@
 package com.example.twitchapp.ui.favourite
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.twitchapp.common.BaseViewModelRx
+import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.repository.Repository
@@ -17,16 +15,15 @@ import javax.inject.Inject
 class FavouriteGamesViewModel @Inject constructor(
     @ApplicationContext context: Context,
     repository: Repository
-) : BaseViewModelRx(context) {
+) : BaseViewModelLiveData(context) {
 
-    private val _uiState = MutableLiveData<UiState<List<Game>>>()
-    val uiState: LiveData<UiState<List<Game>>> = _uiState
+    val uiState = mutableLiveData<UiState<List<Game>>>()
 
     init {
         repository.getFavouriteGames()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                _uiState.value = handleResult(result)
+                uiState.setValue(handleResult(result))
             }
     }
 

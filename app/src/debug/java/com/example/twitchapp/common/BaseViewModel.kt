@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.example.twitchapp.R
+import com.example.twitchapp.common.flow.SingleEvent
 import com.example.twitchapp.model.SnackbarData
 import com.example.twitchapp.ui.game.GameFragmentArgs
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -5,7 +5,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.common.BaseFragmentRx
+import com.example.twitchapp.common.livedata.BaseFragmentLiveData
 import com.example.twitchapp.databinding.FragmentSimpleListBinding
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.ui.UiState
@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FavouriteGamesFragment :
-    BaseFragmentRx<FavouriteGamesViewModel>(R.layout.fragment_simple_list) {
+    BaseFragmentLiveData<FavouriteGamesViewModel>(R.layout.fragment_simple_list) {
 
     private val viewBinding: FragmentSimpleListBinding by viewBinding()
     override val viewModel: FavouriteGamesViewModel by viewModels()
