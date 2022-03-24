@@ -14,9 +14,6 @@ import com.example.twitchapp.repository.notification.NotificationRepositoryImpl
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -26,25 +23,27 @@ class FirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var notificationRepository: NotificationRepositoryImpl
+
     @Inject
     lateinit var notifier: TwitchNotifier
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        CoroutineScope(Dispatchers.IO).launch {
 
-            val notificationModel = message.toIntent().extras?.let {
-                createNotificationModel(it)
-            }
+        val notificationModel = message.toIntent().extras?.let {
+            createNotificationModel(it)
+        }
 
-            notificationModel?.let {
-                notificationRepository.saveNotification(it).subscribe()
+        notificationModel?.let {
+            notificationRepository.saveNotification(it).subscribe()
 
-                when ((application as App).currentAppState) {
-                    AppState.OnActivityCreated,
-                    AppState.OnActivityStarted,
-                    AppState.OnActivityResumed -> {}
-                    else -> { notifier.showNotification(it) }
+            when ((application as App).currentAppState) {
+                AppState.OnActivityCreated,
+                AppState.OnActivityStarted,
+                AppState.OnActivityResumed -> {
+                }
+                else -> {
+                    notifier.showNotification(it)
                 }
             }
         }

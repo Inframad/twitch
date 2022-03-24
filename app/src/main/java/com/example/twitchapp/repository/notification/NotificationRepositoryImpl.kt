@@ -19,7 +19,7 @@ class NotificationRepositoryImpl @Inject constructor(
     override fun getAllNotifications(): Observable<Result<List<TwitchNotification>>> =
         notificationDatasource.getAllNotifications()
 
-    override suspend fun saveNotification(notification: TwitchNotification): Completable {
+    override fun saveNotification(notification: TwitchNotification): Completable {
         _notificationsEventSubject.onNext(notification)
         return notificationDatasource.saveNotification(notification)
     }
