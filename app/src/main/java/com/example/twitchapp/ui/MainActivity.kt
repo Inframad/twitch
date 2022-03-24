@@ -13,7 +13,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.common.extensions.bindCommandAction
+import com.example.twitchapp.common.extensions.bindActionLiveData
 import com.example.twitchapp.databinding.ActivityMainBinding
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.navigation.Navigator
@@ -37,13 +37,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private fun bindViewModel() {
         with(viewModel) {
-            bindCommandAction(toggleBottomNavigationViewVisibility) {
+            bindActionLiveData(toggleBottomNavigationViewVisibility) {
                 viewBinding.bottomNavigation.isVisible = it
             }
-            bindCommandAction(showToastCommand) {
+            bindActionLiveData(showToastCommand) {
                 Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
             }
-            bindCommandAction(navigateToGameScreenCommand) {
+            bindActionLiveData(navigateToGameScreenCommand) {
                 Navigator.goToGameScreen(this@MainActivity, it)
             }
         }
@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun init() {
-        lifecycle.addObserver(viewModel)
         viewModel.initialized()
         intent?.extras?.getParcelable<GameNotification>(NotificationConst.TWITCH_NOTIFICATION_KEY)
             ?.let {
