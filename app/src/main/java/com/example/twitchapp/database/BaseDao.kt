@@ -2,6 +2,7 @@ package com.example.twitchapp.database
 
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import io.reactivex.rxjava3.core.Single
 
 interface BaseDao<T> {
 
@@ -12,5 +13,5 @@ interface BaseDao<T> {
     suspend fun replace(item: List<T>)
 
     @Insert
-    fun insert(item: T): Long
+    fun insert(item: T): Single<Long>
 }
