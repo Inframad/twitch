@@ -12,8 +12,6 @@ import com.example.twitchapp.model.SnackbarData
 import com.example.twitchapp.ui.game.GameFragmentArgs
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-import retrofit2.HttpException
-import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -56,12 +54,12 @@ abstract class BaseViewModelLiveData(private val applicationContext: Context) : 
     protected fun handleBaseError(e: Throwable): String {
         Log.e("HandleBaseError", e.toString())
         return when (e) {
-            is HttpException -> when (e.code()) {
+            is com.example.twitchapp.model.exception.HttpException -> when (e.code) {
                 429 -> getString(R.string.scr_any_lbl_too_many_request)
                 404 -> getString(R.string.scr_any_lbl_not_found)
+                400 -> getString(R.string.scr_any_lbl_check_internet_connection)
                 else -> getString(R.string.scr_any_lbl_unknown_error)
             }
-            is IOException -> getString(R.string.scr_any_lbl_check_internet_connection)
             is SocketTimeoutException -> getString(R.string.scr_any_lbl_check_internet_connection)
             is UnknownHostException -> getString(R.string.scr_any_lbl_check_internet_connection)
             else -> getString(R.string.scr_any_lbl_unknown_error)

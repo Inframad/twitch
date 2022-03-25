@@ -80,7 +80,7 @@ dependencies {
     def coroutines_version = "1.5.2"
     def lifecycle_version = "2.4.1"
     def room_version = "2.4.2"
-    def paging_version = "3.1.0"
+    def paging_version = "3.1.1"
     def glide_version = "4.13.0"
     def nav_version = "2.4.1"
     def hilt_version = "2.38.1"
@@ -106,6 +106,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    implementation "androidx.paging:paging-rxjava3:$paging_version"
 
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"

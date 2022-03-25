@@ -2,6 +2,7 @@ package com.example.twitchapp.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.liveData
 import com.example.twitchapp.api.util.NetworkConnectionChecker
 import com.example.twitchapp.database.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.datasource.GameStreamsPagingSourceFactory
@@ -22,11 +23,11 @@ class RepositoryImpl @Inject constructor(
     private val pagingSourceFactory: GameStreamsPagingSourceFactory
 ) : Repository {
 
-    override fun getGameStreamsFlow() = Pager(
+    override fun getGameStreamsLiveData() = Pager(
         PagingConfig(pageSize = GAME_STREAMS_PAGE_SIZE)
     ) {
         pagingSourceFactory.create()
-    }.flow
+    }.liveData
 
     override fun getCurrentNetworkState(): NetworkState =
         networkConnectionChecker.getNetworkState()

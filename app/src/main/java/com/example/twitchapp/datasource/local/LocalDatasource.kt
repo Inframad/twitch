@@ -8,11 +8,11 @@ import io.reactivex.rxjava3.core.Single
 
 interface LocalDatasource {
 
-    suspend fun getGameStreamsPage(startId: Int, endId: Int): List<GameStreamEntity>
-    suspend fun getGameStreamByAccessKey(accessKey: String): GameStreamEntity
-    suspend fun saveGameStreams(gameStreams: List<GameStreamEntity>)
-    suspend fun deleteAllGameStreams()
-    suspend fun getGameStreamsFirstPage(): List<GameStreamEntity>
+    fun getGameStreamsPage(startId: Int, endId: Int): Single<List<GameStreamEntity>>
+    fun getGameStreamByAccessKey(accessKey: String): Single<GameStreamEntity>
+    fun saveGameStreams(gameStreams: List<GameStreamEntity>): Completable
+    fun deleteAllGameStreams(): Completable
+    fun getGameStreamsFirstPage(): Single<List<GameStreamEntity>>
     fun getGame(name: String): Single<Game>
     fun getFavouriteGames(): Observable<List<Game>>
     fun updateGame(game: Game): Completable
