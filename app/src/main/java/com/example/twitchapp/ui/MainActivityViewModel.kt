@@ -1,8 +1,6 @@
 package com.example.twitchapp.ui
 
 import android.content.Context
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.viewModelScope
 import com.example.twitchapp.BuildConfig
 import com.example.twitchapp.common.BaseViewModel
 import com.example.twitchapp.model.notifications.GameNotification
@@ -12,9 +10,6 @@ import com.example.twitchapp.ui.game.GameFragmentArgs
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,11 +22,11 @@ class MainActivityViewModel @Inject constructor(
     val toggleBottomNavigationViewVisibility = TCommand<Boolean>()
 
     init {
-        viewModelScope.launch {
+        /*viewModelScope.launch {
             notificationRepository.getNotificationsEvent()
                 .takeWhile { _currentLifecycleOwnerState == Lifecycle.Event.ON_RESUME }
                 .collect { messageReceived(it) }
-        }
+        }*/ //TODO to Rx
     }
 
     fun onDestinationChanged(screen: AppScreen) {

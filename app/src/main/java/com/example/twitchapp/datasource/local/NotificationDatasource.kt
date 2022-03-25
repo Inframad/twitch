@@ -1,74 +1,74 @@
 package com.example.twitchapp.datasource.local
 
-import com.example.twitchapp.common.dispatchers.IoDispatcher
 import com.example.twitchapp.database.notification.*
-import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.StreamNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class NotificationDatasource @Inject constructor(
     private val twitchNotificationDao: TwitchNotificationPivotDao,
     private val gameNotificationDao: GameNotificationDao,
-    private val streamNotificationDao: StreamNotificationDao,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val streamNotificationDao: StreamNotificationDao
 ) {
 
-    fun getAllNotifications(): Flow<Result<List<TwitchNotification>>> {
-        return twitchNotificationDao.getAllNotifications().map {
-            try {
-                Result.Success(it.map { twitchNotificationEntity ->
-                    when (twitchNotificationEntity.childType) {
-                        TwitchNotificationType.GAME -> gameNotificationDao.getGameNotification(
-                            twitchNotificationEntity.childId
-                        ).toModel()
-                        TwitchNotificationType.STREAMS -> streamNotificationDao.getStreamNotification(
-                            twitchNotificationEntity.childId
-                        ).toModel()
+    fun getAllNotifications(): Observable<List<TwitchNotification>> {
+        return twitchNotificationDao.getAllNotifications()
+            .flatMap { items ->
+                Observable.fromIterable(items)
+                    .flatMapSingle { twitchNotificationEntity ->
+                        when (twitchNotificationEntity.childType) {
+                            TwitchNotificationType.GAME -> gameNotificationDao.getGameNotification(
+                                twitchNotificationEntity.childId
+                            ).map { it.toModel() }
+                            TwitchNotificationType.STREAMS -> streamNotificationDao.getStreamNotification(
+                                twitchNotificationEntity.childId
+                            ).map { it.toModel() }
+                        }
                     }
-                }
-                )
-            } catch (e: Exception) {
-                Result.Error(e)
+                    .toList()
+                    .toObservable()
             }
-        }.flowOn(ioDispatcher)
+            .subscribeOn(Schedulers.io())
     }
 
-    suspend fun saveNotification(
-        notification: TwitchNotification
-    ) {
-        withContext(ioDispatcher) {
-            when (notification) {
-                is GameNotification -> {
-                    twitchNotificationDao.insert(
-                        TwitchNotificationPivotEntity(
-                            date = notification.date,
-                            childType = TwitchNotificationType.GAME,
-                            childId = gameNotificationDao.insert(
-                                GameNotificationEntity.fromModel(
-                                    notification
+    fun saveNotification(twitchNotification: TwitchNotification): Completable =
+        Single.just(twitchNotification)
+            .flatMap { notification ->
+                when (notification) {
+                    is GameNotification -> {
+                        gameNotificationDao.insert(
+                            GameNotificationEntity.fromModel(
+                                notification
+                            )
+                        ).flatMap {
+                            twitchNotificationDao.insert(
+                                TwitchNotificationPivotEntity(
+                                    date = notification.date,
+                                    childType = TwitchNotificationType.GAME,
+                                    childId = it
                                 )
                             )
-                        )
-                    )
-                }
-                is StreamNotification ->
-                    twitchNotificationDao.insert(
-                        TwitchNotificationPivotEntity(
-                            date = notification.date,
-                            childType = TwitchNotificationType.STREAMS,
-                            childId = streamNotificationDao.insert(
-                                StreamNotificationEntity.fromModel(notification)
+                        }
+                    }
+                    is StreamNotification ->
+                        streamNotificationDao.insert(
+                            StreamNotificationEntity.fromModel(
+                                notification
                             )
-                        )
-                    )
-            }
-        }
-    }
+                        ).flatMap {
+                            twitchNotificationDao.insert(
+                                TwitchNotificationPivotEntity(
+                                    date = notification.date,
+                                    childType = TwitchNotificationType.STREAMS,
+                                    childId = it
+                                )
+                            )
+                        }
+                }
+            }.subscribeOn(Schedulers.io()).ignoreElement()
 }

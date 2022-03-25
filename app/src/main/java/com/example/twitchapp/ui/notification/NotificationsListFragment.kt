@@ -6,16 +6,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.common.extensions.bindAction
-import com.example.twitchapp.common.extensions.bindCommandAction
-import com.example.twitchapp.common.flow.BaseFragment
+import com.example.twitchapp.common.extensions.bindActionLiveData
+import com.example.twitchapp.common.livedata.BaseFragmentLiveData
 import com.example.twitchapp.databinding.FragmentSimpleListBinding
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NotificationsListFragment
-    : BaseFragment<NotificationsListViewModel>(R.layout.fragment_simple_list) {
+    : BaseFragmentLiveData<NotificationsListViewModel>(R.layout.fragment_simple_list) {
 
     private val viewBinding: FragmentSimpleListBinding by viewBinding()
     override val viewModel: NotificationsListViewModel by viewModels()
@@ -43,7 +42,7 @@ class NotificationsListFragment
     override fun bindViewModel() {
         super.bindViewModel()
         with(viewModel) {
-            bindAction(uiState) { uiState ->
+            bindActionLiveData(uiState) { uiState ->
                 when (uiState) {
                     is UiState.Loaded -> showFavouriteGamesList(
                         uiState.data
@@ -53,13 +52,13 @@ class NotificationsListFragment
                     UiState.Empty -> showNoDataPlaceholder()
                 }
             }
-            bindAction(toggleFabVisibilityCommand) {
+            bindActionLiveData(toggleFabVisibilityCommand) {
                 viewBinding.floatingActionButton.isVisible = it
             }
-            bindCommandAction(scrollUpCommand) {
+            bindActionLiveData(scrollUpCommand) {
                 viewBinding.recyclerView.smoothScrollToPosition(0)
             }
-            bindCommandAction(sendScrollStateCommand) {
+            bindActionLiveData(sendScrollStateCommand) {
                 onSendScrollStateCommand(
                     (viewBinding.recyclerView.layoutManager as LinearLayoutManager)
                         .findFirstCompletelyVisibleItemPosition(),

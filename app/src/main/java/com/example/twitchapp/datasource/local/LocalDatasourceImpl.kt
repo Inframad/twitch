@@ -1,13 +1,17 @@
 package com.example.twitchapp.datasource.local
 
+import androidx.room.rxjava3.EmptyResultSetException
 import com.example.twitchapp.common.dispatchers.IoDispatcher
 import com.example.twitchapp.database.game.GameDao
 import com.example.twitchapp.database.game.GameEntity
 import com.example.twitchapp.database.streams.GameStreamDao
 import com.example.twitchapp.database.streams.GameStreamEntity
-import com.example.twitchapp.model.Result
+import com.example.twitchapp.model.exception.DatabaseException
+import com.example.twitchapp.model.exception.DatabaseState
 import com.example.twitchapp.model.game.Game
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -50,33 +54,35 @@ class LocalDatasourceImpl @Inject constructor(
             gameStreamDao.getFirstPage()
         }
 
-    override suspend fun getGame(name: String): Game =
-        withContext(ioDispatcher) {
-            gameDao.getGame(name).toModel()
-        }
+    override fun getGame(name: String): Single<Game> =
+        gameDao.getGame(name)
+            .map { it.toModel() }
+            .subscribeOn(Schedulers.io())
 
-
-    override suspend fun isGameExist(name: String): Boolean =
-        withContext(ioDispatcher) {
-            gameDao.isGameExist(name)
-        }
-
-    override fun getFavouriteGames(): Observable<Result.Success<List<Game>>> =
+    override fun getFavouriteGames(): Observable<List<Game>> =
         gameDao.getFavoriteGames()
-            .map { list ->
-                Result.Success(
-                    list.map { gameEntity ->
-                        gameEntity.toModel()
+            .onErrorResumeNext {
+                Observable.error(
+                    when(it) {
+                        is EmptyResultSetException -> DatabaseException(DatabaseState.EMPTY)
+                        else -> it
                     }
                 )
+            }.map { list ->
+                list.map { gameEntity ->
+                    gameEntity.toModel()
+                }
             }.subscribeOn(Schedulers.io())
 
-    override suspend fun updateGame(game: Game) {
-        withContext(ioDispatcher) {
-            gameDao.updateGame(GameEntity.fromModel(game))
-        }
-    }
+    override fun updateGame(game: Game): Completable =
+        gameDao.updateGame(GameEntity.fromModel(game))
+            .subscribeOn(Schedulers.io())
 
-    override suspend fun saveAndGetGame(game: Game): Game =
-        gameDao.saveAndGetGame(GameEntity.fromModel(game)).toModel()
+    override fun saveAndGetGame(game: Game): Single<Game> {
+        val gameEntity = GameEntity.fromModel(game)
+        return gameDao.insertWithIgnore(gameEntity)
+            .andThen(gameDao.getGameById(gameEntity.id))
+            .map { it.toModel()}
+            .subscribeOn(Schedulers.io())
+    }
 }

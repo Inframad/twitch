@@ -35,7 +35,7 @@ abstract class BaseFragmentLiveData<TViewModel : BaseViewModelLiveData>(@LayoutR
                 Snackbar.make(
                     this@BaseFragmentLiveData.requireView(),
                     it.message,
-                    Snackbar.LENGTH_LONG
+                    it.length
                 ).setAction(it.actionName, it.action)
                     .setAnchorView(R.id.bottom_navigation)
                     .show()

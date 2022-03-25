@@ -1,9 +1,9 @@
 package com.example.twitchapp.datasource.remote
 
-import com.example.twitchapp.model.Result
 import com.example.twitchapp.model.game.Game
+import io.reactivex.rxjava3.core.Single
 
 interface RemoteDatasource {
 
-    suspend fun getGame(name: String): Result<Game>
+    fun getGame(name: String): Single<Game>
 }
