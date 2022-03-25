@@ -81,9 +81,11 @@ class LocalDatasourceImpl @Inject constructor(
         gameDao.updateGame(GameEntity.fromModel(game))
             .subscribeOn(Schedulers.io())
 
-    override fun saveAndGetGame(game: Game): Single<Game> =
-        Single.just(gameDao.saveAndGetGame(GameEntity.fromModel(game)))
-            .map {
-                it.toModel()
-            }.subscribeOn(Schedulers.io())
+    override fun saveAndGetGame(game: Game): Single<Game> {
+        val gameEntity = GameEntity.fromModel(game)
+        return gameDao.insertWithIgnore(gameEntity)
+            .andThen(gameDao.getGameById(gameEntity.id))
+            .map { it.toModel()}
+            .subscribeOn(Schedulers.io())
+    }
 }

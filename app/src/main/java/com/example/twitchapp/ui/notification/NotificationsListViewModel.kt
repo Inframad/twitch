@@ -6,7 +6,6 @@ import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.repository.notification.NotificationRepository
-import com.example.twitchapp.repository.notification.NotificationRepositoryImpl
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -29,14 +28,6 @@ class NotificationsListViewModel
     val toggleFabVisibilityCommand = Data<Boolean>()
 
     init {
-        (repository as NotificationRepositoryImpl).getAllNotifications1()
-            .subscribe({
-                       val s = 25
-            }, {
-                val g = 13
-            })
-            .addToCompositeDisposable()
-
         repository.getAllNotifications()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { uiState.setValue(UiState.Loading) }
@@ -55,18 +46,21 @@ class NotificationsListViewModel
     }
 
     private fun handleSuccess(list: List<TwitchNotification>) {
-        uiState.setValue(UiState.Loaded(
-            list.map {
-                TwitchNotificationPresentation.fromModel(
-                    it,
-                    getString(R.string.scr_any_date_time_pattern)
-                )
-            }
-        ))
+        uiState.setValue(
+            if (list.isEmpty()) UiState.Empty
+            else UiState.Loaded(
+                list.map {
+                    TwitchNotificationPresentation.fromModel(
+                        it,
+                        getString(R.string.scr_any_date_time_pattern)
+                    )
+                }
+            )
+        )
     }
 
     private fun handleError(t: Throwable) {
-        when(t) {
+        when (t) {
             is DatabaseException -> uiState.setValue(UiState.Empty)
         }
     }

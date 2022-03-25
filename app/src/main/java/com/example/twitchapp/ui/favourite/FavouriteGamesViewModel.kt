@@ -28,7 +28,10 @@ class FavouriteGamesViewModel @Inject constructor(
     }
 
     private fun handleSuccess(data: List<Game>) {
-        uiState.setValue(UiState.Loaded(data))
+        uiState.setValue(
+            if (data.isEmpty()) UiState.Empty
+            else UiState.Loaded(data)
+        )
     }
 
     private fun handleError(t: Throwable) {

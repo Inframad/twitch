@@ -16,7 +16,7 @@ class NotificationDatasource @Inject constructor(
     private val streamNotificationDao: StreamNotificationDao
 ) {
 
-    fun getAllNotifications1(): Single<List<TwitchNotification>> {
+    fun getAllNotifications(): Observable<List<TwitchNotification>> {
         return twitchNotificationDao.getAllNotifications()
             .flatMap { items ->
                 Observable.fromIterable(items)
@@ -30,41 +30,10 @@ class NotificationDatasource @Inject constructor(
                             ).map { it.toModel() }
                         }
                     }
-            }
-            .toList()
-            .subscribeOn(Schedulers.io())
-    }
-
-    fun getAllNotifications(): Observable<List<TwitchNotification>> {
-        return twitchNotificationDao.getAllNotifications()
-            .flatMap { items ->
-                Observable.fromIterable(items)
-                    .flatMap { twitchNotificationEntity ->
-                        when (twitchNotificationEntity.childType) {
-                            TwitchNotificationType.GAME -> gameNotificationDao.getGameNotification(
-                                twitchNotificationEntity.childId
-                            ).map { it.toModel() }
-                            TwitchNotificationType.STREAMS -> streamNotificationDao.getStreamNotification(
-                                twitchNotificationEntity.childId
-                            ).map { it.toModel() }
-                        }
-                    }
+                    .toList()
+                    .toObservable()
             }
             .subscribeOn(Schedulers.io())
-
-//            .flatMapIterable { it }
-//            .flatMapSingle { twitchNotificationEntity ->
-//                when (twitchNotificationEntity.childType) {
-//                    TwitchNotificationType.GAME -> gameNotificationDao.getGameNotification(
-//                        twitchNotificationEntity.childId
-//                    ).map { it.toModel() }
-//                    TwitchNotificationType.STREAMS -> streamNotificationDao.getStreamNotification(
-//                        twitchNotificationEntity.childId
-//                    ).map { it.toModel() }
-//                }
-//            }.toList()
-            //.toObservable()
-
     }
 
     fun saveNotification(twitchNotification: TwitchNotification): Completable =

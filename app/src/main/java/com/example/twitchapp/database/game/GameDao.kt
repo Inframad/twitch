@@ -14,7 +14,7 @@ interface GameDao: BaseDao<GameEntity> {
     fun getGame(name: String): Single<GameEntity>
 
     @Query("SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE id=:id")
-    fun getGameById(id: Long): GameEntity
+    fun getGameById(id: Long): Single<GameEntity>
 
     @Query("SELECT EXISTS(SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE name = :name)")
     fun isGameExist(name: String): Boolean
@@ -26,11 +26,5 @@ interface GameDao: BaseDao<GameEntity> {
     fun updateGame(game: GameEntity): Completable
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertWithIgnore(gameEntity: GameEntity)
-
-    @Transaction
-    fun saveAndGetGame(gameEntity: GameEntity): GameEntity {
-        insertWithIgnore(gameEntity)
-        return getGameById(gameEntity.id)
-    }
+    fun insertWithIgnore(gameEntity: GameEntity): Completable
 }

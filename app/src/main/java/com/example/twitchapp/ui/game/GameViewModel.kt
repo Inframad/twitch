@@ -73,6 +73,7 @@ class GameViewModel @Inject constructor(
                     imageUrl = it.imageUrl
                 )
             }.subscribe(::handleSuccess, ::handleError)
+            .addToCompositeDisposable()
     }
 
     private fun handleSuccess(data: GameScreenModel) {
