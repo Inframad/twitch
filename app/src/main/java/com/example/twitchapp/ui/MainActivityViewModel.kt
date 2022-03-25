@@ -2,7 +2,7 @@ package com.example.twitchapp.ui
 
 import android.content.Context
 import com.example.twitchapp.BuildConfig
-import com.example.twitchapp.common.BaseViewModel
+import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.repository.notification.NotificationRepository
@@ -10,23 +10,22 @@ import com.example.twitchapp.ui.game.GameFragmentArgs
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val notificationRepository: NotificationRepository
-) : BaseViewModel(context) {
+    notificationRepository: NotificationRepository
+) : BaseViewModelLiveData(context) {
 
     private var _currentScreen = AppScreen.STREAMS
     val toggleBottomNavigationViewVisibility = TCommand<Boolean>()
 
     init {
-        /*viewModelScope.launch {
-            notificationRepository.getNotificationsEvent()
-                .takeWhile { _currentLifecycleOwnerState == Lifecycle.Event.ON_RESUME }
-                .collect { messageReceived(it) }
-        }*/ //TODO to Rx
+        notificationRepository.getNotificationsEvent()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::messageReceived){}
     }
 
     fun onDestinationChanged(screen: AppScreen) {
@@ -55,7 +54,7 @@ class MainActivityViewModel @Inject constructor(
                     twitchNotification.description?.let { description ->
                         "${twitchNotification.title}\n$description"
                     }
-                        ?: twitchNotification.title
+                        ?: twitchNotification.title.toString()
                 )
             }
         }
