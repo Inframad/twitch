@@ -14,7 +14,6 @@ interface LocalDatasource {
     suspend fun deleteAllGameStreams()
     suspend fun getGameStreamsFirstPage(): List<GameStreamEntity>
     fun getGame(name: String): Single<Game>
-    fun isGameExist(name: String): Boolean
     fun getFavouriteGames(): Observable<List<Game>>
     fun updateGame(game: Game): Completable
     fun saveAndGetGame(game: Game): Single<Game>

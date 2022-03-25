@@ -16,9 +16,6 @@ interface GameDao: BaseDao<GameEntity> {
     @Query("SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE id=:id")
     fun getGameById(id: Long): Single<GameEntity>
 
-    @Query("SELECT EXISTS(SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE name = :name)")
-    fun isGameExist(name: String): Boolean
-
     @Query("SELECT * FROM ${DbConstants.GAMES_TABLE_NAME} WHERE isFavourite=1")
     fun getFavoriteGames(): Observable<List<GameEntity>>
 

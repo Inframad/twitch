@@ -59,9 +59,6 @@ class LocalDatasourceImpl @Inject constructor(
             .map { it.toModel() }
             .subscribeOn(Schedulers.io())
 
-    override fun isGameExist(name: String): Boolean =
-        gameDao.isGameExist(name)
-
     override fun getFavouriteGames(): Observable<List<Game>> =
         gameDao.getFavoriteGames()
             .onErrorResumeNext {
