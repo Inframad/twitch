@@ -12,6 +12,7 @@ import com.example.twitchapp.common.extensions.glideImage
 import com.example.twitchapp.common.extensions.setTintColor
 import com.example.twitchapp.common.livedata.BaseFragmentLiveData
 import com.example.twitchapp.databinding.FragmentGameBinding
+import com.example.twitchapp.navigation.Navigator
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,6 +49,9 @@ class GameFragment : BaseFragmentLiveData<GameViewModel>(R.layout.fragment_game)
             }
             bindActionLiveData(toggleFavourite) { color ->
                 viewBinding.favouriteGameImageButton.setTintColor(color)
+            }
+            bindActionLiveData(goBackCommand) {
+                Navigator.goBack(this@GameFragment)
             }
         }
     }

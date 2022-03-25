@@ -4,13 +4,13 @@ import android.content.Context
 import com.example.twitchapp.R
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.SnackbarData
-import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.streams.GameStream
 import com.example.twitchapp.repository.Repository
 import com.example.twitchapp.repository.notification.NotificationRepository
 import com.example.twitchapp.ui.UiState
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -26,6 +26,7 @@ class GameViewModel @Inject constructor(
     val uiState = Data<UiState<GameScreenModel>>()
     private var game: Game? = null
     private var isGameModelFetched = false
+    val goBackCommand = Command()
 
     val toggleFavourite = Data<Int>()
 
@@ -58,31 +59,33 @@ class GameViewModel @Inject constructor(
     }
 
     private fun fetchGameModel(gameName: String?, streamerName: String?, viewersCount: Long?) {
-        repository.getGame(gameName!!)
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { uiState.setValue(UiState.Loading) }
-            .map {
-                isGameModelFetched = true
-                game = it
-                GameScreenModel(
-                    name = it.name
-                        ?: getString(R.string.scr_any_lbl_unknown),
-                    streamerName = streamerName
-                        ?: getString(R.string.scr_any_lbl_unknown),
-                    viewersCount = viewersCount.toString(),
-                    imageUrl = it.imageUrl
-                )
-            }.subscribe(::handleSuccess, ::handleError)
-            .addToCompositeDisposable()
-    }
-
-    private fun handleSuccess(data: GameScreenModel) {
-        uiState.setValue(UiState.Loaded(data))
-    }
-
-    private fun handleError(t: Throwable) {
-        when (t) {
-            is DatabaseException -> uiState.setValue(UiState.Empty)
+        if (gameName != null) {
+            repository.getGame(gameName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { uiState.setValue(UiState.Loading) }
+                .map {
+                    it to GameScreenModel(
+                        name = it.name
+                            ?: getString(R.string.scr_any_lbl_unknown),
+                        streamerName = streamerName
+                            ?: getString(R.string.scr_any_lbl_unknown),
+                        viewersCount = viewersCount.toString(),
+                        imageUrl = it.imageUrl
+                    )
+                }.subscribe({ (g, gameScreenModel) ->
+                    isGameModelFetched = true
+                    game = g
+                    uiState.setValue(UiState.Loaded(gameScreenModel))
+                }, {})
+                .addToCompositeDisposable()
+        } else {
+            showSnackbarCommand.setValue(SnackbarData(
+                getString(R.string.scr_game_lbl_game_is_not_found),
+                getString(R.string.scr_any_lbl_go_back),
+                Snackbar.LENGTH_INDEFINITE
+            ) {
+                goBackCommand.setValue(Unit)
+            })
         }
     }
 
