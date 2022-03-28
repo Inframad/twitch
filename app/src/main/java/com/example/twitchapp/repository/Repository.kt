@@ -1,7 +1,6 @@
 package com.example.twitchapp.repository
 
-import androidx.lifecycle.LiveData
-import androidx.paging.PagingData
+import androidx.paging.Pager
 import com.example.twitchapp.model.NetworkState
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.streams.GameStream
@@ -11,7 +10,7 @@ import io.reactivex.rxjava3.core.Single
 
 interface Repository {
 
-    fun getGameStreamsLiveData(): LiveData<PagingData<GameStream>>
+    fun getGameStreamsLiveData(): Pager<String, GameStream>
     fun getCurrentNetworkState(): NetworkState
     fun getGame(name: String): Single<Game>
     fun getFavouriteGames(): Observable<List<Game>>

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.cachedIn
+import androidx.paging.liveData
 import com.example.twitchapp.R
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.NetworkState
@@ -23,7 +24,8 @@ class GameStreamViewModel @Inject constructor(
     val refreshCommand = Command()
     val retryCommand = Command()
     val isNoDataPlaceholderVisible = TCommand<Boolean>()
-    val gameStreamsLiveData = repository.getGameStreamsLiveData().cachedIn(this)
+    val gameStreamsLiveData = repository.getGameStreamsLiveData()
+        .liveData.cachedIn(this)
 
     init {
         if (repository.getCurrentNetworkState() == NetworkState.NOT_AVAILABLE) {

@@ -2,7 +2,6 @@ package com.example.twitchapp.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.liveData
 import androidx.room.rxjava3.EmptyResultSetException
 import com.example.twitchapp.api.util.NetworkConnectionChecker
 import com.example.twitchapp.database.GAME_STREAMS_PAGE_SIZE
@@ -30,7 +29,7 @@ class RepositoryImpl @Inject constructor(
         PagingConfig(pageSize = GAME_STREAMS_PAGE_SIZE)
     ) {
         pagingSourceFactory.create()
-    }.liveData
+    }
 
     override fun getCurrentNetworkState(): NetworkState =
         networkConnectionChecker.getNetworkState()
