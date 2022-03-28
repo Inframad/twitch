@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.twitchapp.R
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.SnackbarData
+import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.streams.GameStream
@@ -76,7 +77,10 @@ class GameViewModel @Inject constructor(
                     isGameModelFetched = true
                     game = g
                     uiState.setValue(UiState.Loaded(gameScreenModel))
-                }, {})
+                }, {
+                    if(it is DatabaseException) uiState.setValue(UiState.Empty)
+                    else showToast(handleBaseError(it))
+                })
                 .addToCompositeDisposable()
         } else {
             showSnackbarCommand.setValue(SnackbarData(

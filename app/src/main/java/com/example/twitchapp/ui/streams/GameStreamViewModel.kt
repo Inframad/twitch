@@ -11,8 +11,6 @@ import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +27,7 @@ class GameStreamViewModel @Inject constructor(
 
     init {
         if (repository.getCurrentNetworkState() == NetworkState.NOT_AVAILABLE) {
-            showToast(getString(R.string.src_streams_lbl_no_saved_data_and_internet))
+            showToast(getString(R.string.src_streams_lbl_saved_data_is_loaded))
         }
     }
 
@@ -51,25 +49,13 @@ class GameStreamViewModel @Inject constructor(
     }
 
     private fun handleError(e: Throwable) {
-        if (e is NoSuchElementException) {
+        if (e is DatabaseException) {
             isNoDataPlaceholderVisible.setValue(true)
             isRefreshing.setValue(false)
             return
         }
 
-        showToast(
-            when (e) {
-                is com.example.twitchapp.model.exception.HttpException -> when (e.code) {
-                    429 -> getString(R.string.scr_any_lbl_too_many_request)
-                    404 -> getString(R.string.scr_any_lbl_not_found)
-                    400 -> getString(R.string.scr_any_lbl_check_internet_connection)
-                    else -> getString(R.string.scr_any_lbl_unknown_error)
-                }
-                is SocketTimeoutException -> getString(R.string.scr_any_lbl_check_internet_connection)
-                is UnknownHostException -> getString(R.string.scr_any_lbl_check_internet_connection)
-                else -> getString(R.string.scr_any_lbl_unknown_error)
-            }
-        )
+        showToast(handleBaseError(e))
     }
 
     fun onFooterLoadStateChanged(loadState: LoadState) =

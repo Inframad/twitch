@@ -4,7 +4,6 @@ import android.content.Context
 import com.example.twitchapp.R
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.exception.DatabaseException
-import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.repository.notification.NotificationRepository
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +30,24 @@ class NotificationsListViewModel
         repository.getAllNotifications()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { uiState.setValue(UiState.Loading) }
-            .subscribe(::handleSuccess, ::handleError)
+            .subscribe(
+                { list ->
+                    uiState.setValue(if (list.isEmpty()) UiState.Empty
+                    else UiState.Loaded(
+                        list.map {
+                            TwitchNotificationPresentation.fromModel(
+                                it,
+                                getString(R.string.scr_any_date_time_pattern)
+                            )
+                        }
+                    ))
+                },
+                {
+                    if (it is DatabaseException) uiState.setValue(UiState.Empty)
+                    else showToast(handleBaseError(it))
+
+                }
+            )
             .addToCompositeDisposable()
 
         notificationRepository.getNotificationsEvent()
@@ -43,26 +59,6 @@ class NotificationsListViewModel
 
     fun onSendScrollStateCommand(scrollPosition: Int, canScrollDown: Boolean) {
         if (scrollPosition != 0 || canScrollDown) toggleFabVisibilityCommand.setValue(true)
-    }
-
-    private fun handleSuccess(list: List<TwitchNotification>) {
-        uiState.setValue(
-            if (list.isEmpty()) UiState.Empty
-            else UiState.Loaded(
-                list.map {
-                    TwitchNotificationPresentation.fromModel(
-                        it,
-                        getString(R.string.scr_any_date_time_pattern)
-                    )
-                }
-            )
-        )
-    }
-
-    private fun handleError(t: Throwable) {
-        when (t) {
-            is DatabaseException -> uiState.setValue(UiState.Empty)
-        }
     }
 
     fun onFloatingActionButtonClicked() {
