@@ -30,17 +30,20 @@ class NotificationsListViewModel
         repository.getAllNotifications()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { uiState.setValue(UiState.Loading) }
+            .map { twitchNotifications ->
+                twitchNotifications.map {
+                    TwitchNotificationPresentation.fromModel(
+                        it,
+                        getString(R.string.scr_any_date_time_pattern)
+                    )
+                }
+            }
             .subscribe(
-                { list ->
-                    uiState.setValue(if (list.isEmpty()) UiState.Empty
-                    else UiState.Loaded(
-                        list.map {
-                            TwitchNotificationPresentation.fromModel(
-                                it,
-                                getString(R.string.scr_any_date_time_pattern)
-                            )
-                        }
-                    ))
+                {
+                    uiState.setValue(
+                        if (it.isEmpty()) UiState.Empty
+                        else UiState.Loaded(it)
+                    )
                 },
                 {
                     if (it is DatabaseException) uiState.setValue(UiState.Empty)

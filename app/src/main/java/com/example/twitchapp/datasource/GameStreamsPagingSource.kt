@@ -42,10 +42,12 @@ class GameStreamsPagingSource @Inject constructor(
                     } else {
                         Single.just(it)
                     }
-                }.flatMap {
-                    val entities =
-                        it.data.map { it.toModel() }.map { GameStreamEntity.fromModel(it) }
-                    localDatasource.saveGameStreams(entities).andThen(makePage(entities, it.pagination.cursor))
+                }.map {
+                    it.data.map { it.toModel() }
+                        .map { GameStreamEntity.fromModel(it) } to it.pagination.cursor
+                }
+                .flatMap { (entities, cursor) ->
+                    localDatasource.saveGameStreams(entities).andThen(makePage(entities, cursor))
                 }
             AppNetworkMode.OFFLINE -> if (params.key != null) {
                 localDatasource.getGameStreamByAccessKey(params.key!!)
