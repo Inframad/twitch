@@ -2,6 +2,8 @@ package com.example.twitchapp.api
 
 import android.content.Context
 import com.example.twitchapp.BuildConfig
+import com.example.twitchapp.api.adapter.RxErrorHandlingCallAdapterFactory
+import com.example.twitchapp.api.adapter.UriAdapter
 import com.example.twitchapp.api.game.TwitchGamesApi
 import com.example.twitchapp.api.streams.TwitchGameStreamsApi
 import com.example.twitchapp.api.util.NetworkConnectionChecker
@@ -59,14 +61,14 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(
         moshiConverterFactory: MoshiConverterFactory,
-        rxJava3CallAdapterFactory: RxJava3CallAdapterFactory,
+        rxErrorHandlingCallAdapterFactory: RxErrorHandlingCallAdapterFactory,
         client: OkHttpClient,
     ): Retrofit =
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(client)
             .addConverterFactory(moshiConverterFactory)
-            .addCallAdapterFactory(rxJava3CallAdapterFactory)
+            .addCallAdapterFactory(rxErrorHandlingCallAdapterFactory)
             .build()
 
     @Provides

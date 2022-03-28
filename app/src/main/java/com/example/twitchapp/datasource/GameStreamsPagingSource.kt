@@ -1,8 +1,8 @@
 package com.example.twitchapp.datasource
 
 import android.content.Context
-import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import androidx.paging.rxjava3.RxPagingSource
 import com.example.twitchapp.R
 import com.example.twitchapp.api.streams.TwitchGameStreamsApi
 import com.example.twitchapp.api.util.NetworkConnectionChecker
@@ -15,7 +15,7 @@ import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.exception.DatabaseState
 import com.example.twitchapp.model.streams.GameStream
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.net.UnknownHostException
+import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 class GameStreamsPagingSource @Inject constructor(
@@ -23,80 +23,81 @@ class GameStreamsPagingSource @Inject constructor(
     private val localDatasource: LocalDatasource,
     @ApplicationContext private val applicationContext: Context,
     networkConnectionChecker: NetworkConnectionChecker
-) : PagingSource<String, GameStream>() {
+) : RxPagingSource<String, GameStream>() {
 
+    private var isDatabaseShouldBeCleared: Boolean = true
     private var appNetworkMode: AppNetworkMode = when (networkConnectionChecker.getNetworkState()) {
         NetworkState.AVAILABLE -> AppNetworkMode.ONLINE
         NetworkState.NOT_AVAILABLE -> AppNetworkMode.OFFLINE
     }
 
-    private var isDatabaseShouldBeCleared: Boolean = true
-
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, GameStream> {
-        try {
-            var data = emptyList<GameStream>()
-            var nextKey: String? = null
-
-            when (appNetworkMode) {
-                AppNetworkMode.ONLINE -> {
-                    val nextPage = params.key ?: ""
-                    val response = twitchGameStreamsApi.getGameStreams(nextPage)
-
-                    if (isDatabaseShouldBeCleared && !response.data.isNullOrEmpty()) {
-                        localDatasource.deleteAllGameStreams()
+    override fun loadSingle(params: LoadParams<String>): Single<LoadResult<String, GameStream>> {
+        val loadResult = when (appNetworkMode) {
+            AppNetworkMode.ONLINE -> twitchGameStreamsApi.getGameStreams(params.key ?: "")
+                .flatMap {
+                    if (isDatabaseShouldBeCleared && !it.data.isNullOrEmpty()) {
                         isDatabaseShouldBeCleared = false
-                    }
-
-                    data = response.data.map { it.toModel() }
-                    localDatasource.saveGameStreams(data.map { GameStreamEntity.fromModel(it) })
-
-                    nextKey = response.pagination.cursor
-                }
-                AppNetworkMode.OFFLINE -> {
-                    if (params.key != null) {
-                        val nextPage = params.key
-                        val startId = localDatasource.getGameStreamByAccessKey(nextPage!!).id
-                        val gameStreamEntities = localDatasource.getGameStreamsPage(
-                            startId = startId,
-                            endId = startId + GAME_STREAMS_PAGE_SIZE
-                        )
-
-                        if (gameStreamEntities.last().accessKey != nextPage) {
-                            data = gameStreamEntities.map { it.toModel() }
-                            nextKey = data.last().accessKey
-                        }
-
+                        localDatasource.deleteAllGameStreams()
+                            .andThen(Single.just(it))
                     } else {
-                        val gameStreamEntities = localDatasource.getGameStreamsFirstPage()
-
-                        if (gameStreamEntities.isEmpty()) throw DatabaseException(DatabaseState.EMPTY)
-                        else {
-                            data = gameStreamEntities.map { it.toModel() }
-                            nextKey = data.last().accessKey
+                        Single.just(it)
+                    }
+                }.map {
+                    it.data.map { it.toModel() }
+                        .map { GameStreamEntity.fromModel(it) } to it.pagination.cursor
+                }
+                .flatMap { (entities, cursor) ->
+                    localDatasource.saveGameStreams(entities).andThen(makePage(entities, cursor))
+                }
+            AppNetworkMode.OFFLINE -> if (params.key != null) {
+                localDatasource.getGameStreamByAccessKey(params.key!!)
+                    .flatMap {
+                        localDatasource.getGameStreamsPage(
+                            startId = it.id,
+                            endId = it.id + GAME_STREAMS_PAGE_SIZE
+                        )
+                    }.flatMap {
+                        if (it.last().accessKey != params.key) {
+                            makePage(it)
+                        } else {
+                            @Suppress("Unchecked_Cast")
+                            Single.just(
+                                LoadResult.Page(
+                                    data = emptyList<GameStream>(),
+                                    prevKey = null,
+                                    nextKey = null
+                                ) as LoadResult<String, GameStream>
+                            )
                         }
                     }
-                }
+            } else {
+                localDatasource.getGameStreamsFirstPage()
+                    .flatMap {
+                        if(it.isEmpty()) throw DatabaseException(DatabaseState.EMPTY)
+                        else makePage(it)
+                    }
             }
-            return LoadResult.Page(
-                data = data.map { gameStream ->
-                    gameStream.copy(
-                        userName = gameStream.userName
-                            ?: applicationContext.getString(R.string.scr_any_lbl_unknown),
-                        gameName = gameStream.gameName
-                            ?: applicationContext.getString(R.string.scr_any_lbl_unknown),
-                        viewerCount = gameStream.viewerCount ?: 0L
-                    )
-                },
-                prevKey = null,
-                nextKey = nextKey
-            )
-        } catch (e: UnknownHostException) {
-            appNetworkMode = AppNetworkMode.OFFLINE
-            return LoadResult.Error(e)
-        } catch (e: Throwable) {
-            return LoadResult.Error(e)
+        }
+        return loadResult.onErrorResumeNext {
+           Single.just(LoadResult.Error(it))
         }
     }
+
+    private fun makePage(list: List<GameStreamEntity>, nextKey: String? = list.last().accessKey): Single<LoadResult<String, GameStream>> =
+        Single.just(LoadResult.Page(
+            data = list.map { it.toModel() }.map { gameStream ->
+                gameStream.copy(
+                    userName = gameStream.userName
+                        ?: applicationContext.getString(R.string.scr_any_lbl_unknown),
+                    gameName = gameStream.gameName
+                        ?: applicationContext.getString(R.string.scr_any_lbl_unknown),
+                    viewerCount = gameStream.viewerCount ?: 0L
+                )
+            },
+            prevKey = null,
+            nextKey = nextKey
+        )
+        )
 
     override fun getRefreshKey(state: PagingState<String, GameStream>): String? {
         return state.anchorPosition?.let { anchorPosition ->

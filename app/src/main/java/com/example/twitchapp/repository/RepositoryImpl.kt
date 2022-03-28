@@ -2,13 +2,16 @@ package com.example.twitchapp.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.room.rxjava3.EmptyResultSetException
 import com.example.twitchapp.api.util.NetworkConnectionChecker
 import com.example.twitchapp.database.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.datasource.GameStreamsPagingSourceFactory
 import com.example.twitchapp.datasource.local.LocalDatasource
 import com.example.twitchapp.datasource.remote.RemoteDatasource
 import com.example.twitchapp.model.NetworkState
-import com.example.twitchapp.model.exception.NoInternetConnectionException
+import com.example.twitchapp.model.exception.DatabaseException
+import com.example.twitchapp.model.exception.DatabaseState
+import com.example.twitchapp.model.exception.NetworkException
 import com.example.twitchapp.model.game.Game
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
@@ -22,11 +25,11 @@ class RepositoryImpl @Inject constructor(
     private val pagingSourceFactory: GameStreamsPagingSourceFactory
 ) : Repository {
 
-    override fun getGameStreamsFlow() = Pager(
+    override fun getGameStreamsLiveData() = Pager(
         PagingConfig(pageSize = GAME_STREAMS_PAGE_SIZE)
     ) {
         pagingSourceFactory.create()
-    }.flow
+    }
 
     override fun getCurrentNetworkState(): NetworkState =
         networkConnectionChecker.getNetworkState()
@@ -37,9 +40,18 @@ class RepositoryImpl @Inject constructor(
                 localDatasource.saveAndGetGame(it)
             }
             .onErrorResumeNext {
-                when(it) {
-                    is NoInternetConnectionException ->
+                when (it) {
+                    is NetworkException.NetworkIsNotAvailable -> {
                         return@onErrorResumeNext localDatasource.getGame(name)
+                            .onErrorResumeNext { throwable ->
+                                Single.error(
+                                    if (throwable is EmptyResultSetException) DatabaseException(
+                                        DatabaseState.EMPTY
+                                    )
+                                    else throwable
+                                )
+                            }
+                    }
                     else -> throw it
                 }
             }

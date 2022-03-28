@@ -23,20 +23,16 @@ class FavouriteGamesViewModel @Inject constructor(
         repository.getFavouriteGames()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { uiState.setValue(UiState.Loading) }
-            .subscribe(::handleSuccess, ::handleError)
+            .subscribe({ list ->
+                uiState.setValue(
+                    if (list.isEmpty()) UiState.Empty
+                    else UiState.Loaded(list)
+                )
+            },
+                {
+                    if(it is DatabaseException) uiState.setValue(UiState.Empty)
+                    else showToast(handleBaseError(it))
+                })
             .addToCompositeDisposable()
-    }
-
-    private fun handleSuccess(data: List<Game>) {
-        uiState.setValue(
-            if (data.isEmpty()) UiState.Empty
-            else UiState.Loaded(data)
-        )
-    }
-
-    private fun handleError(t: Throwable) {
-        when (t) {
-            is DatabaseException -> uiState.setValue(UiState.Empty)
-        }
     }
 }
