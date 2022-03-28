@@ -77,7 +77,6 @@ android {
 
 dependencies {
     def retrofit_version = "2.9.0"
-    def coroutines_version = "1.5.2"
     def lifecycle_version = "2.4.1"
     def room_version = "2.4.2"
     def paging_version = "3.1.1"
@@ -90,8 +89,6 @@ dependencies {
     def rx_version = "3.0.0"
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"

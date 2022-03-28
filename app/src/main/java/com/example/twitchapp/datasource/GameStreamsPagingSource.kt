@@ -59,6 +59,7 @@ class GameStreamsPagingSource @Inject constructor(
                         if (it.last().accessKey != params.key) {
                             makePage(it)
                         } else {
+                            @Suppress("Unchecked_Cast")
                             Single.just(
                                 LoadResult.Page(
                                     data = emptyList<GameStream>(),
@@ -77,6 +78,7 @@ class GameStreamsPagingSource @Inject constructor(
             }
         }
         return loadResult.onErrorResumeNext {
+            @Suppress("Deprecation")
             Single.just(
                 when (it) {
                     is retrofit2.adapter.rxjava3.HttpException -> {
