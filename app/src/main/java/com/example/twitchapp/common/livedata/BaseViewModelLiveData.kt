@@ -9,11 +9,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.twitchapp.R
 import com.example.twitchapp.model.SnackbarData
+import com.example.twitchapp.model.exception.NetworkException
 import com.example.twitchapp.ui.game.GameFragmentArgs
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 @SuppressLint("StaticFieldLeak")
 abstract class BaseViewModelLiveData(private val applicationContext: Context) : ViewModel() {
@@ -54,14 +53,10 @@ abstract class BaseViewModelLiveData(private val applicationContext: Context) : 
     protected fun handleBaseError(e: Throwable): String {
         Log.e("HandleBaseError", e.toString())
         return when (e) {
-            is com.example.twitchapp.model.exception.HttpException -> when (e.code) {
-                429 -> getString(R.string.scr_any_lbl_too_many_request)
-                404 -> getString(R.string.scr_any_lbl_not_found)
-                400 -> getString(R.string.scr_any_lbl_check_internet_connection)
-                else -> getString(R.string.scr_any_lbl_unknown_error)
-            }
-            is SocketTimeoutException -> getString(R.string.scr_any_lbl_check_internet_connection)
-            is UnknownHostException -> getString(R.string.scr_any_lbl_check_internet_connection)
+            NetworkException.NetworkIsNotAvailable ->
+                getString(R.string.scr_any_lbl_check_internet_connection)
+            NetworkException.InternalServerError ->
+                getString(R.string.scr_any_lbl_server_is_not_available)
             else -> getString(R.string.scr_any_lbl_unknown_error)
         }
     }

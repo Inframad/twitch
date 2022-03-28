@@ -13,7 +13,6 @@ import com.example.twitchapp.model.AppNetworkMode
 import com.example.twitchapp.model.NetworkState
 import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.exception.DatabaseState
-import com.example.twitchapp.model.exception.HttpException
 import com.example.twitchapp.model.streams.GameStream
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.core.Single
@@ -78,15 +77,7 @@ class GameStreamsPagingSource @Inject constructor(
             }
         }
         return loadResult.onErrorResumeNext {
-            @Suppress("Deprecation")
-            Single.just(
-                when (it) {
-                    is retrofit2.adapter.rxjava3.HttpException -> {
-                        LoadResult.Error(HttpException(it.code()))
-                    }
-                    else -> LoadResult.Error(it)
-                }
-            )
+           Single.just(LoadResult.Error(it))
         }
     }
 

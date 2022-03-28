@@ -11,7 +11,7 @@ import com.example.twitchapp.datasource.remote.RemoteDatasource
 import com.example.twitchapp.model.NetworkState
 import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.exception.DatabaseState
-import com.example.twitchapp.model.exception.NoInternetConnectionException
+import com.example.twitchapp.model.exception.NetworkException
 import com.example.twitchapp.model.game.Game
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
@@ -41,13 +41,16 @@ class RepositoryImpl @Inject constructor(
             }
             .onErrorResumeNext {
                 when (it) {
-                    is NoInternetConnectionException -> {
-                        return@onErrorResumeNext localDatasource.getGame(name).onErrorResumeNext {
-                            Single.error(
-                                if (it is EmptyResultSetException) DatabaseException(DatabaseState.EMPTY)
-                                else it
-                            )
-                        }
+                    is NetworkException.NetworkIsNotAvailable -> {
+                        return@onErrorResumeNext localDatasource.getGame(name)
+                            .onErrorResumeNext { throwable ->
+                                Single.error(
+                                    if (throwable is EmptyResultSetException) DatabaseException(
+                                        DatabaseState.EMPTY
+                                    )
+                                    else throwable
+                                )
+                            }
                     }
                     else -> throw it
                 }
