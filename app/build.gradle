@@ -44,17 +44,11 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "TOKEN", "\"w70n5qwx7zi4qufg12212nh3m4yx8w\""
-            buildConfigField "String", "CLIENT_ID", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
             buildConfigField "String", "FCM_TOPIC_NAME", "\"dev\""
-            buildConfigField "String", "BASE_URL", "\"https://api.twitch.tv/helix/\""
         }
         release {
             applicationIdSuffix ".release"
-            buildConfigField "String", "TOKEN", "\"w70n5qwx7zi4qufg12212nh3m4yx8w\""
-            buildConfigField "String", "CLIENT_ID", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
             buildConfigField "String", "FCM_TOPIC_NAME", "\"main\""
-            buildConfigField "String", "BASE_URL", "\"https://api.twitch.tv/helix/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -76,6 +70,11 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':model')
+    implementation project(path: ':repository')
+    implementation project(path: ':api')
+    implementation project(path: ':datasource')
+    implementation project(path: ':database')
     def retrofit_version = "2.9.0"
     def lifecycle_version = "2.4.1"
     def room_version = "2.4.2"

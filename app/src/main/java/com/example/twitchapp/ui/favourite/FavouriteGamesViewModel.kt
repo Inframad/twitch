@@ -1,10 +1,10 @@
 package com.example.twitchapp.ui.favourite
 
 import android.content.Context
+import com.example.repository.Repository
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.game.Game
-import com.example.twitchapp.repository.Repository
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

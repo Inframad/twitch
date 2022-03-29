@@ -7,9 +7,9 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.api.NetworkException
 import com.example.twitchapp.R
-import com.example.twitchapp.model.SnackbarData
-import com.example.twitchapp.model.exception.NetworkException
+import com.example.twitchapp.ui.SnackbarData
 import com.example.twitchapp.ui.game.GameFragmentArgs
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
