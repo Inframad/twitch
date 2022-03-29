@@ -3,7 +3,6 @@ package com.example.twitchapp.ui.favourite
 import android.content.Context
 import com.example.repository.Repository
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
-import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,8 +29,7 @@ class FavouriteGamesViewModel @Inject constructor(
                 )
             },
                 {
-                    if(it is DatabaseException) uiState.setValue(UiState.Empty)
-                    else showToast(handleBaseError(it))
+                    showToast(handleBaseError(it))
                 })
             .addToCompositeDisposable()
     }

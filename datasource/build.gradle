@@ -42,10 +42,6 @@ dependencies {
     implementation Deps.hilt_android
     kapt Deps.hilt_compiler
 
-    implementation Deps.room_runtime
-    implementation Deps.room_rxJava3
-    kapt Deps.room_compiler
-
     implementation Deps.rx3android
     implementation Deps.rx3java
 

@@ -1,6 +1,5 @@
 package com.example.twitchapp.datasource.local
 
-import androidx.room.rxjava3.EmptyResultSetException
 import com.example.twitchapp.database.game.GameDao
 import com.example.twitchapp.database.game.GameEntity
 import com.example.twitchapp.database.streams.GameStreamDao
@@ -44,28 +43,13 @@ class LocalDatasourceImpl @Inject constructor(
 
     override fun getGame(name: String): Single<Game> =
         gameDao.getGame(name)
-            .onErrorResumeNext {
-                Single.error(
-                    when (it) {
-                        is EmptyResultSetException -> DatabaseException(DatabaseState.EMPTY)
-                        else -> it
-                    }
-                )
-            }
+            .switchIfEmpty(Single.error(DatabaseException(DatabaseState.EMPTY)))
             .map { it.toModel() }
-
             .subscribeOn(Schedulers.io())
 
     override fun getFavouriteGames(): Observable<List<Game>> =
         gameDao.getFavoriteGames()
-            .onErrorResumeNext {
-                Observable.error(
-                    when (it) {
-                        is EmptyResultSetException -> DatabaseException(DatabaseState.EMPTY)
-                        else -> it
-                    }
-                )
-            }.map { list ->
+            .map { list ->
                 list.map { gameEntity ->
                     gameEntity.toModel()
                 }
