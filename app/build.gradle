@@ -8,7 +8,6 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
-
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 
 def keystoreProperties = new Properties()
@@ -69,17 +68,13 @@ android {
     }
 }
 
+
 dependencies {
     implementation project(path: ':model')
     implementation project(path: ':repository')
     implementation project(path: ':api')
     implementation project(path: ':datasource')
     implementation project(path: ':database')
-    def retrofit_version = "2.9.0"
-    def lifecycle_version = "2.4.1"
-    def room_version = "2.4.2"
-    def paging_version = "3.1.1"
-    def glide_version = "4.13.0"
     def nav_version = "2.4.1"
     def hilt_version = "2.38.1"
     def view_binding_property_delegate_version = "1.4.4"
@@ -89,23 +84,22 @@ dependencies {
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
+    implementation Deps.retrofit
+    implementation Deps.retrofit_converter_moshi
+    implementation Deps.retrofit_adapter_rxJava3
 
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation Deps.lifecycle_runtime_ktx
+    implementation Deps.lifecycle_viewmodel_ktx
 
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.room:room-rxjava3:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    implementation Deps.room_runtime
+    implementation Deps.room_ktx
+    implementation Deps.room_rxJava3
+    kapt Deps.room_compiler
 
-    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
-    implementation "androidx.paging:paging-rxjava3:$paging_version"
+    implementation Deps.paging_runtime_ktx
 
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    implementation Deps.glide
+    kapt Deps.glide_compiler
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
