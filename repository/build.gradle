@@ -35,14 +35,15 @@ dependencies {
     implementation project(path: ':datasource')
     implementation project(path: ':model')
     implementation project(path: ':api')
-    def hilt_version = "2.38.1"
-    def paging_version = "3.1.1"
 
-    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
-    implementation "androidx.paging:paging-rxjava3:$paging_version"
+    implementation Deps.paging_runtime_ktx
+    implementation Deps.paging_rxJava3
 
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation Deps.rx3android
+    implementation Deps.rx3java
+
+    implementation Deps.hilt_android
+    kapt Deps.hilt_compiler
 
     implementation 'androidx.core:core-ktx:1.7.0'
 }
