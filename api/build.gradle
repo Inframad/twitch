@@ -41,25 +41,20 @@ android {
 
 dependencies {
     implementation project(path: ':model')
-    def retrofit_version = "2.9.0"
-    def rx_version = "3.0.0"
-    def hilt_version = "2.38.1"
-    def moshi_version = "1.13.0"
 
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
+    implementation Deps.retrofit
+    implementation Deps.retrofit_converter_moshi
+    implementation Deps.retrofit_adapter_rxJava3
 
-    implementation "io.reactivex.rxjava3:rxandroid:$rx_version"
-    implementation "io.reactivex.rxjava3:rxjava:$rx_version"
-    implementation "io.reactivex.rxjava3:rxkotlin:$rx_version"
+    implementation Deps.rx3android
+    implementation Deps.rx3java
 
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation Deps.hilt_android
+    kapt Deps.hilt_compiler
 
-    implementation "com.squareup.moshi:moshi-kotlin:${moshi_version}"
-    implementation "com.squareup.moshi:moshi:${moshi_version}"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:${moshi_version}"
+    implementation Deps.moshi
+    implementation Deps.moshi_kotlin
+    kapt Deps.moshi_kotlin_codegen
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'

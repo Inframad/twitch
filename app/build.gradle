@@ -75,12 +75,6 @@ dependencies {
     implementation project(path: ':api')
     implementation project(path: ':datasource')
     implementation project(path: ':database')
-    def nav_version = "2.4.1"
-    def hilt_version = "2.38.1"
-    def view_binding_property_delegate_version = "1.4.4"
-    def moshi_version = "1.13.0"
-    def firebase_version = "29.2.0"
-    def rx_version = "3.0.0"
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
@@ -101,24 +95,25 @@ dependencies {
     implementation Deps.glide
     kapt Deps.glide_compiler
 
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation Deps.navigation_fragment_ktx
+    implementation Deps.navigation_ui_ktx
 
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation Deps.hilt_android
+    kapt Deps.hilt_compiler
 
-    implementation "com.github.kirich1409:viewbindingpropertydelegate:$view_binding_property_delegate_version"
+    implementation Deps.moshi
+    implementation Deps.moshi_kotlin
+    implementation Deps.retrofit_converter_moshi
+    kapt Deps.moshi_kotlin_codegen
 
-    implementation "com.squareup.moshi:moshi-kotlin:${moshi_version}"
-    implementation "com.squareup.moshi:moshi:${moshi_version}"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:${moshi_version}"
+    implementation platform(Deps.firebase_bom)
+    implementation Deps.firebase_messaging
 
-    implementation platform("com.google.firebase:firebase-bom:$firebase_version")
-    implementation 'com.google.firebase:firebase-messaging'
+    implementation Deps.viewbinding_property_delegate
 
-    implementation "io.reactivex.rxjava3:rxandroid:$rx_version"
-    implementation "io.reactivex.rxjava3:rxjava:$rx_version"
-    implementation "io.reactivex.rxjava3:rxkotlin:$rx_version"
+    implementation Deps.rx3android
+    implementation Deps.rx3java
+    implementation Deps.rx3kotlin
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
