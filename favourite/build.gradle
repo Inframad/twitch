@@ -2,7 +2,6 @@ plugins {
     id "com.android.library"
     id "org.jetbrains.kotlin.android"
     id "dagger.hilt.android.plugin"
-    id "androidx.navigation.safeargs.kotlin"
     id "kotlin-kapt"
 }
 
@@ -40,8 +39,8 @@ android {
 
 dependencies {
     implementation project(path: ':model')
-    implementation project(path: ':common')
     implementation project(path: ':repository')
+    implementation project(path: ':common')
 
     implementation Deps.hilt_android
     kapt Deps.hilt_compiler
@@ -50,10 +49,6 @@ dependencies {
     implementation Deps.lifecycle_viewmodel_ktx
 
     implementation Deps.navigation_fragment_ktx
-
-    implementation Deps.paging_runtime_ktx
-
-    implementation Deps.swipe_refresh_layout
 
     implementation Deps.viewbinding_property_delegate
 
@@ -64,5 +59,4 @@ dependencies {
     implementation Deps.androidx_core_ktx
     implementation Deps.app_compat
     implementation Deps.android_material
-    implementation Deps.constraint_layout
 }

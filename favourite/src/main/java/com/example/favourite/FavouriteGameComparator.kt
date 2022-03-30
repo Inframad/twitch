@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.favourite
+package com.example.favourite
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.twitchapp.model.game.Game

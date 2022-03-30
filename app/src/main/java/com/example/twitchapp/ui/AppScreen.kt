@@ -16,7 +16,7 @@ enum class AppScreen {
                 com.example.streams.R.id.gameStreamsFragment -> STREAMS
                 com.example.streams.R.id.gameFragment -> GAME
                 R.id.appReviewFragment -> APP_REVIEW
-                R.id.favouriteGamesFragment -> FAVOURITE
+                com.example.favourite.R.id.favouriteGamesFragment-> FAVOURITE
                 R.id.notificationsListFragment -> NOTIFICATIONS
                 else -> throw IllegalArgumentException("AppScreens don't contain mapper for id ($id)")
             }

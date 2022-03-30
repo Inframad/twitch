@@ -1,12 +1,11 @@
-package com.example.twitchapp.ui.favourite
+package com.example.favourite
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.twitchapp.R
 import com.example.common.extensions.bindActionLiveData
-import com.example.twitchapp.databinding.FragmentSimpleListBinding
+import com.example.favourite.databinding.FragmentSimpleListBinding
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.UiState
 import dagger.hilt.android.AndroidEntryPoint

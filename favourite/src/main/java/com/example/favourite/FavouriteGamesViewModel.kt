@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.favourite
+package com.example.favourite
 
 import android.content.Context
 import com.example.repository.Repository

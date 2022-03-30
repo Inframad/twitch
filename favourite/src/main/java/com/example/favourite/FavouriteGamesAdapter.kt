@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.favourite
+package com.example.favourite
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter

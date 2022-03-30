@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/favouriteGamesFragment"
-        android:name="com.example.twitchapp.ui.favourite.FavouriteGamesFragment"
+        android:name="com.example.favourite.FavouriteGamesFragment"
         android:label="FavouriteGamesFragment" />
 </navigation>

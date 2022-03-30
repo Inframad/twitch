@@ -1,10 +1,10 @@
-package com.example.twitchapp.ui.favourite
+package com.example.favourite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.common.extensions.glideImage
-import com.example.twitchapp.databinding.ItemFavouriteGameBinding
+import com.example.favourite.databinding.ItemFavouriteGameBinding
 import com.example.twitchapp.model.game.Game
 
 class FavouriteGameViewHolder(
