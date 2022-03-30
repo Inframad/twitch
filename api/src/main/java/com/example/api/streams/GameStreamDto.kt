@@ -1,8 +1,8 @@
-package com.example.twitchapp.api.streams
+package com.example.api.streams
 
 import android.net.Uri
-import com.example.twitchapp.api.ApiConst
-import com.example.twitchapp.api.ImageUri
+import com.example.api.ApiConst
+import com.example.api.ImageUri
 import com.example.twitchapp.model.streams.GameStream
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
