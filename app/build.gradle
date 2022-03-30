@@ -78,8 +78,9 @@ dependencies {
     implementation project(path: ':common')
     implementation project(path: ':streams')
     implementation project(path: ':favourite')
+    implementation project(path: ':notification')
 
-    coreLibraryDesugaring Deps.desugar_jdk_libs
+    coreLibraryDesugaring Deps.desugar_jdk_libs //TODO
 
     implementation Deps.retrofit_converter_moshi
 

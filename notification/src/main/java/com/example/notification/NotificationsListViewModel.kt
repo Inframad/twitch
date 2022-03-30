@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.notification
+package com.example.notification
 
 import android.content.Context
 import com.example.repository.notification.NotificationRepository

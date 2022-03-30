@@ -28,11 +28,10 @@ abstract class BaseFragmentLiveData<TViewModel : BaseViewModelLiveData>(@LayoutR
             }
             bindActionLiveData(showSnackbarCommand) {
                 Snackbar.make(
-                    this@BaseFragmentLiveData.requireView(),
+                    requireView(),
                     it.message,
                     it.length
                 ).setAction(it.actionName, it.action)
-                    .setAnchorView(requireView())
                     .show()
             }
         }

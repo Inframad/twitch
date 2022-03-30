@@ -1,13 +1,12 @@
-package com.example.twitchapp.ui.notification
+package com.example.notification
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.twitchapp.R
 import com.example.common.extensions.bindActionLiveData
-import com.example.twitchapp.databinding.FragmentSimpleListBinding
+import com.example.notification.databinding.FragmentSimpleListBinding
 import com.example.twitchapp.model.UiState
 import dagger.hilt.android.AndroidEntryPoint
 

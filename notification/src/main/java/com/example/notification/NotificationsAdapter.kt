@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.notification
+package com.example.notification
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter

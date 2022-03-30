@@ -1,9 +1,9 @@
-package com.example.twitchapp.ui.notification
+package com.example.notification
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.twitchapp.databinding.ItemTwitchNotificationBinding
+import com.example.notification.databinding.ItemTwitchNotificationBinding
 
 class TwitchNotificationViewHolder(
     private val viewBinding: ItemTwitchNotificationBinding

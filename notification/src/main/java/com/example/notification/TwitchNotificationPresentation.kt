@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.notification
+package com.example.notification
 
 import com.example.twitchapp.model.notifications.TwitchNotification
 import java.time.ZoneOffset

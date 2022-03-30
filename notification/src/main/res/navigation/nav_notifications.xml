@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/notificationsListFragment"
-        android:name="com.example.twitchapp.ui.notification.NotificationsListFragment"
+        android:name="com.example.notification.NotificationsListFragment"
         android:label="NotificationsListFragment" />
 </navigation>
