@@ -9,8 +9,8 @@ android {
     compileSdk 32
 
     defaultConfig {
-        minSdk 21
-        targetSdk 32
+        minSdk DefaultConfig.minSdk
+        targetSdk DefaultConfig.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -36,7 +36,7 @@ android {
 dependencies {
     implementation project(path: ':model')
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    coreLibraryDesugaring Deps.desugar_jdk_libs
     implementation Deps.room_runtime
     implementation Deps.room_ktx
     implementation Deps.room_rxJava3
@@ -48,5 +48,5 @@ dependencies {
     implementation Deps.hilt_android
     kapt Deps.hilt_compiler
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation Deps.androidx_core_ktx
 }

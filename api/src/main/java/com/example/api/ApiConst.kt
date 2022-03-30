@@ -1,4 +1,4 @@
-package com.example.twitchapp.api
+package com.example.api
 
 object ApiConst {
     const val STREAM_IMAGE_WIDTH = 1330

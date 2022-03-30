@@ -1,7 +1,7 @@
-package com.example.twitchapp.api.adapter
+package com.example.api.adapter
 
 import android.net.Uri
-import com.example.twitchapp.api.ImageUri
+import com.example.api.ImageUri
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonAdapter.Factory
 import com.squareup.moshi.JsonReader

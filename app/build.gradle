@@ -32,10 +32,10 @@ android {
 
     defaultConfig {
         applicationId "com.example.twitchapp"
-        minSdk 21
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        minSdk DefaultConfig.minSdk
+        targetSdk DefaultConfig.targetSdk
+        versionCode DefaultConfig.versionCode
+        versionName DefaultConfig.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
@@ -77,19 +77,14 @@ dependencies {
     implementation project(path: ':database')
     implementation project(path: ':common')
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    coreLibraryDesugaring Deps.desugar_jdk_libs
 
-    implementation Deps.retrofit
     implementation Deps.retrofit_converter_moshi
-    implementation Deps.retrofit_adapter_rxJava3
 
     implementation Deps.lifecycle_runtime_ktx
     implementation Deps.lifecycle_viewmodel_ktx
 
     implementation Deps.room_runtime
-    implementation Deps.room_ktx
-    implementation Deps.room_rxJava3
-    kapt Deps.room_compiler
 
     implementation Deps.paging_runtime_ktx
 
@@ -102,10 +97,7 @@ dependencies {
     implementation Deps.hilt_android
     kapt Deps.hilt_compiler
 
-    implementation Deps.moshi
     implementation Deps.moshi_kotlin
-    implementation Deps.retrofit_converter_moshi
-    kapt Deps.moshi_kotlin_codegen
 
     implementation platform(Deps.firebase_bom)
     implementation Deps.firebase_messaging
@@ -116,13 +108,10 @@ dependencies {
     implementation Deps.rx3java
     implementation Deps.rx3kotlin
 
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation Deps.swipe_refresh_layout
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation Deps.androidx_core_ktx
+    implementation Deps.app_compat
+    implementation Deps.android_material
+    implementation Deps.constraint_layout
 }

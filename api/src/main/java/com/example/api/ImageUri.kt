@@ -1,4 +1,4 @@
-package com.example.twitchapp.api
+package com.example.api
 
 import com.squareup.moshi.JsonQualifier
 

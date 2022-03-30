@@ -5,7 +5,7 @@ import com.example.api.BuildConfig.BASE_URL
 import com.example.api.streams.TwitchGameStreamsApi
 import com.example.api.util.NetworkConnectionChecker
 import com.example.api.adapter.RxErrorHandlingCallAdapterFactory
-import com.example.twitchapp.api.adapter.UriAdapter
+import com.example.api.adapter.UriAdapter
 import com.example.api.game.TwitchGamesApi
 import com.example.api.util.NetworkConnectionCheckerImpl
 import com.squareup.moshi.Moshi
