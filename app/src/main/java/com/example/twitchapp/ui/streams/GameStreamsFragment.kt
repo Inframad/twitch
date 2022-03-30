@@ -4,8 +4,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.common.extensions.bindActionLiveData
-import com.example.twitchapp.common.livedata.BaseFragmentLiveData
+import com.example.common.extensions.bindActionLiveData
+import com.example.common.livedata.BaseFragmentLiveData
 import com.example.twitchapp.databinding.FragmentGameStreamsBinding
 import com.example.twitchapp.navigation.Navigator
 import com.example.twitchapp.ui.game.GameFragmentArgs
@@ -14,7 +14,7 @@ import com.example.twitchapp.ui.streams.adapter.GameStreamsPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GameStreamsFragment : BaseFragmentLiveData<GameStreamViewModel>(R.layout.fragment_game_streams) {
+class GameStreamsFragment : com.example.common.livedata.BaseFragmentLiveData<GameStreamViewModel>(R.layout.fragment_game_streams) {
 
     private val viewBinding: FragmentGameStreamsBinding by viewBinding()
     override val viewModel: GameStreamViewModel by viewModels()

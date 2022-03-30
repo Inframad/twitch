@@ -7,17 +7,17 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.common.extensions.bindActionLiveData
-import com.example.twitchapp.common.extensions.glideImage
-import com.example.twitchapp.common.extensions.setTintColor
-import com.example.twitchapp.common.livedata.BaseFragmentLiveData
+import com.example.common.extensions.bindActionLiveData
+import com.example.common.extensions.glideImage
+import com.example.common.extensions.setTintColor
+import com.example.common.livedata.BaseFragmentLiveData
 import com.example.twitchapp.databinding.FragmentGameBinding
 import com.example.twitchapp.navigation.Navigator
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GameFragment : BaseFragmentLiveData<GameViewModel>(R.layout.fragment_game) {
+class GameFragment : com.example.common.livedata.BaseFragmentLiveData<GameViewModel>(R.layout.fragment_game) {
 
     private val viewBinding: FragmentGameBinding by viewBinding()
     override val viewModel: GameViewModel by viewModels()

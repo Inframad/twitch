@@ -1,4 +1,4 @@
-package com.example.twitchapp.common.livedata
+package com.example.common.livedata
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData

@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui
+package com.example.common
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar

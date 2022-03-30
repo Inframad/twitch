@@ -1,4 +1,4 @@
-package com.example.twitchapp.common.extensions
+package com.example.common.extensions
 
 import android.content.res.ColorStateList
 import android.net.Uri
@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
-import com.example.twitchapp.R
 
 fun ImageView.glideImage(uri: Uri?) {
     val circularProgressDrawable = CircularProgressDrawable(this.context)
@@ -21,7 +20,7 @@ fun ImageView.glideImage(uri: Uri?) {
     Glide.with(this)
         .load(uri)
         .placeholder(circularProgressDrawable)
-        .error(R.drawable.image_error_placeholder)
+        //.error(R.drawable.image_error_placeholder) TODO
         .into(this)
 }
 

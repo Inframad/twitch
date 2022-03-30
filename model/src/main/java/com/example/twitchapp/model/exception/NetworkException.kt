@@ -1,4 +1,4 @@
-package com.example.api
+package com.example.twitchapp.model.exception
 
 sealed class NetworkException : Exception() {
     object NetworkIsNotAvailable : NetworkException()

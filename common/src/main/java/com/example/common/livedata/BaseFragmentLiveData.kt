@@ -1,13 +1,11 @@
-package com.example.twitchapp.common.livedata
+package com.example.common.livedata
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import com.example.twitchapp.R
-import com.example.twitchapp.common.extensions.bindActionLiveData
-import com.example.twitchapp.navigation.Navigator
+import com.example.common.extensions.bindActionLiveData
 import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragmentLiveData<TViewModel : BaseViewModelLiveData>(@LayoutRes lId: Int) :
@@ -25,9 +23,6 @@ abstract class BaseFragmentLiveData<TViewModel : BaseViewModelLiveData>(@LayoutR
 
     protected open fun bindViewModel() {
         with(viewModel) {
-            bindActionLiveData(navigateToGameScreenCommand) {
-                Navigator.goToGameScreen(this@BaseFragmentLiveData, it)
-            }
             bindActionLiveData(showToastCommand) {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
@@ -37,7 +32,7 @@ abstract class BaseFragmentLiveData<TViewModel : BaseViewModelLiveData>(@LayoutR
                     it.message,
                     it.length
                 ).setAction(it.actionName, it.action)
-                    .setAnchorView(R.id.bottom_navigation)
+                    .setAnchorView(requireView())
                     .show()
             }
         }

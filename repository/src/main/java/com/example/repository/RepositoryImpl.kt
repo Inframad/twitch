@@ -2,7 +2,7 @@ package com.example.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.example.api.NetworkException
+import com.example.twitchapp.model.exception.NetworkException
 import com.example.api.util.NetworkConnectionChecker
 import com.example.twitchapp.datasource.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.datasource.GameStreamsPagingSourceFactory

@@ -1,4 +1,4 @@
-package com.example.twitchapp.common.livedata
+package com.example.common.livedata
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,10 +7,9 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.api.NetworkException
-import com.example.twitchapp.R
-import com.example.twitchapp.ui.SnackbarData
-import com.example.twitchapp.ui.game.GameFragmentArgs
+import com.example.common.R
+import com.example.common.SnackbarData
+import com.example.twitchapp.model.exception.NetworkException
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 
@@ -20,7 +19,6 @@ abstract class BaseViewModelLiveData(private val applicationContext: Context) : 
     protected val compositeDisposable = CompositeDisposable()
     val showToastCommand = TCommand<String>()
     val showSnackbarCommand = TCommand<SnackbarData>()
-    val navigateToGameScreenCommand = TCommand<GameFragmentArgs>()
 
     protected fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
         applicationContext.getString(resId, *formatArgs)

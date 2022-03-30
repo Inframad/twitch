@@ -1,15 +1,15 @@
 package com.example.twitchapp.ui.game
 
 import android.content.Context
+import com.example.common.SnackbarData
+import com.example.common.livedata.BaseViewModelLiveData
 import com.example.repository.Repository
 import com.example.repository.notification.NotificationRepository
 import com.example.twitchapp.R
-import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.streams.GameStream
-import com.example.twitchapp.ui.SnackbarData
 import com.example.twitchapp.ui.UiState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +27,7 @@ class GameViewModel @Inject constructor(
     val uiState = Data<UiState<GameScreenModel>>()
     private var game: Game? = null
     private var isGameModelFetched = false
+    val navigateToGameScreenCommand = TCommand<GameFragmentArgs>()
     val goBackCommand = Command()
 
     val toggleFavourite = Data<Int>()
@@ -67,9 +68,10 @@ class GameViewModel @Inject constructor(
                 .map {
                     it to GameScreenModel(
                         name = it.name
-                            ?: getString(R.string.scr_any_lbl_unknown),
+                            ?: getString(com.example.common.R.string.scr_any_lbl_unknown),
                         streamerName = streamerName
-                            ?: getString(R.string.scr_any_lbl_unknown),
+                            ?: getString(
+                                com.example.common.R.string.scr_any_lbl_unknown),
                         viewersCount = viewersCount.toString(),
                         imageUrl = it.imageUrl
                     )
@@ -85,7 +87,7 @@ class GameViewModel @Inject constructor(
         } else {
             showSnackbarCommand.setValue(SnackbarData(
                 getString(R.string.scr_game_lbl_game_is_not_found),
-                getString(R.string.scr_any_lbl_go_back),
+                getString(com.example.common.R.string.scr_any_lbl_go_back),
                 Snackbar.LENGTH_INDEFINITE
             ) {
                 goBackCommand.setValue(Unit)
@@ -109,11 +111,11 @@ class GameViewModel @Inject constructor(
                         UiState.Loaded(
                             GameScreenModel(
                                 name = it.gameName
-                                    ?: getString(R.string.scr_any_lbl_unknown),
+                                    ?: getString(com.example.common.R.string.scr_any_lbl_unknown),
                                 streamerName = it.streamerName
-                                    ?: getString(R.string.scr_any_lbl_unknown),
+                                    ?: getString(com.example.common.R.string.scr_any_lbl_unknown),
                                 viewersCount = it.viewersCount?.toString()
-                                    ?: getString(R.string.scr_any_lbl_null_viewers_count),
+                                    ?: getString(com.example.common.R.string.scr_any_lbl_null_viewers_count),
                                 imageUrl = game.imageUrl
                             )
                         )
@@ -121,7 +123,7 @@ class GameViewModel @Inject constructor(
                 } else {
                     showSnackbarCommand.setValue(SnackbarData(
                         message = "${twitchNotification.title}\n${twitchNotification.description}",
-                        actionName = getString(R.string.scr_any_lbl_go_to)
+                        actionName = getString(com.example.common.R.string.scr_any_lbl_go_to)
                     ) {
                         navigateToGameScreenCommand.setValue(
                             GameFragmentArgs(notification = twitchNotification)

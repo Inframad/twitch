@@ -3,7 +3,7 @@ package com.example.twitchapp.ui.notification
 import android.content.Context
 import com.example.repository.notification.NotificationRepository
 import com.example.twitchapp.R
-import com.example.twitchapp.common.livedata.BaseViewModelLiveData
+import com.example.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ class NotificationsListViewModel
     @ApplicationContext context: Context,
     repository: NotificationRepository,
     notificationRepository: NotificationRepository
-) : BaseViewModelLiveData(context) {
+) : com.example.common.livedata.BaseViewModelLiveData(context) {
 
     val scrollUpCommand = Command()
     val sendScrollStateCommand = Command()
@@ -34,7 +34,7 @@ class NotificationsListViewModel
                 twitchNotifications.map {
                     TwitchNotificationPresentation.fromModel(
                         it,
-                        getString(R.string.scr_any_date_time_pattern)
+                        getString(com.example.common.R.string.scr_any_date_time_pattern)
                     )
                 }
             }

@@ -1,4 +1,4 @@
-package com.example.twitchapp.common.extensions
+package com.example.common.extensions
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData

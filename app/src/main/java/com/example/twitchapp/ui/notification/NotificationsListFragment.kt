@@ -6,15 +6,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
-import com.example.twitchapp.common.extensions.bindActionLiveData
-import com.example.twitchapp.common.livedata.BaseFragmentLiveData
+import com.example.common.extensions.bindActionLiveData
+import com.example.common.livedata.BaseFragmentLiveData
 import com.example.twitchapp.databinding.FragmentSimpleListBinding
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NotificationsListFragment
-    : BaseFragmentLiveData<NotificationsListViewModel>(R.layout.fragment_simple_list) {
+    : com.example.common.livedata.BaseFragmentLiveData<NotificationsListViewModel>(R.layout.fragment_simple_list) {
 
     private val viewBinding: FragmentSimpleListBinding by viewBinding()
     override val viewModel: NotificationsListViewModel by viewModels()
@@ -26,7 +26,7 @@ class NotificationsListFragment
         adapter = NotificationsAdapter()
         viewBinding.apply {
             recyclerView.adapter = adapter
-            noDataTextView.text = getString(R.string.scr_any_lbl_no_notifications)
+            noDataTextView.text = getString(com.example.common.R.string.scr_any_lbl_no_notifications)
             floatingActionButton.setOnClickListener {
                 viewModel.onFloatingActionButtonClicked()
             }

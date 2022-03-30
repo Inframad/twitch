@@ -2,7 +2,7 @@ package com.example.twitchapp.ui.favourite
 
 import android.content.Context
 import com.example.repository.Repository
-import com.example.twitchapp.common.livedata.BaseViewModelLiveData
+import com.example.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class FavouriteGamesViewModel @Inject constructor(
     @ApplicationContext context: Context,
     repository: Repository
-) : BaseViewModelLiveData(context) {
+) : com.example.common.livedata.BaseViewModelLiveData(context) {
 
     val uiState = Data<UiState<List<Game>>>()
 

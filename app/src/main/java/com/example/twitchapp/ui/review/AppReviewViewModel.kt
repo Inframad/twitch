@@ -3,7 +3,7 @@ package com.example.twitchapp.ui.review
 import android.content.Context
 import android.text.Editable
 import com.example.twitchapp.R
-import com.example.twitchapp.common.livedata.BaseViewModelLiveData
+import com.example.common.livedata.BaseViewModelLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AppReviewViewModel @Inject constructor(
     @ApplicationContext context: Context
-) : BaseViewModelLiveData(context) {
+) : com.example.common.livedata.BaseViewModelLiveData(context) {
 
     val goBackCommand = Command()
 
