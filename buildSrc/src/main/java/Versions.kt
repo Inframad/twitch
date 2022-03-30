@@ -10,6 +10,20 @@ object Versions {
     const val moshi= "1.13.0"
     const val firebase = "29.2.0"
     const val rx = "3.0.0"
+    const val swipe_refresh_layout = "1.1.0"
+    const val androidx_core_ktx = "1.7.0"
+    const val app_compat = "1.4.1"
+    const val android_material = "1.5.0"
+    const val constraint_layout = "2.1.3"
+    const val desugar_jdk_libs = "1.1.5"
+}
+
+@Suppress("unused")
+object DefaultConfig {
+    const val minSdk = 21
+    const val targetSdk = 32
+    const val versionCode = 1
+    const val versionName = "1.0"
 }
 
 @Suppress("unused")
@@ -50,4 +64,13 @@ object Deps {
     const val rx3android = "io.reactivex.rxjava3:rxandroid:${Versions.rx}"
     const val rx3java = "io.reactivex.rxjava3:rxjava:${Versions.rx}"
     const val rx3kotlin = "io.reactivex.rxjava3:rxkotlin:${Versions.rx}"
+
+    const val swipe_refresh_layout = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipe_refresh_layout}"
+
+    const val androidx_core_ktx = "androidx.core:core-ktx:${Versions.androidx_core_ktx}"
+    const val app_compat = "androidx.appcompat:appcompat:${Versions.app_compat}"
+    const val android_material = "com.google.android.material:material:${Versions.android_material}"
+    const val constraint_layout = "androidx.constraintlayout:constraintlayout:${Versions.constraint_layout}"
+
+    const val desugar_jdk_libs = "com.android.tools:desugar_jdk_libs:${Versions.desugar_jdk_libs}"
 }

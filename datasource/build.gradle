@@ -9,8 +9,8 @@ android {
     compileSdk 32
 
     defaultConfig {
-        minSdk 21
-        targetSdk 32
+        minSdk DefaultConfig.minSdk
+        targetSdk DefaultConfig.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -45,5 +45,5 @@ dependencies {
     implementation Deps.rx3android
     implementation Deps.rx3java
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation Deps.androidx_core_ktx
 }
