@@ -1,13 +1,13 @@
-package com.example.twitchapp.ui.streams
+package com.example.streams.streams
 
 import android.content.Context
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.cachedIn
 import androidx.paging.liveData
-import com.example.repository.Repository
-import com.example.twitchapp.R
 import com.example.common.livedata.BaseViewModelLiveData
+import com.example.repository.Repository
+import com.example.streams.R
 import com.example.twitchapp.model.NetworkState
 import com.example.twitchapp.model.exception.DatabaseException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class GameStreamViewModel @Inject constructor(
     @ApplicationContext context: Context,
     repository: Repository
-) : com.example.common.livedata.BaseViewModelLiveData(context) {
+) : BaseViewModelLiveData(context) {
 
     val isRefreshing = TCommand<Boolean>()
     val refreshCommand = Command()

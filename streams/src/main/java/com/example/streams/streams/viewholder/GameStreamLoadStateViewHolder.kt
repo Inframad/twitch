@@ -1,12 +1,12 @@
-package com.example.twitchapp.ui.streams.viewholder
+package com.example.streams.streams.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.twitchapp.R
-import com.example.twitchapp.databinding.GameStreamsLoadStateFooterBinding
-import com.example.twitchapp.ui.streams.FooterItem
+import com.example.streams.streams.FooterItem
+import com.example.streams.R
+import com.example.streams.databinding.GameStreamsLoadStateFooterBinding
 
 class GameStreamLoadStateViewHolder (
     private val binding: GameStreamsLoadStateFooterBinding,

@@ -1,20 +1,20 @@
-package com.example.twitchapp.ui.streams
+package com.example.streams.streams
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.twitchapp.R
 import com.example.common.extensions.bindActionLiveData
 import com.example.common.livedata.BaseFragmentLiveData
-import com.example.twitchapp.databinding.FragmentGameStreamsBinding
-import com.example.twitchapp.navigation.Navigator
-import com.example.twitchapp.ui.game.GameFragmentArgs
-import com.example.twitchapp.ui.streams.adapter.GameStreamsLoadStateAdapter
-import com.example.twitchapp.ui.streams.adapter.GameStreamsPagingAdapter
+import com.example.streams.R
+import com.example.streams.streams.adapter.GameStreamsLoadStateAdapter
+import com.example.streams.streams.adapter.GameStreamsPagingAdapter
+import com.example.streams.databinding.FragmentGameStreamsBinding
+import com.example.streams.game.GameFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GameStreamsFragment : com.example.common.livedata.BaseFragmentLiveData<GameStreamViewModel>(R.layout.fragment_game_streams) {
+class GameStreamsFragment : BaseFragmentLiveData<GameStreamViewModel>(R.layout.fragment_game_streams) {
 
     private val viewBinding: FragmentGameStreamsBinding by viewBinding()
     override val viewModel: GameStreamViewModel by viewModels()
@@ -23,7 +23,7 @@ class GameStreamsFragment : com.example.common.livedata.BaseFragmentLiveData<Gam
 
     override fun initViews() {
         pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator()) { gameStream ->
-            Navigator.goToGameScreen(this, GameFragmentArgs(stream = gameStream))
+            findNavController().navigate(R.id.gameFragment, GameFragmentArgs(stream = gameStream).toBundle())
         }
 
         viewBinding.apply {

@@ -1,16 +1,16 @@
-package com.example.twitchapp.ui.game
+package com.example.streams.game
 
 import android.content.Context
 import com.example.common.SnackbarData
 import com.example.common.livedata.BaseViewModelLiveData
 import com.example.repository.Repository
 import com.example.repository.notification.NotificationRepository
-import com.example.twitchapp.R
+import com.example.streams.R
+import com.example.twitchapp.model.UiState
 import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.streams.GameStream
-import com.example.twitchapp.ui.UiState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -79,6 +79,7 @@ class GameViewModel @Inject constructor(
                     isGameModelFetched = true
                     game = g
                     uiState.setValue(UiState.Loaded(gameScreenModel))
+                    toggleFavourite()
                 }, {
                     if(it is DatabaseException) uiState.setValue(UiState.Empty)
                     else showToast(handleBaseError(it))
@@ -97,8 +98,8 @@ class GameViewModel @Inject constructor(
 
     private fun toggleFavourite() {
         toggleFavourite.setValue(
-            if (game?.isFavourite == true) R.color.red_400
-            else R.color.grey_400
+            if (game?.isFavourite == true) com.example.common.R.color.red_400
+            else com.example.common.R.color.grey_400
         )
     }
 
@@ -106,7 +107,7 @@ class GameViewModel @Inject constructor(
         game?.let { game ->
             twitchNotification?.let {
                 if (twitchNotification.gameName == game.name) {
-                    showToastCommand.setValue(getString(R.string.scr_game_lbl_game_data_updated))
+                    showToastCommand.setValue(getString(com.example.common.R.string.scr_any_lbl_game_info_updated))
                     uiState.setValue(
                         UiState.Loaded(
                             GameScreenModel(

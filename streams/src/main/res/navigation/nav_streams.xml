@@ -6,11 +6,11 @@
 
     <fragment
         android:id="@+id/gameStreamsFragment"
-        android:name="com.example.twitchapp.ui.streams.GameStreamsFragment"
+        android:name="com.example.streams.streams.GameStreamsFragment"
         android:label="GameStreamsFragment" />
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.example.twitchapp.ui.game.GameFragment"
+        android:name="com.example.streams.game.GameFragment"
         android:label="GameFragment">
         <argument
             android:name="stream"

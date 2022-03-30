@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui
+package com.example.twitchapp.model
 
 sealed class UiState<out T> {
     data class Loaded<out T>(val data: T): UiState<T>()

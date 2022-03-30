@@ -13,8 +13,8 @@ enum class AppScreen {
     companion object {
         fun fromResId(@IdRes id: Int) =
             when (id) {
-                R.id.gameStreamsFragment -> STREAMS
-                R.id.gameFragment -> GAME
+                com.example.streams.R.id.gameStreamsFragment -> STREAMS
+                com.example.streams.R.id.gameFragment -> GAME
                 R.id.appReviewFragment -> APP_REVIEW
                 R.id.favouriteGamesFragment -> FAVOURITE
                 R.id.notificationsListFragment -> NOTIFICATIONS

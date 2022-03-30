@@ -1,10 +1,10 @@
-package com.example.twitchapp.ui.streams.viewholder
+package com.example.streams.streams.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.common.extensions.glideImage
-import com.example.twitchapp.databinding.ItemGameStreamBinding
+import com.example.streams.databinding.ItemGameStreamBinding
 import com.example.twitchapp.model.streams.GameStream
 
 class GameStreamViewHolder(private val binding: ItemGameStreamBinding) :

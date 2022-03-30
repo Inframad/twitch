@@ -6,7 +6,7 @@ import com.example.twitchapp.BuildConfig
 import com.example.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
-import com.example.twitchapp.ui.game.GameFragmentArgs
+import com.example.streams.game.GameFragmentArgs
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

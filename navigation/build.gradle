@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
 }
 
 android {
@@ -34,16 +33,6 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':model')
 
-    implementation Deps.glide
-    kapt Deps.glide_compiler
-
-    implementation Deps.rx3android
-    implementation Deps.rx3java
-
-    implementation Deps.swipe_refresh_layout
-    
-    implementation Deps.androidx_core_ktx
-    implementation Deps.android_material
+    implementation Deps.navigation_fragment_ktx
 }

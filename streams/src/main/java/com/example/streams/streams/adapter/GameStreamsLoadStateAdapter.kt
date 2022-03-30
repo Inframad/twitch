@@ -1,10 +1,10 @@
-package com.example.twitchapp.ui.streams.adapter
+package com.example.streams.streams.adapter
 
 import android.view.ViewGroup
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
-import com.example.twitchapp.ui.streams.FooterItem
-import com.example.twitchapp.ui.streams.viewholder.GameStreamLoadStateViewHolder
+import com.example.streams.streams.FooterItem
+import com.example.streams.streams.viewholder.GameStreamLoadStateViewHolder
 
 class GameStreamsLoadStateAdapter(
     private val onLoadStateChanged: (LoadState) -> FooterItem,

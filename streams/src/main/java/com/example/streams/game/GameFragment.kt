@@ -1,19 +1,18 @@
-package com.example.twitchapp.ui.game
+package com.example.streams.game
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.twitchapp.R
 import com.example.common.extensions.bindActionLiveData
 import com.example.common.extensions.glideImage
 import com.example.common.extensions.setTintColor
-import com.example.common.livedata.BaseFragmentLiveData
-import com.example.twitchapp.databinding.FragmentGameBinding
-import com.example.twitchapp.navigation.Navigator
-import com.example.twitchapp.ui.UiState
+import com.example.streams.R
+import com.example.streams.databinding.FragmentGameBinding
+import com.example.twitchapp.model.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,7 +50,7 @@ class GameFragment : com.example.common.livedata.BaseFragmentLiveData<GameViewMo
                 viewBinding.favouriteGameImageButton.setTintColor(color)
             }
             bindActionLiveData(goBackCommand) {
-                Navigator.goBack(this@GameFragment)
+                findNavController().popBackStack() //TODO
             }
         }
     }

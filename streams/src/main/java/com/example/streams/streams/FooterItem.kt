@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.streams
+package com.example.streams.streams
 
 data class FooterItem(
     val errorMsg: String,

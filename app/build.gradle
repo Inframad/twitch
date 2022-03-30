@@ -76,6 +76,7 @@ dependencies {
     implementation project(path: ':datasource')
     implementation project(path: ':database')
     implementation project(path: ':common')
+    implementation project(path: ':streams')
 
     coreLibraryDesugaring Deps.desugar_jdk_libs
 

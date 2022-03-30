@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.twitchapp.R
 import com.example.common.extensions.bindActionLiveData
-import com.example.common.livedata.BaseFragmentLiveData
 import com.example.twitchapp.databinding.FragmentSimpleListBinding
-import com.example.twitchapp.ui.UiState
+import com.example.twitchapp.model.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

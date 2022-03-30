@@ -4,7 +4,6 @@
     <dimen name="card_view_margin_vertical">8dp</dimen>
     <dimen name="card_text_margin_horizontal">8dp</dimen>
     <dimen name="fragment_app_review_content_margin">8dp</dimen>
-    <dimen name="footer_error_text_size">18sp</dimen>
     <dimen name="full_screen_text_size">30sp</dimen>
     <dimen name="small_icon_width">25dp</dimen>
     <dimen name="small_icon_height">25dp</dimen>
@@ -23,5 +22,4 @@
     <dimen name="image_view_width_25dp">25dp</dimen>
     <dimen name="image_view_height_25dp">25dp</dimen>
     <string name="game_image_dimension_ratio">0.752</string>
-    <string name="game_stream_image_view_dimension_ratio">1.774</string>
 </resources>

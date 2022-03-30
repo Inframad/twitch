@@ -1,4 +1,4 @@
-package com.example.twitchapp.ui.game
+package com.example.streams.game
 
 import android.net.Uri
 
