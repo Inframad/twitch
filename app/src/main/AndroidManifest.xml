@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".App"
+        android:name="com.example.twitchapp.App"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="false"
@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TwitchApp">
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.example.twitchapp.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".notification.FirebaseMessagingService"
+            android:name="com.example.twitchapp.notification.FirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

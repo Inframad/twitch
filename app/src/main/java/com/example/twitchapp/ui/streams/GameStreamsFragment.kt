@@ -49,7 +49,7 @@ class GameStreamsFragment : BaseFragmentLiveData<GameStreamViewModel>(R.layout.f
     override fun bindViewModel() {
         super.bindViewModel()
         viewModel.apply {
-            bindActionLiveData(gameStreamsLiveData) {
+           bindActionLiveData(gameStreamsLiveData) {
                 pagingDataAdapter?.submitData(lifecycle, it)
             }
             bindActionLiveData(refreshCommand) { pagingDataAdapter?.refresh() }

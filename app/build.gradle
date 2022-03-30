@@ -8,7 +8,6 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
-
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 
 def keystoreProperties = new Properties()
@@ -33,10 +32,10 @@ android {
 
     defaultConfig {
         applicationId "com.example.twitchapp"
-        minSdk 21
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        minSdk DefaultConfig.minSdk
+        targetSdk DefaultConfig.targetSdk
+        versionCode DefaultConfig.versionCode
+        versionName DefaultConfig.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
@@ -44,17 +43,11 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "TOKEN", "\"w70n5qwx7zi4qufg12212nh3m4yx8w\""
-            buildConfigField "String", "CLIENT_ID", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
             buildConfigField "String", "FCM_TOPIC_NAME", "\"dev\""
-            buildConfigField "String", "BASE_URL", "\"https://api.twitch.tv/helix/\""
         }
         release {
             applicationIdSuffix ".release"
-            buildConfigField "String", "TOKEN", "\"w70n5qwx7zi4qufg12212nh3m4yx8w\""
-            buildConfigField "String", "CLIENT_ID", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
             buildConfigField "String", "FCM_TOPIC_NAME", "\"main\""
-            buildConfigField "String", "BASE_URL", "\"https://api.twitch.tv/helix/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -75,65 +68,49 @@ android {
     }
 }
 
+
 dependencies {
-    def retrofit_version = "2.9.0"
-    def lifecycle_version = "2.4.1"
-    def room_version = "2.4.2"
-    def paging_version = "3.1.1"
-    def glide_version = "4.13.0"
-    def nav_version = "2.4.1"
-    def hilt_version = "2.38.1"
-    def view_binding_property_delegate_version = "1.4.4"
-    def moshi_version = "1.13.0"
-    def firebase_version = "29.2.0"
-    def rx_version = "3.0.0"
+    implementation project(path: ':model')
+    implementation project(path: ':repository')
+    implementation project(path: ':api')
+    implementation project(path: ':datasource')
+    implementation project(path: ':database')
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    coreLibraryDesugaring Deps.desugar_jdk_libs
 
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
+    implementation Deps.retrofit_converter_moshi
 
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation Deps.lifecycle_runtime_ktx
+    implementation Deps.lifecycle_viewmodel_ktx
 
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.room:room-rxjava3:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    implementation Deps.room_runtime
 
-    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
-    implementation "androidx.paging:paging-rxjava3:$paging_version"
+    implementation Deps.paging_runtime_ktx
 
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    implementation Deps.glide
+    kapt Deps.glide_compiler
 
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation Deps.navigation_fragment_ktx
+    implementation Deps.navigation_ui_ktx
 
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation Deps.hilt_android
+    kapt Deps.hilt_compiler
 
-    implementation "com.github.kirich1409:viewbindingpropertydelegate:$view_binding_property_delegate_version"
+    implementation Deps.moshi_kotlin
 
-    implementation "com.squareup.moshi:moshi-kotlin:${moshi_version}"
-    implementation "com.squareup.moshi:moshi:${moshi_version}"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:${moshi_version}"
+    implementation platform(Deps.firebase_bom)
+    implementation Deps.firebase_messaging
 
-    implementation platform("com.google.firebase:firebase-bom:$firebase_version")
-    implementation 'com.google.firebase:firebase-messaging'
+    implementation Deps.viewbinding_property_delegate
 
-    implementation "io.reactivex.rxjava3:rxandroid:$rx_version"
-    implementation "io.reactivex.rxjava3:rxjava:$rx_version"
-    implementation "io.reactivex.rxjava3:rxkotlin:$rx_version"
+    implementation Deps.rx3android
+    implementation Deps.rx3java
+    implementation Deps.rx3kotlin
 
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation Deps.swipe_refresh_layout
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation Deps.androidx_core_ktx
+    implementation Deps.app_compat
+    implementation Deps.android_material
+    implementation Deps.constraint_layout
 }

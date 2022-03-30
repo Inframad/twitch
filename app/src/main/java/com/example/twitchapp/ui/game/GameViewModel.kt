@@ -1,15 +1,15 @@
 package com.example.twitchapp.ui.game
 
 import android.content.Context
+import com.example.repository.Repository
+import com.example.repository.notification.NotificationRepository
 import com.example.twitchapp.R
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
-import com.example.twitchapp.model.SnackbarData
 import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.streams.GameStream
-import com.example.twitchapp.repository.Repository
-import com.example.twitchapp.repository.notification.NotificationRepository
+import com.example.twitchapp.ui.SnackbarData
 import com.example.twitchapp.ui.UiState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel

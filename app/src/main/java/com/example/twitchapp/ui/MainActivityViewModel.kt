@@ -1,11 +1,11 @@
 package com.example.twitchapp.ui
 
 import android.content.Context
+import com.example.repository.notification.NotificationRepository
 import com.example.twitchapp.BuildConfig
 import com.example.twitchapp.common.livedata.BaseViewModelLiveData
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
-import com.example.twitchapp.repository.notification.NotificationRepository
 import com.example.twitchapp.ui.game.GameFragmentArgs
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
