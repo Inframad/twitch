@@ -3,13 +3,14 @@ package com.example.twitchapp
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.example.common.AppState
+import com.example.common.ApplicationWithState
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class App : Application() {
+class App : Application(), ApplicationWithState {
 
     private var _currentAppState: AppState? = null
-    val currentAppState get() = _currentAppState
 
     init {
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
@@ -43,5 +44,8 @@ class App : Application() {
 
         })
     }
+
+    override fun getCurrentState(): AppState? =
+        _currentAppState
 }
 

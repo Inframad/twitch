@@ -1,4 +1,4 @@
-package com.example.twitchapp.notification
+package com.example.twitchapp
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.twitchapp.R
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.example.twitchapp.ui.MainActivity
@@ -23,10 +22,10 @@ class TwitchNotifier @Inject constructor(
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = NotificationConst.CHANNEL_NAME
+            val name = CHANNEL_NAME
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(
-                NotificationConst.CHANNEL_ID,
+                CHANNEL_ID,
                 name,
                 importance
             )
@@ -39,7 +38,7 @@ class TwitchNotifier @Inject constructor(
     fun showNotification(notification: TwitchNotification) {
         with(NotificationManagerCompat.from(applicationContext)) {
             val notificationBuilder =
-                NotificationCompat.Builder(applicationContext, NotificationConst.CHANNEL_ID)
+                NotificationCompat.Builder(applicationContext, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_twitch)
                     .setContentTitle(notification.title)
                     .setContentText(notification.description)
@@ -51,7 +50,7 @@ class TwitchNotifier @Inject constructor(
             }
 
             if (notification is GameNotification) {
-                clickIntent.putExtra(NotificationConst.TWITCH_NOTIFICATION_KEY, notification)
+                clickIntent.putExtra(TWITCH_NOTIFICATION_KEY, notification)
             }
 
             val flags =
@@ -63,16 +62,18 @@ class TwitchNotifier @Inject constructor(
 
             val pendingIntent = PendingIntent.getActivity(
                 applicationContext,
-                NotificationConst.NOTIFICATION_REQUEST_CODE,
+                NOTIFICATION_REQUEST_CODE,
                 clickIntent,
                 flags
             )
             notificationBuilder.setContentIntent(pendingIntent)
 
             notify(
-                NotificationConst.NOTIFICATION_ID,
+                NOTIFICATION_ID,
                 notificationBuilder.build()
             )
         }
     }
+
+
 }

@@ -1,0 +1,50 @@
+plugins {
+    id "com.android.library"
+    id "dagger.hilt.android.plugin"
+    id "org.jetbrains.kotlin.android"
+    id "kotlin-kapt"
+}
+
+android {
+    compileSdk = 32
+
+    defaultConfig {
+        minSdk = DefaultConfig.minSdk
+        targetSdk = DefaultConfig.targetSdk
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation project(path: ':model')
+    implementation project(path: ':common')
+    implementation project(path: ':repository')
+
+    implementation Deps.hilt_android
+    kapt Deps.hilt_compiler
+
+    implementation platform(Deps.firebase_bom)
+    implementation Deps.firebase_messaging
+
+    implementation Deps.rx3android
+    implementation Deps.rx3java
+}

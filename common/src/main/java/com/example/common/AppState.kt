@@ -1,4 +1,4 @@
-package com.example.twitchapp
+package com.example.common
 
 enum class AppState {
     OnActivityCreated,

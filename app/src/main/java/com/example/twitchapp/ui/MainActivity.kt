@@ -17,7 +17,7 @@ import com.example.common.extensions.bindActionLiveData
 import com.example.twitchapp.databinding.ActivityMainBinding
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.navigation.Navigator
-import com.example.twitchapp.notification.NotificationConst
+import com.example.twitchapp.TWITCH_NOTIFICATION_KEY
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -64,10 +64,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private fun init() {
         viewModel.initialized()
-        intent?.extras?.getParcelable<GameNotification>(NotificationConst.TWITCH_NOTIFICATION_KEY)
+        intent?.extras?.getParcelable<GameNotification>(TWITCH_NOTIFICATION_KEY)
             ?.let {
                 viewModel.onIntent(it)
-                intent.removeExtra(NotificationConst.TWITCH_NOTIFICATION_KEY)
+                intent.removeExtra(TWITCH_NOTIFICATION_KEY)
             }
     }
 
