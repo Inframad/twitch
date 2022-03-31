@@ -1,4 +1,4 @@
-package com.example.twitchapp.datasource
+package com.example.streams
 
 import android.content.Context
 import androidx.paging.PagingState
@@ -6,6 +6,8 @@ import androidx.paging.rxjava3.RxPagingSource
 import com.example.api.streams.TwitchGameStreamsApi
 import com.example.api.util.NetworkConnectionChecker
 import com.example.twitchapp.database.streams.GameStreamEntity
+import com.example.twitchapp.datasource.GAME_STREAMS_PAGE_SIZE
+import com.example.twitchapp.datasource.R
 import com.example.twitchapp.datasource.local.LocalDatasource
 import com.example.twitchapp.model.AppNetworkMode
 import com.example.twitchapp.model.NetworkState
@@ -35,15 +37,11 @@ class GameStreamsPagingSource @Inject constructor(
                 .flatMap {
                     if (isDatabaseShouldBeCleared && !it.data.isNullOrEmpty()) {
                         isDatabaseShouldBeCleared = false
-                        localDatasource.deleteAllGameStreams()
-                            .andThen(Single.just(it))
-                    } else {
-                        Single.just(it)
-                    }
+                        localDatasource.deleteAllGameStreams().andThen(Single.just(it))
+                    } else Single.just(it)
                 }.map {
-                    it.data.map {
-                        it.toModel()
-                    }.map { GameStreamEntity.fromModel(it) } to it.pagination.cursor
+                    it.data.map { it.toModel() }
+                        .map { GameStreamEntity.fromModel(it) } to it.pagination.cursor
                 }
                 .flatMap { (entities, cursor) ->
                     localDatasource.saveGameStreams(entities).andThen(makePage(entities, cursor))

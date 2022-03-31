@@ -1,15 +1,15 @@
 package com.example.streams.streams
 
 import android.content.Context
-import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
-import androidx.paging.cachedIn
-import androidx.paging.liveData
+import androidx.paging.*
 import com.example.common.livedata.BaseViewModelLiveData
 import com.example.repository.Repository
+import com.example.streams.GameStreamsPagingSourceFactory
 import com.example.streams.R
+import com.example.twitchapp.datasource.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.model.NetworkState
 import com.example.twitchapp.model.exception.DatabaseException
+import com.example.twitchapp.model.streams.GameStream
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -17,15 +17,20 @@ import javax.inject.Inject
 @HiltViewModel
 class GameStreamViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    repository: Repository
+    repository: Repository,
+    pagingSourceFactory: GameStreamsPagingSourceFactory
 ) : BaseViewModelLiveData(context) {
 
     val isRefreshing = TCommand<Boolean>()
     val refreshCommand = Command()
     val retryCommand = Command()
     val isNoDataPlaceholderVisible = TCommand<Boolean>()
-    val gameStreamsLiveData = repository.getGameStreamsLiveData()
-        .liveData.cachedIn(this)
+
+    val gameStreamsLiveData = Pager(
+        PagingConfig(pageSize = GAME_STREAMS_PAGE_SIZE)
+    ) {
+        pagingSourceFactory.create()
+    }.liveData.cachedIn(this)
 
     init {
         if (repository.getCurrentNetworkState() == NetworkState.NOT_AVAILABLE) {

@@ -41,7 +41,10 @@ android {
 dependencies {
     implementation project(path: ':model')
     implementation project(path: ':common')
+    implementation project(path: ':api')
     implementation project(path: ':repository')
+    implementation project(path: ':datasource')
+    implementation project(path: ':database')
 
     implementation Deps.hilt_android
     kapt Deps.hilt_compiler
@@ -52,6 +55,7 @@ dependencies {
     implementation Deps.navigation_fragment_ktx
 
     implementation Deps.paging_runtime_ktx
+    implementation Deps.paging_rxJava3
 
     implementation Deps.swipe_refresh_layout
 

@@ -1,4 +1,4 @@
-package com.example.twitchapp.datasource
+package com.example.streams
 
 import android.content.Context
 import com.example.api.streams.TwitchGameStreamsApi
