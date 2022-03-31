@@ -13,6 +13,7 @@ import com.example.twitchapp.model.exception.NetworkException
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 
+@Suppress("FunctionName")
 @SuppressLint("StaticFieldLeak")
 abstract class BaseViewModelLiveData(private val applicationContext: Context) : ViewModel() {
 
