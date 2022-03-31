@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.common.extensions.bindActionLiveData
+import com.example.twitchapp.AppScreen
 import com.example.twitchapp.R
 import com.example.twitchapp.TWITCH_NOTIFICATION_KEY
 import com.example.twitchapp.databinding.ActivityMainBinding

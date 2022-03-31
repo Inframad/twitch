@@ -2,8 +2,8 @@ package com.example.notification
 
 import android.content.Context
 import com.example.repository.notification.NotificationRepository
-import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.UiState
+import com.example.twitchapp.model.exception.DatabaseException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -59,7 +59,8 @@ class NotificationsListViewModel
     }
 
     fun onSendScrollStateCommand(scrollPosition: Int, canScrollDown: Boolean) {
-        if (scrollPosition != 0 || canScrollDown) toggleFabVisibilityCommand.setValue(true)
+        if ((scrollPosition != 0 || canScrollDown) && scrollPosition != -1)
+            toggleFabVisibilityCommand.setValue(true)
     }
 
     fun onFloatingActionButtonClicked() {

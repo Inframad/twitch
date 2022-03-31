@@ -1,7 +1,6 @@
-package com.example.twitchapp.ui
+package com.example.twitchapp
 
 import androidx.annotation.IdRes
-import com.example.twitchapp.R
 
 enum class AppScreen {
     STREAMS,

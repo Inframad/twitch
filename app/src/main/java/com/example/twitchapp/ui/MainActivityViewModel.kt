@@ -1,12 +1,12 @@
 package com.example.twitchapp.ui
 
 import android.content.Context
-import com.example.repository.notification.NotificationRepository
-import com.example.twitchapp.BuildConfig
 import com.example.common.livedata.BaseViewModelLiveData
+import com.example.repository.notification.NotificationRepository
+import com.example.streams.game.GameFragmentArgs
+import com.example.twitchapp.AppScreen
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
-import com.example.streams.game.GameFragmentArgs
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -40,7 +40,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun initialized() {
-        FirebaseMessaging.getInstance().subscribeToTopic(BuildConfig.FCM_TOPIC_NAME)
+        FirebaseMessaging.getInstance().subscribeToTopic(com.example.twitchapp.BuildConfig.FCM_TOPIC_NAME)
     }
 
     fun onIntent(notification: GameNotification) {

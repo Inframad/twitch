@@ -1,7 +1,7 @@
 package com.example.twitchapp
 
 import androidx.appcompat.app.AppCompatActivity
-import com.example.notificationservice.DestinationActivity
+import com.example.notificationservice.DestinationActivityClass
 import com.example.twitchapp.ui.MainActivity
 import dagger.Module
 import dagger.Provides
@@ -14,7 +14,7 @@ import kotlin.reflect.KClass
 class AppModule {
 
     @Provides
-    @DestinationActivity
+    @DestinationActivityClass
     fun provideActivityClass(): KClass<out AppCompatActivity> =
         MainActivity::class
 }

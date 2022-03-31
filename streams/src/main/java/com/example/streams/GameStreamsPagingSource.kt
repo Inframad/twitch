@@ -7,7 +7,6 @@ import com.example.api.streams.TwitchGameStreamsApi
 import com.example.api.util.NetworkConnectionChecker
 import com.example.twitchapp.database.streams.GameStreamEntity
 import com.example.twitchapp.datasource.GAME_STREAMS_PAGE_SIZE
-import com.example.twitchapp.datasource.R
 import com.example.twitchapp.datasource.local.LocalDatasource
 import com.example.twitchapp.model.AppNetworkMode
 import com.example.twitchapp.model.NetworkState
@@ -85,9 +84,9 @@ class GameStreamsPagingSource @Inject constructor(
             data = list.map { it.toModel() }.map { gameStream ->
                 gameStream.copy(
                     userName = gameStream.userName
-                        ?: applicationContext.getString(R.string.scr_any_lbl_unknown),
+                        ?: applicationContext.getString(com.example.common.R.string.scr_any_lbl_unknown),
                     gameName = gameStream.gameName
-                        ?: applicationContext.getString(R.string.scr_any_lbl_unknown),
+                        ?: applicationContext.getString(com.example.common.R.string.scr_any_lbl_unknown),
                     viewerCount = gameStream.viewerCount ?: 0L
                 )
             },

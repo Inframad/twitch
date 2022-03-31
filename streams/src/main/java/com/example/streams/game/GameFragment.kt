@@ -50,7 +50,7 @@ class GameFragment : com.example.common.livedata.BaseFragmentLiveData<GameViewMo
                 viewBinding.favouriteGameImageButton.setTintColor(color)
             }
             bindActionLiveData(goBackCommand) {
-                findNavController().popBackStack() //TODO
+                findNavController().popBackStack()
             }
         }
     }

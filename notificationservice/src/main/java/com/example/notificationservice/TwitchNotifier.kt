@@ -24,7 +24,7 @@ import kotlin.reflect.KClass
 @Singleton
 class TwitchNotifier @Inject constructor(
     @ApplicationContext private val applicationContext: Context,
-    @DestinationActivity private val activityClass: KClass<out AppCompatActivity>
+    @DestinationActivityClass private val activityClass: KClass<out AppCompatActivity>
 ): Notifier {
 
     init {
