@@ -1,11 +1,10 @@
-package com.example.twitchapp.ui.review
+package com.example.appreview
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.twitchapp.R
+import com.example.appreview.databinding.FragmentAppReviewBinding
 import com.example.common.extensions.bindActionLiveData
-import com.example.twitchapp.databinding.FragmentAppReviewBinding
-import com.example.twitchapp.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +16,7 @@ class AppReviewFragment : com.example.common.livedata.BaseFragmentLiveData<AppRe
     override fun bindViewModel() {
         super.bindViewModel()
         bindActionLiveData(viewModel.goBackCommand) {
-            Navigator.goBack(this@AppReviewFragment)
+            findNavController().popBackStack()
         }
     }
 

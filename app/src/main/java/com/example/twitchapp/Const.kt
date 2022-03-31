@@ -1,7 +1,3 @@
 package com.example.twitchapp
 
 const val TWITCH_NOTIFICATION_KEY = "TWITCH_NOTIFICATION"
-const val CHANNEL_ID = "NOTIFICATION"
-const val CHANNEL_NAME = "FIREBASE NOTIFICATION"
-const val NOTIFICATION_ID = 0
-const val NOTIFICATION_REQUEST_CODE = 0

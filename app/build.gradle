@@ -79,7 +79,8 @@ dependencies {
     implementation project(path: ':streams')
     implementation project(path: ':favourite')
     implementation project(path: ':notification')
-    implementation project(path: ':firebaseservice')
+    implementation project(path: ':notificationservice')
+    implementation project(path: ':appreview')
 
     coreLibraryDesugaring Deps.desugar_jdk_libs //TODO
 

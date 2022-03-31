@@ -1,34 +1,30 @@
-package com.example.firebaseservice
+package com.example.notificationservice
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import com.example.common.AppState
 import com.example.common.ApplicationWithState
-import com.example.firebaseservice.NotificationConst.MessageKeys
-import com.example.firebaseservice.NotificationConst.NotificationType
-import com.example.repository.notification.NotificationRepository
+import com.example.notificationservice.NotificationConst.MessageKeys
+import com.example.notificationservice.NotificationConst.NotificationType
 import com.example.repository.notification.NotificationRepositoryImpl
-import com.example.twitchapp.FirebaseServiceModuleDependencies
-import com.example.twitchapp.TwitchNotifier
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.StreamNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.EntryPointAccessors
 import java.util.*
 import javax.inject.Inject
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 @AndroidEntryPoint
-class FirebaseService @Inject constructor(): FirebaseMessagingService() {
+class FirebaseService: FirebaseMessagingService() {
 
     @Inject
     lateinit var notificationRepository: NotificationRepositoryImpl
 
     @Inject
-    lateinit var notifier: TwitchNotifier
+    lateinit var notifier: Notifier
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
@@ -73,16 +69,4 @@ class FirebaseService @Inject constructor(): FirebaseMessagingService() {
         }
     }
 
-    override fun onCreate() {
-        DaggerFirebaseServiceComponent.builder()
-            .appDependicies(
-                EntryPointAccessors.fromApplication(
-                    applicationContext,
-                    FirebaseServiceModuleDependencies::class.java
-                )
-            )
-            .build()
-            .inject(this)
-        super.onCreate()
-    }
 }

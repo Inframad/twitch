@@ -1,11 +1,3 @@
 <resources>
     <string name="app_name">TwitchApp</string>
-    <!-- App review -->
-    <string name="scr_app_review_lbl_review_is_sent">Отзыв (%1$s) отправлен. Спасибо что оценили на %2$.1f звезд(ы)!</string>
-    <string name="scr_app_review_hint_review">Напишите ваши впечатления от приложения</string>
-    <string name="scr_app_review_button_send">Отправить</string>
-
-    <!-- Favourite games -->
-    <string name="scr_favourite_games_no_favourite_games">Вы еще ничего не добавили в избранное</string>
-    <string name="scr_game_lbl_game_data_updated">Данные по текущей игре обновлены</string>
 </resources>

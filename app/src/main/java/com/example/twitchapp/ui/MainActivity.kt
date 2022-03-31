@@ -8,16 +8,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.twitchapp.R
 import com.example.common.extensions.bindActionLiveData
+import com.example.twitchapp.R
+import com.example.twitchapp.TWITCH_NOTIFICATION_KEY
 import com.example.twitchapp.databinding.ActivityMainBinding
 import com.example.twitchapp.model.notifications.GameNotification
-import com.example.twitchapp.navigation.Navigator
-import com.example.twitchapp.TWITCH_NOTIFICATION_KEY
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,7 +44,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
             }
             bindActionLiveData(navigateToGameScreenCommand) {
-                Navigator.goToGameScreen(this@MainActivity, it)
+                findNavController(R.id.nav_host_fragment)
+                    .navigate(com.example.streams.R.id.gameFragment, it.toBundle())
             }
         }
     }

@@ -7,10 +7,6 @@
     <include app:graph="@navigation/nav_streams" />
     <include app:graph="@navigation/nav_favourite" />
     <include app:graph="@navigation/nav_notifications" />
-
-    <fragment
-        android:id="@+id/appReviewFragment"
-        android:name="com.example.twitchapp.ui.review.AppReviewFragment"
-        android:label="AppReviewFragment" />
+    <include app:graph="@navigation/nav_app_review" />
 
 </navigation>
