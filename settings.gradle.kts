@@ -24,9 +24,9 @@ include(
     ":repository",
     ":model",
     ":common",
-    ":streams",
-    ":favourite",
-    ":notification",
-    ":notificationservice",
-    ":appreview"
+    ":features:streams",
+    ":features:favourite",
+    ":features:notification",
+    ":features:notificationservice",
+    ":features:appreview"
 )

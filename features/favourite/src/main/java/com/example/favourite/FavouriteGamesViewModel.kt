@@ -2,8 +2,8 @@ package com.example.favourite
 
 import android.content.Context
 import com.example.repository.Repository
-import com.example.twitchapp.model.game.Game
 import com.example.twitchapp.model.UiState
+import com.example.twitchapp.model.game.Game
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

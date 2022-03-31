@@ -9,7 +9,6 @@ import com.example.streams.R
 import com.example.twitchapp.datasource.GAME_STREAMS_PAGE_SIZE
 import com.example.twitchapp.model.NetworkState
 import com.example.twitchapp.model.exception.DatabaseException
-import com.example.twitchapp.model.streams.GameStream
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

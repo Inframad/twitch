@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.streams.streams.FooterItem
 import com.example.streams.R
 import com.example.streams.databinding.GameStreamsLoadStateFooterBinding
+import com.example.streams.streams.FooterItem
 
 class GameStreamLoadStateViewHolder (
     private val binding: GameStreamsLoadStateFooterBinding,

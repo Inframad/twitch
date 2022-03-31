@@ -7,10 +7,10 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.common.extensions.bindActionLiveData
 import com.example.common.livedata.BaseFragmentLiveData
 import com.example.streams.R
-import com.example.streams.streams.adapter.GameStreamsLoadStateAdapter
-import com.example.streams.streams.adapter.GameStreamsPagingAdapter
 import com.example.streams.databinding.FragmentGameStreamsBinding
 import com.example.streams.game.GameFragmentArgs
+import com.example.streams.streams.adapter.GameStreamsLoadStateAdapter
+import com.example.streams.streams.adapter.GameStreamsPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

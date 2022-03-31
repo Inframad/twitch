@@ -75,11 +75,11 @@ dependencies {
     implementation project(path: ':datasource')
     implementation project(path: ':database')
     implementation project(path: ':common')
-    implementation project(path: ':streams')
-    implementation project(path: ':favourite')
-    implementation project(path: ':notification')
-    implementation project(path: ':notificationservice')
-    implementation project(path: ':appreview')
+    implementation project(path: ':features:streams')
+    implementation project(path: ':features:favourite')
+    implementation project(path: ':features:notification')
+    implementation project(path: ':features:notificationservice')
+    implementation project(path: ':features:appreview')
 
     implementation Deps.retrofit_converter_moshi
 
