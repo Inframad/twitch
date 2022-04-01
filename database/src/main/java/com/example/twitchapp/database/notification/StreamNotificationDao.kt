@@ -9,6 +9,6 @@ import io.reactivex.rxjava3.core.Single
 @Dao
 interface StreamNotificationDao : BaseDao<StreamNotificationEntity> {
 
-    @Query("SELECT * FROM ${DbConstants.STREAM_NOTIFICATIONS_TABLE_NAME} WHERE id=:id")
-    fun getStreamNotification(id: Long): Single<StreamNotificationEntity>
+    @Query("SELECT * FROM ${DbConstants.STREAM_NOTIFICATIONS_TABLE_NAME} WHERE messageId=:id")
+    fun getStreamNotification(id: String): Single<StreamNotificationEntity>
 }

@@ -9,4 +9,5 @@ interface NotificationRepository {
     fun getAllNotifications(): Observable<List<TwitchNotification>>
     fun saveNotification(notification: TwitchNotification): Completable
     fun getNotificationsEvent(): Observable<TwitchNotification>
+    fun deleteNotification(notification: TwitchNotification): Completable
 }

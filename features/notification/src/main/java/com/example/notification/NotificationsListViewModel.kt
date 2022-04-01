@@ -4,18 +4,21 @@ import android.content.Context
 import com.example.repository.notification.NotificationRepository
 import com.example.twitchapp.model.UiState
 import com.example.twitchapp.model.exception.DatabaseException
+import com.example.twitchapp.model.notifications.TwitchNotification
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 
 @HiltViewModel
 class NotificationsListViewModel
 @Inject constructor(
     @ApplicationContext context: Context,
-    repository: NotificationRepository,
-    notificationRepository: NotificationRepository
+    private val notificationRepository: NotificationRepository
 ) : com.example.common.livedata.BaseViewModelLiveData(context) {
+
+    private val listNotifications: MutableList<TwitchNotification> = mutableListOf()
 
     val scrollUpCommand = Command()
     val sendScrollStateCommand = Command()
@@ -25,22 +28,25 @@ class NotificationsListViewModel
     val toggleFabVisibilityCommand = Data<Boolean>()
 
     init {
-        repository.getAllNotifications()
+        notificationRepository.getAllNotifications()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { uiState.setValue(UiState.Loading) }
-            .map { twitchNotifications ->
-                twitchNotifications.map {
+            .flatMap { twitchNotifications ->
+                Observable.just(twitchNotifications.map {
                     TwitchNotificationPresentation.fromModel(
                         it,
                         getString(com.example.common.R.string.scr_any_date_time_pattern)
                     )
-                }
+                } to twitchNotifications)
             }
             .subscribe(
-                {
+                { (twitchNotificationsPresentation, twitchNotifications) ->
+                    listNotifications.clear()
+                    listNotifications.addAll(twitchNotifications)
+
                     uiState.setValue(
-                        if (it.isEmpty()) UiState.Empty
-                        else UiState.Loaded(it)
+                        if (twitchNotificationsPresentation.isEmpty()) UiState.Empty
+                        else UiState.Loaded(twitchNotificationsPresentation)
                     )
                 },
                 {
@@ -70,5 +76,11 @@ class NotificationsListViewModel
 
     fun onRecyclerViewScrollStateChanged(canScrollUp: Boolean) {
         if (!canScrollUp) toggleFabVisibilityCommand.setValue(false)
+    }
+
+    fun onRightItemSwipe(layoutPosition: Int) {
+        notificationRepository.deleteNotification(listNotifications[layoutPosition])
+            .subscribe()
+            .addToCompositeDisposable()
     }
 }

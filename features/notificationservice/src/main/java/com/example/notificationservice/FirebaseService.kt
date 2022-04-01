@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 @AndroidEntryPoint
-class FirebaseService: FirebaseMessagingService() {
+class FirebaseService : FirebaseMessagingService() {
 
     @Inject
     lateinit var notificationRepository: NotificationRepositoryImpl
@@ -29,34 +29,35 @@ class FirebaseService: FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val notificationModel = message.toIntent().extras?.let {
-            createNotificationModel(it)
-        }
-        notificationModel?.let {
-            notificationRepository.saveNotification(it).subscribe()
+        message.toIntent().extras?.let { bundle ->
+            bundle.getString(MessageKeys.MESSAGE_ID)?.let { messageId ->
+                createNotificationModel(bundle, messageId).apply {
+                    notificationRepository.saveNotification(this).subscribe()
 
-            when ((application as ApplicationWithState).getCurrentState()) {
-                AppState.OnActivityCreated,
-                AppState.OnActivityStarted,
-                AppState.OnActivityResumed -> {
-                }
-                else -> {
-                    notifier.showNotification(it)
+                    when ((application as ApplicationWithState).getCurrentState()) {
+                        AppState.OnActivityCreated,
+                        AppState.OnActivityStarted,
+                        AppState.OnActivityResumed -> {
+                        }
+                        else -> {
+                            notifier.showNotification(this)
+                        }
+                    }
                 }
             }
         }
     }
 
-    private fun createNotificationModel(bundle: Bundle): TwitchNotification {
+    private fun createNotificationModel(bundle: Bundle, messageId: String): TwitchNotification {
         bundle.apply {
             return when (val type = getString(MessageKeys.NOTIFICATION_TYPE)) {
                 NotificationType.STREAMS -> StreamNotification(
-                    messageId = getString(MessageKeys.MESSAGE_ID),
+                    messageId = messageId,
                     title = applicationContext.getString(com.example.common.R.string.scr_any_lbl_new_streams_available),
                     date = Date()
                 )
                 NotificationType.GAME -> GameNotification(
-                    messageId = getString(MessageKeys.MESSAGE_ID),
+                    messageId = messageId,
                     title = getString(MessageKeys.GAME_NAME),
                     description = getString(com.example.common.R.string.scr_any_lbl_game_info_updated),
                     gameName = getString(MessageKeys.GAME_NAME),
