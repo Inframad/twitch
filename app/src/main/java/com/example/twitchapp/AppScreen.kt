@@ -12,10 +12,10 @@ enum class AppScreen {
     companion object {
         fun fromResId(@IdRes id: Int) =
             when (id) {
-                com.example.streams.R.id.gameStreamsFragment -> STREAMS
-                com.example.streams.R.id.gameFragment -> GAME
+                com.example.navigation.R.id.gameStreamsFragment -> STREAMS
+                com.example.game.R.id.gameFragment-> GAME
                 com.example.appreview.R.id.appReviewFragment -> APP_REVIEW
-                com.example.favourite.R.id.favouriteGamesFragment-> FAVOURITE
+                com.example.favourite.R.id.favouriteGamesFragment -> FAVOURITE
                 com.example.notification.R.id.notificationsListFragment -> NOTIFICATIONS
                 else -> throw IllegalArgumentException("AppScreens don't contain mapper for id ($id)")
             }

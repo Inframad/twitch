@@ -1,16 +1,14 @@
-package com.example.streams.streams
+package com.example.streams.ui
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.common.extensions.bindActionLiveData
 import com.example.common.livedata.BaseFragmentLiveData
 import com.example.streams.R
 import com.example.streams.databinding.FragmentGameStreamsBinding
-import com.example.streams.game.GameFragmentArgs
-import com.example.streams.streams.adapter.GameStreamsLoadStateAdapter
-import com.example.streams.streams.adapter.GameStreamsPagingAdapter
+import com.example.streams.ui.adapter.GameStreamsLoadStateAdapter
+import com.example.streams.ui.adapter.GameStreamsPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +21,7 @@ class GameStreamsFragment : BaseFragmentLiveData<GameStreamViewModel>(R.layout.f
 
     override fun initViews() {
         pagingDataAdapter = GameStreamsPagingAdapter(GameStreamComparator()) { gameStream ->
-            findNavController().navigate(R.id.gameFragment, GameFragmentArgs(stream = gameStream).toBundle())
+            viewModel.onStreamClicked(gameStream)
         }
 
         viewBinding.apply {

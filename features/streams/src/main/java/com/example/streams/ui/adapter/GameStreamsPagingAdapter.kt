@@ -1,9 +1,9 @@
-package com.example.streams.streams.adapter
+package com.example.streams.ui.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.example.streams.streams.viewholder.GameStreamViewHolder
+import com.example.streams.ui.viewholder.GameStreamViewHolder
 import com.example.twitchapp.model.streams.GameStream
 
 class GameStreamsPagingAdapter(

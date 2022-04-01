@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_game"
+    app:startDestination="@id/gameFragment">
+
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.example.game.GameFragment"
+        android:label="GameFragment">
+        <argument
+            android:name="stream"
+            android:defaultValue="@null"
+            app:argType="com.example.twitchapp.model.streams.GameStream"
+            app:nullable="true" />
+        <argument
+            android:name="notification"
+            android:defaultValue="@null"
+            app:argType="com.example.twitchapp.model.notifications.GameNotification"
+            app:nullable="true" />
+    </fragment>
+
+</navigation>

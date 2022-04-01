@@ -5,6 +5,11 @@
       <map>
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/twitch/app/src/main/res/drawable/ic_notification.xml" value="0.196" />
         <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/twitch/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.115" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/twitchapplication/app/src/main/res/menu/main_menu.xml" value="0.15" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/twitchapplication/common/src/main/res/drawable/ic_heart.xml" value="0.1" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/twitchapplication/common/src/main/res/drawable/ic_notification.xml" value="0.1" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/twitchapplication/features/game/src/main/res/layout/fragment_game.xml" value="0.1" />
+        <entry key="..\:/Users/AlexeyTyukavkin/AndroidStudioProjects/twitchapplication/navigation/src/main/res/menu/bottom_navigation_menu.xml" value="0.18802083333333333" />
       </map>
     </option>
   </component>

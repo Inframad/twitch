@@ -2,8 +2,8 @@ package com.example.twitchapp.ui
 
 import android.content.Context
 import com.example.common.livedata.BaseViewModelLiveData
+import com.example.navigation.Navigator
 import com.example.repository.notification.NotificationRepository
-import com.example.streams.game.GameFragmentArgs
 import com.example.twitchapp.AppScreen
 import com.example.twitchapp.model.notifications.GameNotification
 import com.example.twitchapp.model.notifications.TwitchNotification
@@ -16,12 +16,12 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    notificationRepository: NotificationRepository
+    notificationRepository: NotificationRepository,
+    private val navigator: Navigator
 ) : BaseViewModelLiveData(context) {
 
     private var _currentScreen = AppScreen.STREAMS
     val toggleBottomNavigationViewVisibility = TCommand<Boolean>()
-    val navigateToGameScreenCommand = TCommand<GameFragmentArgs>()
 
     init {
         notificationRepository.getNotificationsEvent()
@@ -44,7 +44,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun onIntent(notification: GameNotification) {
-        navigateToGameScreenCommand.setValue(GameFragmentArgs(notification = notification))
+       navigator.openGame(notification)
     }
 
     private fun messageReceived(twitchNotification: TwitchNotification?) {

@@ -1,11 +1,10 @@
-package com.example.streams.game
+package com.example.game
 
 import android.content.Context
 import com.example.common.SnackbarData
 import com.example.common.livedata.BaseViewModelLiveData
 import com.example.repository.Repository
 import com.example.repository.notification.NotificationRepository
-import com.example.streams.R
 import com.example.twitchapp.model.UiState
 import com.example.twitchapp.model.exception.DatabaseException
 import com.example.twitchapp.model.game.Game
@@ -21,14 +20,13 @@ import javax.inject.Inject
 class GameViewModel @Inject constructor(
     @ApplicationContext context: Context,
     private val repository: Repository,
-    notificationRepository: NotificationRepository
+    notificationRepository: NotificationRepository,
+    private val navigator: GameNavigator
 ) : BaseViewModelLiveData(context) {
 
     val uiState = Data<UiState<GameScreenModel>>()
     private var game: Game? = null
     private var isGameModelFetched = false
-    val navigateToGameScreenCommand = TCommand<GameFragmentArgs>()
-    val goBackCommand = Command()
 
     val toggleFavourite = Data<Int>()
 
@@ -87,11 +85,11 @@ class GameViewModel @Inject constructor(
                 .addToCompositeDisposable()
         } else {
             showSnackbarCommand.setValue(SnackbarData(
-                getString(R.string.scr_game_lbl_game_is_not_found),
+                "",//getString(R.string.scr_game_lbl_game_is_not_found),
                 getString(com.example.common.R.string.scr_any_lbl_go_back),
                 Snackbar.LENGTH_INDEFINITE
             ) {
-                goBackCommand.setValue(Unit)
+                navigator.goBack()
             })
         }
     }
@@ -103,10 +101,10 @@ class GameViewModel @Inject constructor(
         )
     }
 
-    private fun onMessageReceived(twitchNotification: GameNotification?) {
+    private fun onMessageReceived(gameNotification: GameNotification?) {
         game?.let { game ->
-            twitchNotification?.let {
-                if (twitchNotification.gameName == game.name) {
+            gameNotification?.let {
+                if (gameNotification.gameName == game.name) {
                     showToastCommand.setValue(getString(com.example.common.R.string.scr_any_lbl_game_info_updated))
                     uiState.setValue(
                         UiState.Loaded(
@@ -123,12 +121,10 @@ class GameViewModel @Inject constructor(
                     )
                 } else {
                     showSnackbarCommand.setValue(SnackbarData(
-                        message = "${twitchNotification.title}\n${twitchNotification.description}",
+                        message = "${gameNotification.title}\n${gameNotification.description}",
                         actionName = getString(com.example.common.R.string.scr_any_lbl_go_to)
                     ) {
-                        navigateToGameScreenCommand.setValue(
-                            GameFragmentArgs(notification = twitchNotification)
-                        )
+                        navigator.openGame(gameNotification)
                     })
                 }
             }

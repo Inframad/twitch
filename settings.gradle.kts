@@ -18,6 +18,7 @@ dependencyResolutionManagement {
 rootProject.name = "TwitchApp"
 include(
     ":app",
+    ":navigation",
     ":api",
     ":datasource",
     ":database",
@@ -28,5 +29,6 @@ include(
     ":features:favourite",
     ":features:notification",
     ":features:notificationservice",
-    ":features:appreview"
+    ":features:appreview",
+    ":features:game"
 )

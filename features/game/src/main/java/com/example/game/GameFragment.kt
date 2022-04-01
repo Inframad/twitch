@@ -1,19 +1,18 @@
-package com.example.streams.game
+package com.example.game
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.common.extensions.bindActionLiveData
 import com.example.common.extensions.glideImage
 import com.example.common.extensions.setTintColor
-import com.example.streams.R
-import com.example.streams.databinding.FragmentGameBinding
+import com.example.game.databinding.FragmentGameBinding
 import com.example.twitchapp.model.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class GameFragment : com.example.common.livedata.BaseFragmentLiveData<GameViewModel>(R.layout.fragment_game) {
@@ -29,7 +28,7 @@ class GameFragment : com.example.common.livedata.BaseFragmentLiveData<GameViewMo
 
     override fun initViews() {
         viewBinding.noDataTextView.text =
-            getString(R.string.src_streams_lbl_no_saved_data_and_internet)
+            getString(com.example.common.R.string.src_any_lbl_no_saved_data_and_internet)
         viewBinding.favouriteGameImageButton.setOnClickListener {
             viewModel.favouriteGameImageButtonClicked()
         }
@@ -48,9 +47,6 @@ class GameFragment : com.example.common.livedata.BaseFragmentLiveData<GameViewMo
             }
             bindActionLiveData(toggleFavourite) { color ->
                 viewBinding.favouriteGameImageButton.setTintColor(color)
-            }
-            bindActionLiveData(goBackCommand) {
-                findNavController().popBackStack()
             }
         }
     }

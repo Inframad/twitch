@@ -1,4 +1,4 @@
-package com.example.streams.streams.viewholder
+package com.example.streams.ui.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -70,6 +70,7 @@ android {
 
 dependencies {
     implementation project(path: ':model')
+    implementation project(path: ':navigation')
     implementation project(path: ':repository')
     implementation project(path: ':api')
     implementation project(path: ':datasource')
@@ -80,6 +81,7 @@ dependencies {
     implementation project(path: ':features:notification')
     implementation project(path: ':features:notificationservice')
     implementation project(path: ':features:appreview')
+    implementation project(path: ':features:game')
 
     implementation Deps.retrofit_converter_moshi
 

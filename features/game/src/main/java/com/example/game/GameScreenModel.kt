@@ -1,4 +1,4 @@
-package com.example.streams.game
+package com.example.game
 
 import android.net.Uri
 

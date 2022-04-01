@@ -9,13 +9,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppReviewViewModel @Inject constructor(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
+    private val navigator: AppReviewNavigator
 ) : BaseViewModelLiveData(context) {
-
-    val goBackCommand = Command()
 
     fun onSendReviewButtonClicked(review: Editable, rating: Float) {
         showToast(getString(R.string.scr_app_review_lbl_review_is_sent, review.toString(), rating))
-        goBackCommand.setValue(Unit)
+        navigator.goBack()
     }
 }
