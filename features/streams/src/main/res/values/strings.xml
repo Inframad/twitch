@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Streams -->
+    <string name="src_streams_lbl_saved_data_is_loaded">Интернет соединение недоступно, загружены сохраненные данные</string>
+    <string name="scr_streams_lbl_game_is_not_found">Игра не найдена</string>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TwitchApp</string>
+    <!-- App review -->
+    <string name="scr_app_review_lbl_review_is_sent">Отзыв (%1$s) отправлен. Спасибо что оценили на %2$.1f звезд(ы)!</string>
+    <string name="scr_app_review_hint_review">Напишите ваши впечатления от приложения</string>
+    <string name="scr_app_review_button_send">Отправить</string>
+</resources>

@@ -11,5 +11,5 @@ data class GameStream(
     val userName: String?,
     val gameName: String?,
     val viewerCount: Long?,
-    val imageUrl: Uri?
+    val imageUrl: Uri?,
 ) : Parcelable

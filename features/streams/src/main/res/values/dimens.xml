@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="footer_error_text_size">18sp</dimen>
+    <string name="game_stream_image_view_dimension_ratio">1.774</string>
+</resources>

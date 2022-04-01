@@ -32,7 +32,7 @@ class GameStreamEntity(
                 userName = gameStream.userName,
                 gameName = gameStream.gameName,
                 viewerCount = gameStream.viewerCount,
-                imageUrl = gameStream.imageUrl
+                imageUrl = gameStream.imageUrl,
             )
     }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_streams"
+    app:startDestination="@id/gameStreamsFragment">
+
+    <fragment
+        android:id="@+id/gameStreamsFragment"
+        android:name="com.example.streams.ui.GameStreamsFragment"
+        android:label="GameStreamsFragment" />
+
+    <include app:graph="@navigation/nav_game" />
+
+</navigation>

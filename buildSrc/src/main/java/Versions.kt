@@ -16,6 +16,7 @@ object Versions {
     const val android_material = "1.5.0"
     const val constraint_layout = "2.1.3"
     const val desugar_jdk_libs = "1.1.5"
+    const val fragment_ktx = "1.4.1"
 }
 
 @Suppress("unused")
@@ -73,4 +74,6 @@ object Deps {
     const val constraint_layout = "androidx.constraintlayout:constraintlayout:${Versions.constraint_layout}"
 
     const val desugar_jdk_libs = "com.android.tools:desugar_jdk_libs:${Versions.desugar_jdk_libs}"
+
+    const val fragment_ktx = "androidx.fragment:fragment-ktx:${Versions.fragment_ktx}"
 }

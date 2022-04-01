@@ -9,6 +9,6 @@ import io.reactivex.rxjava3.core.Single
 @Dao
 interface GameNotificationDao: BaseDao<GameNotificationEntity> {
 
-    @Query("SELECT * FROM ${DbConstants.GAME_NOTIFICATIONS_TABLE_NAME} WHERE id=:id")
-    fun getGameNotification(id: Long): Single<GameNotificationEntity>
+    @Query("SELECT * FROM ${DbConstants.GAME_NOTIFICATIONS_TABLE_NAME} WHERE messageId=:id")
+    fun getGameNotification(id: String): Single<GameNotificationEntity>
 }

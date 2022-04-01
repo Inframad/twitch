@@ -1,0 +1,62 @@
+plugins {
+    id "com.android.library"
+    id "org.jetbrains.kotlin.android"
+    id "dagger.hilt.android.plugin"
+    id "kotlin-kapt"
+}
+
+android {
+    compileSdk = 32
+
+    defaultConfig {
+        minSdk = DefaultConfig.minSdk
+        targetSdk = DefaultConfig.targetSdk
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(path: ':model')
+    implementation project(path: ':repository')
+    implementation project(path: ':common')
+
+    implementation Deps.hilt_android
+    kapt Deps.hilt_compiler
+
+    implementation Deps.lifecycle_runtime_ktx
+    implementation Deps.lifecycle_viewmodel_ktx
+
+    implementation Deps.navigation_fragment_ktx
+
+    implementation Deps.viewbinding_property_delegate
+
+    implementation Deps.rx3android
+    implementation Deps.rx3java
+    implementation Deps.rx3kotlin
+
+    implementation Deps.androidx_core_ktx
+    implementation Deps.app_compat
+    implementation Deps.android_material
+}

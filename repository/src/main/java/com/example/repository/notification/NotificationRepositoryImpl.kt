@@ -25,4 +25,7 @@ class NotificationRepositoryImpl @Inject constructor(
 
     override fun getNotificationsEvent(): Observable<TwitchNotification> =
         _notificationsEventSubject
+
+    override fun deleteNotification(notification: TwitchNotification): Completable =
+        notificationDatasource.deleteNotification(notification)
 }

@@ -39,36 +39,25 @@ class NotificationDatasource @Inject constructor(
     fun saveNotification(twitchNotification: TwitchNotification): Completable =
         Single.just(twitchNotification)
             .flatMap { notification ->
+                twitchNotificationDao.insert(
+                    TwitchNotificationPivotEntity.fromTwitchNotification(notification)
+                ).ignoreElement().andThen(Single.just(notification))
+            }.flatMap { notification ->
                 when (notification) {
                     is GameNotification -> {
                         gameNotificationDao.insert(
-                            GameNotificationEntity.fromModel(
-                                notification
-                            )
-                        ).flatMap {
-                            twitchNotificationDao.insert(
-                                TwitchNotificationPivotEntity(
-                                    date = notification.date,
-                                    childType = TwitchNotificationType.GAME,
-                                    childId = it
-                                )
-                            )
-                        }
+                            GameNotificationEntity.fromModel(notification)
+                        )
                     }
                     is StreamNotification ->
                         streamNotificationDao.insert(
-                            StreamNotificationEntity.fromModel(
-                                notification
-                            )
-                        ).flatMap {
-                            twitchNotificationDao.insert(
-                                TwitchNotificationPivotEntity(
-                                    date = notification.date,
-                                    childType = TwitchNotificationType.STREAMS,
-                                    childId = it
-                                )
-                            )
-                        }
+                            StreamNotificationEntity.fromModel(notification)
+                        )
                 }
             }.subscribeOn(Schedulers.io()).ignoreElement()
+
+    fun deleteNotification(notification: TwitchNotification): Completable =
+        twitchNotificationDao.delete(TwitchNotificationPivotEntity.fromTwitchNotification(notification))
+            .subscribeOn(Schedulers.io())
+
 }

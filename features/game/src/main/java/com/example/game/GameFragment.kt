@@ -1,0 +1,89 @@
+package com.example.game
+
+import android.os.Bundle
+import android.view.View
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.common.extensions.bindActionLiveData
+import com.example.common.extensions.glideImage
+import com.example.common.extensions.setTintColor
+import com.example.game.databinding.FragmentGameBinding
+import com.example.twitchapp.model.UiState
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
+@AndroidEntryPoint
+class GameFragment : com.example.common.livedata.BaseFragmentLiveData<GameViewModel>(R.layout.fragment_game) {
+
+    private val viewBinding: FragmentGameBinding by viewBinding()
+    override val viewModel: GameViewModel by viewModels()
+    private val navArgs: GameFragmentArgs by navArgs()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
+
+    override fun initViews() {
+        viewBinding.noDataTextView.text =
+            getString(com.example.common.R.string.src_any_lbl_no_saved_data_and_internet)
+        viewBinding.favouriteGameImageButton.setOnClickListener {
+            viewModel.favouriteGameImageButtonClicked()
+        }
+    }
+
+    override fun bindViewModel() {
+        super.bindViewModel()
+        with(viewModel) {
+            bindActionLiveData(uiState) {
+                when (it) {
+                    is UiState.Loaded -> showGame(it.data)
+                    is UiState.Error -> showError(it.msg)
+                    UiState.Loading -> showLoading()
+                    UiState.Empty -> showNoDataPlaceholder()
+                }
+            }
+            bindActionLiveData(toggleFavourite) { color ->
+                viewBinding.favouriteGameImageButton.setTintColor(color)
+            }
+        }
+    }
+
+    private fun showError(msg: String) {
+        viewBinding.progressBarLayout.isVisible = false
+        viewBinding.errorLayout.isVisible = true
+        viewBinding.noDataLayout.isVisible = false
+        viewBinding.errorTextView.text = msg
+    }
+
+    private fun showNoDataPlaceholder() {
+        viewBinding.progressBarLayout.isVisible = false
+        viewBinding.errorLayout.isVisible = false
+        viewBinding.noDataLayout.isVisible = true
+    }
+
+    private fun showLoading() {
+        viewBinding.progressBarLayout.isVisible = true
+        viewBinding.errorLayout.isVisible = false
+        viewBinding.noDataLayout.isVisible = false
+    }
+
+    private fun showGame(data: GameScreenModel) {
+        viewBinding.apply {
+            progressBarLayout.isVisible = false
+            viewBinding.errorLayout.isVisible = false
+            viewBinding.noDataLayout.isVisible = false
+
+            gameNameTextView.text = data.name
+            streamerNameTextView.text = data.streamerName
+            viewersCountTextView.text = data.viewersCount
+            gameImageView.glideImage(data.imageUrl)
+        }
+    }
+
+    private fun init() {
+        viewModel.init(navArgs.stream, navArgs.notification)
+    }
+}

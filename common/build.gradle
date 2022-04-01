@@ -1,0 +1,49 @@
+plugins {
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+}
+
+android {
+    compileSdk = 32
+
+    defaultConfig {
+        minSdk = 21
+        targetSdk = 32
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation project(path: ':model')
+
+    implementation Deps.glide
+    kapt Deps.glide_compiler
+
+    implementation Deps.rx3android
+    implementation Deps.rx3java
+
+    implementation Deps.swipe_refresh_layout
+    
+    implementation Deps.androidx_core_ktx
+    implementation Deps.android_material
+}

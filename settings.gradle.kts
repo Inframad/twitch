@@ -16,9 +16,19 @@ dependencyResolutionManagement {
 
 }
 rootProject.name = "TwitchApp"
-include(":app")
-include (":api")
-include (":datasource")
-include (":database")
-include (":repository")
-include (":model")
+include(
+    ":app",
+    ":navigation",
+    ":api",
+    ":datasource",
+    ":database",
+    ":repository",
+    ":model",
+    ":common",
+    ":features:streams",
+    ":features:favourite",
+    ":features:notification",
+    ":features:notificationservice",
+    ":features:appreview",
+    ":features:game"
+)

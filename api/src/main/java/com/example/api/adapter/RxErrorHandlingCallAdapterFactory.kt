@@ -1,6 +1,6 @@
 package com.example.api.adapter
 
-import com.example.api.NetworkException
+import com.example.twitchapp.model.exception.NetworkException
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
