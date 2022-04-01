@@ -17,7 +17,8 @@ class Navigator @Inject constructor() :
     StreamsNavigator,
     GameNavigator,
     AppReviewNavigator {
-    var navController: NavController? = null
+
+    private var navController: NavController? = null
 
     override fun openGame(notification: GameNotification) {
         navigator.navController?.navigate(
@@ -35,6 +36,12 @@ class Navigator @Inject constructor() :
 
     override fun goBack() {
         navigator.navController?.popBackStack()
+    }
+
+    fun onDestinationChanged(action: (Int) -> Unit) {
+        navigator.navController?.addOnDestinationChangedListener { _, destination, _ ->
+            action(destination.id)
+        }
     }
 
     companion object {
@@ -56,5 +63,7 @@ class Navigator @Inject constructor() :
         fun onNavDestinationSelected(item: MenuItem) =
             navigator.navController?.let { item.onNavDestinationSelected(it) }
                 ?: false
+
     }
+
 }

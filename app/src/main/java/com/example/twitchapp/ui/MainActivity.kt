@@ -48,13 +48,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         Navigator.setNavController(navController)
-
-        navController.let {
-            NavigationUI.setupWithNavController(viewBinding.bottomNavigation, it)
-            it.addOnDestinationChangedListener { _, destination, _ ->
-                viewModel.onDestinationChanged(AppScreen.fromResId(destination.id))
-            }
-        }
+        NavigationUI.setupWithNavController(viewBinding.bottomNavigation, navController)
     }
 
     private fun init() {

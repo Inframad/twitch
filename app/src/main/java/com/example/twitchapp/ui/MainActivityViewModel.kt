@@ -27,16 +27,10 @@ class MainActivityViewModel @Inject constructor(
         notificationRepository.getNotificationsEvent()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::messageReceived){}
-    }
 
-    fun onDestinationChanged(screen: AppScreen) {
-        _currentScreen = screen
-        toggleBottomNavigationViewVisibility.setValue(
-            when (screen) {
-                AppScreen.APP_REVIEW -> false
-                else -> true
-            }
-        )
+        navigator.onDestinationChanged {
+            _currentScreen = AppScreen.fromResId(it)
+        }
     }
 
     fun initialized() {
